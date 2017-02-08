@@ -22,7 +22,7 @@ public class AudioEngine {
     private FloatBuffer listenerOri;
 
     /** Holds all of the tracks given to the AudioEngine. */
-    private ArrayList<Track> tracks = new ArrayList<Track>();
+    private ArrayList<Track> tracks = new ArrayList<>();
 
     /**
      * Object to handle individual audio tracks.
@@ -196,8 +196,8 @@ public class AudioEngine {
         Track track = new Track(filepath);
         tracks.add(track);
 
-        /** Return the size of tracks as a reference to the track. */
-        return tracks.size();
+        /** Return the size of tracks (-1) as a reference to the track. */
+        return tracks.size() - 1;
     }
 
     /**
@@ -217,6 +217,7 @@ public class AudioEngine {
      * @param ref The reference to the Track to play.
      */
     public void playTrack(int ref) {
+        // TODO: Check if index is out of bounds.
         /** Get the track from the list of Tracks and play it. */
         Track track = (Track) tracks.get(ref);
         track.play();
