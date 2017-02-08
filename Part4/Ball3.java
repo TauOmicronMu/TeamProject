@@ -91,6 +91,7 @@ public class Ball3 {
 	public void moveRight() {
 		if(dx+agility < maxSpeed){
 			dx += agility;
+			
 		}
 	}
 	public void moveLeft() {
