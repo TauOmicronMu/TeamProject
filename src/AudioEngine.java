@@ -73,12 +73,55 @@ public class AudioEngine {
             return AL10.AL_FALSE;
         }
 
+        /**
+         * Looks at the item on top of this.buffer and returns it, without incrementing the position of the buffer.
+         * @return The first int in this.buffer.
+         */
+        private int bufferPeek() {
+            int bufferItem = buffer.get();
+            buffer.position(0);
+            return bufferItem;
+        }
+
+        /**
+         * Looks at the item on top of this.source and returns it, without incrementing the position of the buffer.
+         * @return The first int in this.source.
+         */
+        private int sourcePeek() {
+            int sourceItem = source.get();
+            source.position(0);
+            return sourceItem;
+        }
+
+        /**
+         * Plays the Track once.
+         */
         private void play() {
-            AL10.alSourcePlay(source.get());
-            // TODO: Thread this!!!
-            boolean x = true;
-            while(x);
-            killALData();
+            int sourceItem = sourcePeek();
+            /** Make sure that we aren't looping. */
+            AL10.alSourcei(sourceItem, AL10.AL_LOOPING, 0);
+            AL10.alSourcePlay(sourceItem);
+        }
+
+        /**
+         * Stops the Track.
+         */
+        private void stop() {
+            int sourceItem = sourcePeek();
+            AL10.alSourceStop(sourceItem);
+        }
+
+        /**
+         * Loops the Track.
+         * Note: Looping will be overridden by playing a sound once, so bear in mind that
+         * it is worth creating two Tracks of a sound if you intend to both loop it and
+         * play the sound normally simultaneously.
+         */
+        private void loop() {
+            int sourceItem = sourcePeek();
+            /** Make sure that we're looping. */
+            AL10.alSourcei(sourceItem, AL10.AL_LOOPING, 1);
+            AL10.alSourcePlay(sourceItem);
         }
 
         /**
@@ -213,13 +256,51 @@ public class AudioEngine {
     }
 
     /**
-     * Plays the Track with reference, ref.
+     * Plays the Track with reference, ref, or does nothing if ref is out of bounds.
      * @param ref The reference to the Track to play.
      */
     public void playTrack(int ref) {
-        // TODO: Check if index is out of bounds.
+        /** 'Error' if ref is out of bounds. */
+        if(ref >= tracks.size()) {
+            System.err.println("WARNING: Track Out of Bounds");
+            return;
+        }
+
         /** Get the track from the list of Tracks and play it. */
-        Track track = (Track) tracks.get(ref);
+        Track track = tracks.get(ref);
         track.play();
     }
+
+    /**
+     * Stops the Track with reference, ref, or does nothing if ref is out of bounds.
+     * @param ref The reference to the Track to Stop.
+     */
+    public void stopTrack(int ref) {
+        /** 'Error' if ref is out of bounds. */
+        if(ref >= tracks.size()) {
+            System.err.println("WARNING: Track Out of Bounds");
+            return;
+        }
+
+        /** Get the track from the list of Tracks and stop it. */
+        Track track = tracks.get(ref);
+        track.stop();
+    }
+
+    /**
+     * Loops the Track with reference, ref, or does nothing if ref is out of bounds.
+     * @param ref The reference to the Track to Loop.
+     */
+    public void loopTrack(int ref) {
+        /** 'Error' if ref is out of bounds. */
+        if(ref >= tracks.size()) {
+            System.err.println("WARNING: Track Out of Bounds");
+            return;
+        }
+
+        /** Get the track from the list of Tracks and stop it. */
+        Track track = tracks.get(ref);
+        track.loop();
+    }
+
 }
