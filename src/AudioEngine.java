@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class AudioEngine {
 
     /** Holds the device and context through which to play the audio. */
-    long device;
-    long context;
+    private long device;
+    private long context;
 
     /** Holds the information required for the listener. */
     private FloatBuffer listenerPos;
