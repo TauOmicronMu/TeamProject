@@ -1,55 +1,45 @@
 package networking;
 
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class NetworkEngine implements Runnable {
+abstract class NetworkEngine implements Runnable {
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private boolean running;
-    private Socket outSocket;
-    private ServerSocket serverSocket;
-    private ConcurrentLinkedQueue<Message> messages;
+    private ConcurrentLinkedQueue<Message> messages = new ConcurrentLinkedQueue<>();
 
-    public void initialize(String host, int address) {
-        try {
-            outSocket = new Socket(host, address);
-        } catch (IOException e) {
-            System.err.println("Couldn't initialize socket.");
-            e.printStackTrace();
-            return;
-        }
-
-        try {
-            inputStream = new ObjectInputStream(socket.getInputStream());
-            outputStream = new ObjectOutputStream(socket.getOutputStream());
-        } catch (IOException e) {
-            System.err.println("Couldn't get socket's input/output stream");
-            e.printStackTrace();
-            return;
-        }
-
-        new Thread(this).start();
-    }
-
-    public void stop() {
+    private void stop() {
         running = false;
     }
 
-    public Optional<Message> nextMessage() {
+    Optional<Message> nextMessage() {
         Message m = messages.poll();
         if (m != null) return Optional.of(m);
         return Optional.empty();
     }
 
+    void sendMessage(Message m) {
+        try {
+            outputStream.writeObject(m);
+        } catch (IOException e) {
+            System.out.println("Failed to write message. Stopping...");
+            //e.printStackTrace();
+            stop();
+            System.exit(0);
+        }
+    }
+
     @Override
     public void run() {
+        running = true;
+        System.out.println("Starting to read messages from input stream...");
         while (running) {
             try {
                 Message m = (Message) inputStream.readObject();
@@ -59,5 +49,22 @@ public class NetworkEngine implements Runnable {
                 running = false;
             }
         }
+    }
+
+    void initialize(Socket socket) {
+        // Grab input and output streams to the given socket.
+        System.out.println("Initializing...");
+        try {
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            inputStream = new ObjectInputStream(socket.getInputStream());
+        } catch (IOException e) {
+            System.err.println("Couldn't get i/o stream for socket.");
+            e.printStackTrace();
+            return;
+        }
+        System.out.println("Initialized.");
+
+        // Start handling messages on the socket.
+        new Thread(this).start();
     }
 }
