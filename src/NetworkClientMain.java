@@ -17,7 +17,9 @@ class Client extends NetworkClient implements Runnable {
     private int gameState = 0;
 
     /**
+     * Client is an example of what a main GameClient might look like.
      * In order to use the features of the NetworkClient, we need to call the constructor.
+     *
      * @param host The hostname of the server we're connecting to.
      * @param port The port on which the server is listening for connections.
      */
@@ -62,6 +64,7 @@ class Client extends NetworkClient implements Runnable {
 
     /**
      * Update the game state, introducing a slight error.
+     *
      * @param input The player input to use in our update simulation.
      */
     private void simulateUpdate(int input) {
@@ -69,10 +72,25 @@ class Client extends NetworkClient implements Runnable {
         gameState %= 20;
     }
 
+    /**
+     * Utility method to send a player's input to the server, wrapped in a
+     * Message object.
+     *
+     * @param input The player's input.
+     */
     private void sendInput(int input) {
         sendMessage(new Message(String.valueOf(input)));
     }
 
+
+    /**
+     * This method allows us to handle incoming messages from the server. In
+     * this case, we're using the message as a new authoritative game state.
+     * N.B. that this method is called by the internal mechanisms and won't
+     * need to be called manually by anyone implementing a NetworkClient.
+     *
+     * @param m The message we've received from the server.
+     */
     @Override
     public void handleMessage(Message m) {
         int gameState = Integer.valueOf(m.getText());
@@ -82,6 +100,9 @@ class Client extends NetworkClient implements Runnable {
 }
 
 
+/**
+ * Spin up a server to demonstrate the client-server synchronisation.
+ */
 public class NetworkClientMain {
     public static void main(String... args) {
         Client client = new Client("localhost", 8080);

@@ -1,7 +1,8 @@
 package networking;
 
-import java.util.function.Consumer;
-
-interface MessageHandler extends Consumer<Message> {
+/**
+ * This MessageHandler interface exists for two reasons:
+ */
+interface MessageHandler {
     void handleMessage(Message m);
 }

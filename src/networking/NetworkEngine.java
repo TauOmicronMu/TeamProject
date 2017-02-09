@@ -8,6 +8,11 @@ import java.net.Socket;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+
+/**
+ * A NetworkEngine exists to abstract away the sockets, streams and queues
+ * into a nice interface for sending and receiving messages.
+ */
 abstract class NetworkEngine implements Runnable {
 
     private ObjectInputStream inputStream;
@@ -15,56 +20,72 @@ abstract class NetworkEngine implements Runnable {
     private boolean running;
     private ConcurrentLinkedQueue<Message> messages = new ConcurrentLinkedQueue<>();
 
+    /**
+     * Stop our message-reception loop from continuing at the next iteration.
+     */
     private void stop() {
         running = false;
     }
 
+    /**
+     * Essentially this method is a "poll" for messages. It returns an
+     * Optional Message: either the next message in our received queue,
+     * or Empty.
+     */
     Optional<Message> nextMessage() {
         Message m = messages.poll();
         if (m != null) return Optional.of(m);
         return Optional.empty();
     }
 
+    /**
+     * Send a message to our output stream, and therefore our connected device.
+     *
+     * @param m The message to send.
+     */
     void sendMessage(Message m) {
         try {
             outputStream.writeObject(m);
         } catch (IOException e) {
             System.out.println("Failed to write message. Stopping...");
-            //e.printStackTrace();
-            stop();
             System.exit(0);
         }
     }
 
+    /**
+     * Start a main loop which reads messages from our input stream into a
+     * buffer of received messages.
+     */
     @Override
     public void run() {
         running = true;
-        System.out.println("Starting to read messages from input stream...");
         while (running) {
             try {
                 Message m = (Message) inputStream.readObject();
                 messages.add(m);
             } catch (Exception e) {
                 e.printStackTrace();
-                running = false;
+                stop();
             }
         }
     }
 
+    /**
+     * Given a socket representing our connection to another device, create
+     * the necessary input and output streams to be able to send data to that
+     * device.
+     *
+     * @param socket The socket across which we want to send data.
+     */
     void initialize(Socket socket) {
-        // Grab input and output streams to the given socket.
-        System.out.println("Initializing...");
         try {
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             inputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
-            System.err.println("Couldn't get i/o stream for socket.");
+            System.err.println("Couldn't get one of input or output stream for socket.");
             e.printStackTrace();
             return;
         }
-        System.out.println("Initialized.");
-
-        // Start handling messages on the socket.
         new Thread(this).start();
     }
 }
