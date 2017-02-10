@@ -1,4 +1,4 @@
-package Part4;
+package gradual;
 
 public class Main {
 
@@ -8,7 +8,6 @@ public class Main {
 		g.start();
 		g.run();
 		g.end();
-
 	}
 
 }
