@@ -17,7 +17,7 @@ public class Distribution {
 		int maximum = 0;
 		Move[] move;
 		int[] score;
-		while(minimum < 50){//ÔÙÕ”ÏÂ:how about score.length < x
+		while(minimum < 50){//or score.length < x
 			move = new Move[max_angle-min_angle-1];
 			score = generateMove(move);
 			setRange(move,score);
