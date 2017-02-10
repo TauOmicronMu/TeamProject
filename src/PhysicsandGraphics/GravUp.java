@@ -1,7 +1,4 @@
-package gradual;
-
-import java.awt.Color;
-import java.awt.Graphics;
+package PhysicsandGraphics;
 
 public class GravUp extends Item{
 

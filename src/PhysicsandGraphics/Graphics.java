@@ -1,17 +1,12 @@
-package gradual;
+package PhysicsandGraphics;
 import static org.lwjgl.glfw.GLFW.*;
 
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
-
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
-import static org.lwjgl.opengl.GL20.glCreateShader;
 
-import java.applet.Applet;
-import java.util.ArrayList;
 import java.util.Random;
 /**
  * Main class for graphics
@@ -20,14 +15,9 @@ import java.util.Random;
  */
 public class Graphics {
 
-		private static float x = 0f;
-		private static float y = -0.615f;
-		private static float invisiblex;
-		private static float invisibley;
+		private static int invisiblex;
+		private static int invisibley;
 		private static boolean buttondown = false;
-		private static boolean drawrec = true;
-		private static float changey = -0.01f;
-		private static float changex = 0;
 		private static boolean started = false;
 		private static Shader shader;
 		private long window;
@@ -36,9 +26,9 @@ public class Graphics {
 		private Platform p[] = new Platform[10];
 		private Item item[] = new Item[3];
 		private Random r = new Random();
+		private DrawCircle drawc = new DrawCircle();
 		
 		public Graphics() {
-			// TODO Auto-generated constructor stub
 		}
 			
 		public int getHeight() {
@@ -52,7 +42,7 @@ public class Graphics {
 		 * Sets up the screen, placing the ball in the initial position and creating the obstacles
 		 * @param window
 		 */
-		public long init()
+		public void init()
 		{		
 			if(!glfwInit())
 			{
@@ -74,17 +64,14 @@ public class Graphics {
 			glfwMakeContextCurrent(window);
 			
 			GL.createCapabilities();
-			
-			
 			shader = new Shader("shader");
 			
-			return window;
 		}
 		
 		public void start() {
-			b = new Ball3();
+			b = new Ball3(videoMode.width()/2,25);
 			for(int i = 0; i < p.length; i++){
-				p[i] = new Platform(videoMode.width()- r.nextInt(700), videoMode.height() - 200 * i, 140, 20);
+				p[i] = new Platform(videoMode.width()- r.nextInt(videoMode.width()-50), videoMode.height() - 100 * i, 140, 20);
 			}
 			
 			for(int i = 0; i < item.length; i++){
@@ -109,10 +96,9 @@ public class Graphics {
 		 */
 		public void run()
 		{
-			while(true)
+			while(!glfwWindowShouldClose(window))
 			{
 				setup(shader);
-			
 				for(int i = 0; i< item.length; i++){
 					if(item[i].getY() == videoMode.height() + 100){
 						item[i]=null;
@@ -142,9 +128,8 @@ public class Graphics {
 				}
 				
 				b.update(this);
-			
-				b.paint(this);
-				
+				mousenavigation();
+				drawc.paintPinball(this, b.getX(), b.getY());
 				for(int i = 0; i < p.length; i++){
 					p[i].paint(this);
 				}
@@ -153,23 +138,65 @@ public class Graphics {
 					item[i].paint();
 				}
 			
-			if(drawrec)
-			{
-				float[] verticesr = {-1.0f,-0.6f,0.3f,-1.0f,-0.63f,0.3f,1.0f,-0.63f,0.3f,1.0f,-0.6f,0.3f};
-				Rectangle.drawrectangle(verticesr);
-			}
-			//mousenavigation(window);
+			
 			glfwSwapBuffers(window);
 			
 			try {
 				Thread.sleep(17);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			}
 		}
-	}
 		
+
+		/**
+		 * Monitors the mouse, checks for clicks and releases
+		 * @param window
+		 */
+		private void mousenavigation() {
+
+			//find current position of cursor
+			GLFWCursorPosCallbackI cursorcallback = new GLFWCursorPosCallbackI(){
+
+				public void invoke(long window, double xpos, double ypos)
+				{
+					invisiblex = (int) xpos;
+					invisibley = (int) ypos;
+				}
+			};
+			glfwSetCursorPosCallback(window,cursorcallback);
+			
+			//check if mouse has been released
+			GLFWMouseButtonCallbackI mousecallback = new GLFWMouseButtonCallbackI()
+			{
+				public void invoke(long window, int button, int action, int mods)
+				{
+					if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+					{
+						buttondown = false;
+						started = true;
+					}
+				}
+				
+			};
+			
+			//check if mouse has been pressed
+			glfwSetMouseButtonCallback(window,mousecallback);
+			if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+			{
+				b.setX(invisiblex);
+				b.setY(invisibley);
+				b.update(this);
+				buttondown = true;
+			}
+			
+			//if the button hasn't been pressed keep moving ball
+			if(!buttondown && started )
+			{		
+				b.update(this);
+			}
+		}
 		/**
 		 * Clears the colour from the screen and binds the shader
 		 * Necessary each time you draw
@@ -183,14 +210,13 @@ public class Graphics {
 			
 		}
 		
-		
 		public float changexCoord(int x) {
-			float newX = -1+(x/400); 
-			return newX;
+			float newx = (float)-1.0f + ((float)x/(float)(videoMode.width()/2));
+			return newx;
 		}
 		
 		public float changeyCoord(int y) {
-			float newY = 1 -(y/400);
-			return newY;
+			float newy = (float)1.0f - ((float)y/(float)(videoMode.height()/2));
+			return newy;
 		}
 }

@@ -1,4 +1,4 @@
-package Part4;
+package PhysicsandGraphics;
 
 import static org.lwjgl.opengl.GL11.glColor4f;
 
@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class Item {
 	
-	private int x, y, dy, width, height, radius;
+	private int x, y, dy, radius;
 	private Graphics game;
 	
 	public Item(int y) {
@@ -37,8 +37,8 @@ public class Item {
 		 checkForCollision(ball);
 		 if(y > game.getHeight() - radius ){
 			 Random r = new Random();
-			 y = - 700 - r.nextInt(300);
-			 x = r.nextInt(700)+ radius+ 100;
+			 y = - game.getHeight()-100 - r.nextInt(300);
+			 x = r.nextInt(game.getWidth()-100)+ radius+ 100;
 			 
 		 }
 		
@@ -61,12 +61,10 @@ public class Item {
 		
 	}
 	private void performAction(Ball3 ball) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void paint(){
-		float[] vertices = createCircle(game.changexCoord(x),game.changeyCoord(y),400,0.05f);
+		float[] vertices = createCircle(game.changexCoord(x),game.changeyCoord(y),0.2f,0.02f);
 		Model circle1 = new Model(vertices);
 	
 		circle1.render(vertices);
@@ -89,9 +87,9 @@ public class Item {
 		for(int j= 3; j < (noVertices * 3); j = j + 3)
 		{
 			
-			glColor4f(0,1,0,0);
+			glColor4f(0,0,1,0);
 			
-			vertices[j] = (float) ( x + ((radius/1.3) * Math.cos(i * doublePI / noSides)));
+			vertices[j] = (float) ( x + (radius * Math.cos(i * doublePI / noSides)));
 			vertices[j+1] = (float) ( y + (radius * Math.sin(i * doublePI / noSides)));
 			vertices[j+2] = z;
 			i++;

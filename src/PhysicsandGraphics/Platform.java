@@ -1,4 +1,6 @@
-package gradual;
+package PhysicsandGraphics;
+import static org.lwjgl.opengl.GL11.glColor4f;
+
 import java.util.Random;
 
 public class Platform {
@@ -33,7 +35,7 @@ public class Platform {
 			 
 			 Random r = new Random();
 			 y = 0 + 40;
-			 x = game.getWidth() - r.nextInt(700)-100;
+			 x = game.getWidth() - r.nextInt(game.getWidth()-100)-100;
 			 
 		 }
 		
@@ -56,6 +58,7 @@ public class Platform {
 		float floatx = game.changexCoord(x);
 		float floaty = game.changeyCoord(y);
 		float[] verticesb = {floatx,floaty,0.3f,floatx,(floaty - 0.05f),0.3f,(floatx - 0.3f),(floaty - 0.05f),0.3f,(floatx -0.3f),floaty,0.3f};
+		glColor4f(1,0,0,0);
 		Rectangle.drawrectangle(verticesb);
 	}
 }

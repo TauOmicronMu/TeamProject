@@ -1,4 +1,4 @@
-package Part4;
+package PhysicsandGraphics;
 import static org.lwjgl.opengl.GL20.*;
 
 import java.io.BufferedReader;

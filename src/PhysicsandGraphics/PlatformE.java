@@ -1,4 +1,4 @@
-package gradual;
+package PhysicsandGraphics;
 
 public class PlatformE {
 

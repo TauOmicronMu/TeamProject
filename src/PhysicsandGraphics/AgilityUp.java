@@ -1,4 +1,4 @@
-package Part4;
+package PhysicsandGraphics;
 
 public class AgilityUp extends Item{
 

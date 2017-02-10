@@ -1,21 +1,20 @@
-package gradual;
+package PhysicsandGraphics;
 
-public class AgilityUp extends Item{
+public class AgilityDown extends Item{
 
-	public AgilityUp(int x) {
+	public AgilityDown(int x) {
 		super(x);
 		// TODO Auto-generated constructor stub
 	}
 	
 	public void performActio(Ball3 ball) {
-		if(ball.getAgility() < 8){
-			ball.setAgility(ball.getAgility() + 1);
+		if(ball.getAgility()>=2){
+			ball.setAgility(ball.getAgility() - 1);
 		}
 	}
 	
 	@Override
 	public void paint() {
-		
 		//colour
 		super.paint();
 	}
