@@ -13,7 +13,7 @@ import java.util.Random;
 class Client extends NetworkClient implements Runnable {
 
     // A random number generator and an integer can simulate input and game state respectively.
-    private Random random = new Random();
+    private final Random random = new Random();
     private int gameState = 0;
 
     /**

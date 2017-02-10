@@ -7,8 +7,8 @@ package networking;
  * for everything else.
  */
 abstract public class NetworkClient extends NetworkUser {
-    private String host;
-    private int port;
+    private final String host;
+    private final int port;
 
     public NetworkClient(String serverHost, int serverPort) {
         this.host = serverHost;

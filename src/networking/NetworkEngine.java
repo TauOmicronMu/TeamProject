@@ -18,7 +18,7 @@ abstract class NetworkEngine implements Runnable {
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private boolean running;
-    private ConcurrentLinkedQueue<Message> messages = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<Message> messages = new ConcurrentLinkedQueue<>();
 
     /**
      * Stop our message-reception loop from continuing at the next iteration.

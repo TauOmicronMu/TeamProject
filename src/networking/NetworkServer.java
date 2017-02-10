@@ -7,7 +7,7 @@ package networking;
  * for everything else.
  */
 public abstract class NetworkServer extends NetworkUser {
-    private int port;
+    private final int port;
 
     public NetworkServer(int port) {
         this.port = port;

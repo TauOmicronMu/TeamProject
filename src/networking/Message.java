@@ -8,7 +8,7 @@ import java.io.Serializable;
  * client and the server. For this simple demo it can be as simple as a String.
  */
 public class Message implements Serializable {
-    private String text;
+    private final String text;
 
     public Message(String text) {
         this.text = text;
