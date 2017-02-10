@@ -113,7 +113,7 @@ public class Ball3 {
 			else{
 				x += dx;
 			}
-			
+			System.out.println(x);
 			if( y == game.getHeight()- radius - 1){
 				dx *= xFriction;
 				if(Math.abs(dx) < 0.8){
@@ -123,6 +123,7 @@ public class Ball3 {
 			
 			if(y>game.getHeight() - radius - 1){
 				y = game.getHeight() - radius - 1;
+				System.out.println(game.getHeight());
 				dy *= energyloss;
 				dy = -dy;
 			}else{
@@ -142,7 +143,6 @@ public class Ball3 {
 	{
 		float[] vertices = createCircle(game.changexCoord(x),game.changeyCoord(y),400,0.05f);
 		Model circle1 = new Model(vertices);
-	
 		circle1.render(vertices);
 	}
 	

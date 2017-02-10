@@ -28,7 +28,7 @@ public class Graphics {
 		private static float changex = 0;
 		private static boolean started = false;
 		private static ArrayList<ArrayList<Float>> obstacles = new ArrayList<ArrayList<Float>>();
-		private static Shader shader = new Shader("shader");
+		private static Shader shader;
 		private long window;
 		private Ball3 b;
 		private GLFWVidMode videoMode;
@@ -59,7 +59,7 @@ public class Graphics {
 				System.exit(1);
 			}
 			glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-			long window = glfwCreateWindow(800, 800, "Pinball", 0, 0);
+			window = glfwCreateWindow(800, 800, "Pinball", 0, 0);
 			if(window == 0)
 			{
 				throw new IllegalStateException("Failed to create window");
@@ -73,7 +73,8 @@ public class Graphics {
 			glfwMakeContextCurrent(window);
 			
 			GL.createCapabilities();
-			//setscreen(window,4);
+			shader = new Shader("shader");
+			
 		}
 		
 		public void start() {
@@ -137,7 +138,7 @@ public class Graphics {
 				}
 				
 				b.update(this);
-			
+				System.out.println("painting");
 				b.paint(this);
 				
 				for(int i = 0; i < p.length; i++){
@@ -148,11 +149,6 @@ public class Graphics {
 					item[i].paint();
 				}
 			
-			if(drawrec)
-			{
-				float[] verticesr = {-1.0f,-0.6f,0.3f,-1.0f,-0.63f,0.3f,1.0f,-0.63f,0.3f,1.0f,-0.6f,0.3f};
-				Rectangle.drawrectangle(verticesr);
-			}
 			//mousenavigation(window);
 			glfwSwapBuffers(window);
 			

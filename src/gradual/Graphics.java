@@ -29,7 +29,7 @@ public class Graphics {
 		private static float changey = -0.01f;
 		private static float changex = 0;
 		private static boolean started = false;
-		private static Shader shader = new Shader("shader");
+		private static Shader shader;
 		private long window;
 		private Ball3 b;
 		private GLFWVidMode videoMode;
@@ -74,6 +74,10 @@ public class Graphics {
 			glfwMakeContextCurrent(window);
 			
 			GL.createCapabilities();
+			
+			
+			shader = new Shader("shader");
+			
 			return window;
 		}
 		
@@ -105,7 +109,6 @@ public class Graphics {
 		 */
 		public void run()
 		{
-			int vs = glCreateShader(GL_VERTEX_SHADER);
 			while(true)
 			{
 				setup(shader);

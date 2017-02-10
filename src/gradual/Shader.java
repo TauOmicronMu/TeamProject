@@ -23,54 +23,53 @@ public class Shader {
 	 */
 	public Shader(String filename)
 	{
-		System.out.println("Hello");
-		//program = glCreateProgram();
+		program = glCreateProgram();
 		
-		//vs = glCreateShader(GL_VERTEX_SHADER);
-		//glShaderSource(vs, readFile(filename+".vs"));
-		//glCompileShader(vs);
-		/*if(glGetShaderi(vs,GL_COMPILE_STATUS) != 1)
+		vs = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(vs, readFile(filename+".vs"));
+		glCompileShader(vs);
+		if(glGetShaderi(vs,GL_COMPILE_STATUS) != 1)
 		{
 			System.err.println(glGetShaderInfoLog(vs));
 			System.exit(1);
-		}*/
+		}
 		
 		
-		//fs = glCreateShader(GL_FRAGMENT_SHADER);
-		//glShaderSource(fs, readFile(filename+".fs"));
-		//glCompileShader(fs);
-		/*if(glGetShaderi(fs,GL_COMPILE_STATUS) != 1)
+		fs = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fs, readFile(filename+".fs"));
+		glCompileShader(fs);
+		if(glGetShaderi(fs,GL_COMPILE_STATUS) != 1)
 		{
 			System.err.println(glGetShaderInfoLog(fs));
 			System.exit(1);
-		}*/
+		}
 		
-		//glAttachShader(program,vs);
-		//glAttachShader(program, fs);
+		glAttachShader(program,vs);
+		glAttachShader(program, fs);
 		
-		//glBindAttribLocation(program, 0, "vertices");
+		glBindAttribLocation(program, 0, "vertices");
 		
-		//glLinkProgram(program);
-		//(glGetProgrami(program,GL_LINK_STATUS) != 1)
-		//{
-		//	System.err.println(glGetProgramInfoLog(program));
-		//	System.exit(1);
-		//}
-		
-		
-		//glValidateProgram(program);
-		/*if(glGetProgrami(program,GL_VALIDATE_STATUS) != 1)
+		glLinkProgram(program);
+		if(glGetProgrami(program,GL_LINK_STATUS) != 1)
 		{
 			System.err.println(glGetProgramInfoLog(program));
 			System.exit(1);
-		}*/
+		}
+		
+		
+		glValidateProgram(program);
+		if(glGetProgrami(program,GL_VALIDATE_STATUS) != 1)
+		{
+			System.err.println(glGetProgramInfoLog(program));
+			System.exit(1);
+		}
 	}
 	/**
 	 * Allows you to use the shader
 	 */
 	public void bind()
 	{
-		//glUseProgram(program);
+		glUseProgram(program);
 	}
 	
 	/**
@@ -83,7 +82,7 @@ public class Shader {
 		StringBuilder string = new StringBuilder();
 		BufferedReader br;
 		try{
-			br = new BufferedReader(new FileReader(new File("C:/Users/Ella/workspace/EngineTry3/src/shaders" + filename)));
+			br = new BufferedReader(new FileReader(new File("C:/Users/Ella/workspace/EngineTry3/src/" + filename)));
 			String line;
 			while((line = br.readLine()) != null)
 			{

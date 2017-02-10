@@ -22,7 +22,7 @@ public class Platform {
 		height = 40;
 	}
 	public void update(Graphics game, Ball3 ball) {
-		System.out.println(ball.getDy());
+		//System.out.println(ball.getDy());
 		if(ball.getAgility()>3){
 			y += ball.getAgility();
 		}else{

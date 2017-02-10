@@ -1,6 +1,6 @@
-package Part4;
+package gradual;
 
-public class Main {
+public class Main2 {
 
 	public static void main(String[] args) {
 		Graphics g = new Graphics();
@@ -8,7 +8,6 @@ public class Main {
 		g.start();
 		g.run();
 		g.end();
-
 	}
 
 }
