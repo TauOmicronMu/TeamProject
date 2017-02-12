@@ -150,6 +150,12 @@ public class Graphics {
 						item[i].update(this, b);
 					}
 					
+					if(glfwGetKey(window, GLFW_KEY_A) == GLFW_TRUE){
+						b.moveLeft();
+					}else if(glfwGetKey(window, GLFW_KEY_D) == GLFW_TRUE){
+						b.moveRight();
+					}
+					
 					b.update(this);
 					drawc.paintPinball(this, b.getX(), b.getY());
 					for(int i = 0; i < p.length; i++){
