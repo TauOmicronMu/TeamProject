@@ -35,7 +35,7 @@ public class Platform {
 			 
 			 Random r = new Random();
 			 y = 0 + 40;
-			 x = game.getWidth() - r.nextInt(game.getWidth()-100)-100;
+			 x = game.getWidth() - r.nextInt(game.getWidth()-100);
 			 
 		 }
 		
@@ -46,8 +46,11 @@ public class Platform {
 		int radius = ball.getRadius();
 		
 		if (ballY + radius > y && ballY+radius < y + height){
+			System.out.println("Y true");
 			if(ballX > x && ballX < x + width){
 			
+				System.out.println("Collision");
+				
 				double newDy= ball.getGameDy();
 				ball.setDy(newDy);
 				ball.setY(y - radius);
@@ -57,6 +60,8 @@ public class Platform {
 	public void paint(Graphics game){
 		float floatx = game.changexCoord(x);
 		float floaty = game.changeyCoord(y);
+		//System.out.println("PlatformX: " + x);
+		//System.out.println("PlatformY: " + floatx);
 		float[] verticesb = {floatx,floaty,0.3f,floatx,(floaty - 0.05f),0.3f,(floatx - 0.3f),(floaty - 0.05f),0.3f,(floatx -0.3f),floaty,0.3f};
 		glColor4f(1,0,0,0);
 		Rectangle.drawrectangle(verticesb);

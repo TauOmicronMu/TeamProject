@@ -21,6 +21,8 @@ public class Graphics {
 		private static boolean started = false;
 		private static Shader shader;
 		private long window;
+		private int windowheight = 600;
+		private int windowwidth = 600;
 		private Ball3 b;
 		private GLFWVidMode videoMode;
 		private Platform p[] = new Platform[10];
@@ -32,10 +34,10 @@ public class Graphics {
 		}
 			
 		public int getHeight() {
-			return videoMode.height();
+			return windowheight;
 		}
 		public int getWidth() {
-			return videoMode.width();
+			return windowwidth;
 		}
 		
 		/**
@@ -50,7 +52,7 @@ public class Graphics {
 				System.exit(1);
 			}
 			glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-			window = glfwCreateWindow(600, 600, "Pinball", 0, 0);
+			window = glfwCreateWindow(windowwidth, windowheight, "Pinball", 0, 0);
 			if(window == 0)
 			{
 				throw new IllegalStateException("Failed to create window");
@@ -58,7 +60,7 @@ public class Graphics {
 			}
 
 			videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-			glfwSetWindowPos(window, (videoMode.width()- 600)/2, (videoMode.height() - 600)/2);
+			glfwSetWindowPos(window, (videoMode.width()- windowwidth)/2, (videoMode.height() - windowheight)/2);
 			
 			glfwShowWindow(window);
 			glfwMakeContextCurrent(window);
@@ -67,11 +69,15 @@ public class Graphics {
 			shader = new Shader("shader");
 			
 		}
-		
+		/**
+		 * Creates the ball object
+		 * Creates the platforms
+		 * Creates the power-ups
+		 */
 		public void start() {
-			b = new Ball3(videoMode.width()/2,25);
+			b = new Ball3(windowwidth/3,25);
 			for(int i = 0; i < p.length; i++){
-				p[i] = new Platform(videoMode.width()- r.nextInt(videoMode.width()-50), videoMode.height() - 100 * i, 140, 20);
+				System.out.println(p[i] = new Platform(windowwidth- r.nextInt(windowwidth-50), windowheight - 200 * i, 140, 20));
 			}
 			
 			for(int i = 0; i < item.length; i++){
@@ -91,8 +97,7 @@ public class Graphics {
 		/**
 		 * Called every run of the main game loop to update 
 		 * the position of the ball, create new obstacles, 
-		 * move the window etc.
-		 * @param window
+		 * move the obstacles, power-ups etc.
 		 */
 		public void run()
 		{
@@ -100,7 +105,7 @@ public class Graphics {
 			{
 				setup(shader);
 				for(int i = 0; i< item.length; i++){
-					if(item[i].getY() == videoMode.height() + 100){
+					if(item[i].getY() == windowheight + 100){
 						item[i]=null;
 						switch (r.nextInt(4)){
 						case 0:
@@ -129,6 +134,8 @@ public class Graphics {
 				
 				b.update(this);
 				mousenavigation();
+				//System.out.println("X: " + b.getX());
+				//System.out.println("Y: " + b.getY());
 				drawc.paintPinball(this, b.getX(), b.getY());
 				for(int i = 0; i < p.length; i++){
 					p[i].paint(this);
@@ -209,14 +216,40 @@ public class Graphics {
 			shader.bind();
 			
 		}
-		
+		/**
+		 * Converts an x-coordinate to float equivalent (needed for drawing with openGL)
+		 * @param x
+		 * @return the converted coordinate
+		 */
 		public float changexCoord(int x) {
-			float newx = (float)-1.0f + ((float)x/(float)(videoMode.width()/2));
+			float newx = (float)(-1.0f) + ((float)x/(float)(windowwidth/2));
 			return newx;
 		}
 		
+		/**
+		 * Converts an x-coordinate to float equivalent (needed for drawing with openGL)
+		 * @param x
+		 * @return the converted coordinate
+		 */
+		public float changexCoord2(int x) {
+			float newx = 0f;
+			if(x > windowwidth/2)
+			{
+				newx = (float)(float)x/(float)(windowwidth/2);
+			}
+			//float newx = (float)-1.0f + ((float)x/(float)(windowwidth/2));
+			return newx;
+		}
+		
+		/**
+		 * Converts an y-coordinate to float equivalent (needed for drawing with openGL)
+		 * @param y
+		 * @return the converted coordinate
+		 */
 		public float changeyCoord(int y) {
-			float newy = (float)1.0f - ((float)y/(float)(videoMode.height()/2));
+			float newy = (float)1.0f - ((float)y/(float)(windowheight/2));
 			return newy;
 		}
+		
+		
 }

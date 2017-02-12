@@ -15,6 +15,8 @@ public class DrawCircle {
 	 */
 	public void paintPinball(Graphics game, int x, int y)
 	{
+		System.out.println("Old X: " + x);
+		System.out.println("New X: " + game.changexCoord(x));
 		float[] vertices = createCircle(game.changexCoord(x),game.changeyCoord(y),0.5f,0.08f);
 		Model circle1 = new Model(vertices);
 		circle1.render(vertices);
