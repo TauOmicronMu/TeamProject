@@ -21,8 +21,8 @@ public class Graphics {
 		private static int invisibley;
 		private static Shader shader;
 		private long window;
-		private int windowheight = 600;
-		private int windowwidth = 600;
+		private int windowHeight = 800;
+		private int windowWidth = 800;
 		private static boolean changetogame = false;
 		private static boolean changetoquit = false;
 		private static boolean changetomenu = false;
@@ -44,14 +44,14 @@ public class Graphics {
 		}
 			
 		public int getHeight() {
-			return windowheight;
+			return windowHeight;
 		}
 		public int getWidth() {
-			return windowwidth;
+			return windowWidth;
 		}
 		
 		/**
-		 * Sets up the screen, placing the ball in the initial position and creating the obstacles
+		 * Sets up the screen
 		 * @param window
 		 */
 		public void init()
@@ -62,14 +62,14 @@ public class Graphics {
 				System.exit(1);
 			}
 			glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-			window = glfwCreateWindow(windowwidth, windowheight, "Pinball", 0, 0);
+			window = glfwCreateWindow(windowWidth, windowHeight, "Pinball", 0, 0);
 			if(window == 0)
 			{
 				throw new IllegalStateException("Failed to create window");
 			}
 
 			videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-			glfwSetWindowPos(window, (videoMode.width()- windowwidth)/2, (videoMode.height() - windowheight)/2);
+			glfwSetWindowPos(window, (videoMode.width()- windowWidth)/2, (videoMode.height() - windowHeight)/2);
 			
 			glfwShowWindow(window);
 			glfwMakeContextCurrent(window);
@@ -88,9 +88,9 @@ public class Graphics {
 				menu.drawall();
 			}
 			
-			b = new Ball3(windowwidth/2,windowheight/2);
+			b = new Ball3(windowWidth/2,windowHeight/2);
 			for(int i = 0; i < p.length; i++){
-				p[i] = new Platform(windowwidth- r.nextInt(windowwidth-50), windowheight - 200 * i, 140, 20);
+				p[i] = new Platform(r.nextInt(windowWidth-220) -100, windowHeight - 200 * i, 120, 10);
 			}
 			
 			for(int i = 0; i < item.length; i++){
@@ -121,13 +121,13 @@ public class Graphics {
 					menu.drawall();
 					glfwSwapBuffers(window);
 				}else if(initial){
-					drawc.paintPinball(this, b.getX(), b.getY());
+					drawc.paintPinball(this, b.getX(), b.getY(), b.getRadius());
 					if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_TRUE){
 						initial = false;
 					}glfwSwapBuffers(window);
 				}else if(!initial){
 					for(int i = 0; i< item.length; i++){
-						if(item[i].getY() == windowheight + 100){
+						if(item[i].getY() == windowHeight + 100){
 							item[i]=null;
 							switch (r.nextInt(4)){
 							case 0:
@@ -161,7 +161,7 @@ public class Graphics {
 					}
 					
 					b.update(this);
-					drawc.paintPinball(this, b.getX(), b.getY());
+					drawc.paintPinball(this, b.getX(), b.getY(), b.getRadius());
 					for(int i = 0; i < p.length; i++){
 						p[i].paint(this);
 					}
@@ -241,7 +241,7 @@ public class Graphics {
 					b.setX(invisiblex);
 					b.setY(invisibley);
 					//b.update(this);
-					drawc.paintPinball(this, invisiblex, invisibley);
+					drawc.paintPinball(this, invisiblex, invisibley, b.getRadius());
 				}
 			}
 		}
@@ -264,7 +264,7 @@ public class Graphics {
 		 * @return the converted coordinate
 		 */
 		public float changexCoord(int x) {
-			float newx = (float)(-1.0f) + ((float)x/(float)(windowwidth/2));
+			float newx = (float)(-1.0f) + ((float)x/(float)(windowWidth/2));
 			return newx;
 		}
 		
@@ -275,9 +275,9 @@ public class Graphics {
 		 */
 		public float changexCoord2(int x) {
 			float newx = 0f;
-			if(x > windowwidth/2)
+			if(x > windowWidth/2)
 			{
-				newx = (float)(float)x/(float)(windowwidth/2);
+				newx = (float)(float)x/(float)(windowWidth/2);
 			}
 			//float newx = (float)-1.0f + ((float)x/(float)(windowwidth/2));
 			return newx;
@@ -289,8 +289,13 @@ public class Graphics {
 		 * @return the converted coordinate
 		 */
 		public float changeyCoord(int y) {
-			float newy = (float)1.0f - ((float)y/(float)(windowheight/2));
+			float newy = (float)1.0f - ((float)y/(float)(windowHeight/2));
 			return newy;
+		}
+		
+		public float changeDistance(int distance){
+			float newDistance = (1.0f * (float)distance)/(windowWidth/2);
+			return newDistance;
 		}
 		
 		
