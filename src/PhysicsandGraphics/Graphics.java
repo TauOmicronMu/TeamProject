@@ -26,6 +26,7 @@ public class Graphics {
 		private static boolean changetogame = false;
 		private static boolean changetoquit = false;
 		private static boolean changetomenu = false;
+		private static boolean initial = true;
 		private enum STATE{
 			MENU,
 			GAME
@@ -65,7 +66,6 @@ public class Graphics {
 			if(window == 0)
 			{
 				throw new IllegalStateException("Failed to create window");
-				
 			}
 
 			videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -88,7 +88,7 @@ public class Graphics {
 				menu.drawall();
 			}
 			
-			b = new Ball3(windowwidth/3,25);
+			b = new Ball3(windowwidth/2,windowheight/2);
 			for(int i = 0; i < p.length; i++){
 				p[i] = new Platform(windowwidth- r.nextInt(windowwidth-50), windowheight - 200 * i, 140, 20);
 			}
@@ -96,7 +96,6 @@ public class Graphics {
 			for(int i = 0; i < item.length; i++){
 				item[i] = new GravUp( -1000 * i);
 			}
-			glfwSwapBuffers(window);
 		}
 		
 		/**
@@ -121,7 +120,12 @@ public class Graphics {
 				if(state==STATE.MENU){
 					menu.drawall();
 					glfwSwapBuffers(window);
-				}else{
+				}else if(initial){
+					drawc.paintPinball(this, b.getX(), b.getY());
+					if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_TRUE){
+						initial = false;
+					}glfwSwapBuffers(window);
+				}else if(!initial){
 					for(int i = 0; i< item.length; i++){
 						if(item[i].getY() == windowheight + 100){
 							item[i]=null;
@@ -207,6 +211,7 @@ public class Graphics {
 							state=STATE.MENU;
 							changetomenu=false;
 							changetogame=false;
+							initial=true;
 							start();
 						}else if(changetogame==true){
 							state=STATE.GAME;
@@ -232,7 +237,7 @@ public class Graphics {
 					menu.drawall();
 				}else if(state==STATE.GAME && -0.95<=x && x<=-0.85 && 0.9<=y && y<=0.95){
 					changetomenu = true;
-				}else{
+				}else if(state==STATE.GAME){
 					b.setX(invisiblex);
 					b.setY(invisibley);
 					//b.update(this);
