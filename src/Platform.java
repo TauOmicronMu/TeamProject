@@ -3,7 +3,7 @@ import java.util.Random;
 import static org.lwjgl.opengl.GL11.glColor4f;
 
 
-public class Platform {
+class Platform {
 
     private int dx;
     private int x, y, width, height;
@@ -15,7 +15,7 @@ public class Platform {
      *@param width the width of the platform
      *@param height the height of the platform
      */
-    public Platform(int x, int y, int width, int height) {
+    Platform(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -36,19 +36,21 @@ public class Platform {
      *@param game the game class object
      *@param ball the ball class object
      */
-    public void update(Graphics game, Ball ball) {
-        //System.out.println(ball.getDy());
+    void update(GameState game) {
+        // Todo: Investigate magic numbers here.
+
+        Ball ball = game.getBall();
         if (ball.getAgility() > 3) {
             y += ball.getAgility();
         } else {
             y += dx;
         }
         checkForCollision(ball);
-        if (y > game.getHeight()) {
+        if (y > game.getWindowHeight()) {
 
             Random r = new Random();
-            y = 0 + 40;
-            x = game.getWidth() - r.nextInt(game.getWidth() - 100);
+            y = 40;
+            x = game.getWindowWidth() - r.nextInt(game.getWindowWidth() - 100);
 
         }
 
@@ -79,11 +81,11 @@ public class Platform {
     /*
      * Draws the platform
      */
-    public void paint(Graphics game) {
-        float floatx = game.changexCoord(x);
-        float floaty = game.changeyCoord(y);
-        float widthGl = game.changeDistance(width);
-        float heightGl = game.changeDistance(height);
+    void paint(Window game) {
+        float floatx = game.glScaleX(x);
+        float floaty = game.glScaleY(y);
+        float widthGl = game.glScaleDistance(width);
+        float heightGl = game.glScaleDistance(height);
 
         float[] verticesb = {floatx, floaty, 0.3f, floatx, (floaty - heightGl), 0.3f, (floatx + widthGl), (floaty - heightGl), 0.3f, (floatx + widthGl), floaty, 0.3f};
         glColor4f(1, 0, 0, 0);

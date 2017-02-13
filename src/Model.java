@@ -77,7 +77,6 @@ public class Model {
         glBindVertexArray(0);
 
         glDisableVertexAttribArray(0);
-        ;
     }
 
 }

@@ -6,13 +6,12 @@ import static org.lwjgl.opengl.GL11.glColor4f;
 public class Item {
 
     private int x, y, dy, radius;
-    private Graphics game;
 
     /*
      * Constructor for item class(PowerUps)
      * @param y the y position of the powerUp
      */
-    public Item(int y) {
+    Item(int y) {
         this.y = y;
         Random r = new Random();
         x = r.nextInt(700) + radius + 100;
@@ -23,16 +22,8 @@ public class Item {
     /*
      * Get method for Y
      */
-    public int getY() {
+    int getY() {
         return y;
-    }
-
-    /*
-     * Set method for Y
-     * @param y
-     */
-    public void setY(int y) {
-        this.y = y;
     }
 
     /*
@@ -53,14 +44,18 @@ public class Item {
     /*
      * Updates the position of the PowerUp
      */
-    public void update(Graphics game, Ball ball) {
+    void update(GameState game) {
+        int height = game.getWindowHeight();
+        int width = game.getWindowWidth();
+        Ball ball = game.getBall();
+
         y += dy;
-        this.game = game;
-        checkForCollision(ball);
-        if (y > game.getHeight() - radius) {
+
+        checkForCollision(ball, game);
+        if (y > height - radius) {
             Random r = new Random();
-            y = -game.getHeight() - 100 - r.nextInt(300);
-            x = r.nextInt(game.getWidth() - 100) + radius + 100;
+            y = -height - 100 - r.nextInt(300);
+            x = r.nextInt(width - 100) + radius + 100;
 
         }
 
@@ -70,7 +65,7 @@ public class Item {
      * Checks for collision between the ball and the powerUp
      * @param ball
      */
-    private void checkForCollision(Ball ball) {
+    private void checkForCollision(Ball ball, GameState game) {
         int ballX = ball.getX();
         int ballY = ball.getY();
         int ballR = ball.getRadius();
@@ -83,7 +78,7 @@ public class Item {
         if (c < collide) {
             performAction(ball);
             x = 0;
-            y = game.getHeight() + 100;
+            y = game.getWindowHeight() + 100;
         }
 
     }
@@ -98,8 +93,8 @@ public class Item {
     /*
      * Paints the powerUps
      */
-    public void paint() {
-        float[] vertices = createCircle(game.changexCoord(x), game.changeyCoord(y), 0.2f, 0.02f);
+    void paint(Window window) {
+        float[] vertices = createCircle(window.glScaleX(x), window.glScaleY(y), 0.2f, 0.02f);
         Model circle1 = new Model(vertices);
 
         circle1.render(vertices);

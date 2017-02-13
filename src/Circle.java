@@ -1,8 +1,4 @@
-public class DrawCircle {
-
-    public DrawCircle() {
-
-    }
+class Circle {
 
     /**
      * Draws the pinball
@@ -10,10 +6,10 @@ public class DrawCircle {
      * @param x the current x position of the centre of the pinball
      * @param y the current y position of the centre of the pinball
      */
-    public void paintPinball(Graphics graphics, int x, int y, int radius) {
-        float radius2 = graphics.changeDistance(radius);
-        float x2 = graphics.changexCoord(x);
-        float y2 = graphics.changeyCoord(y);
+    static void paintPinball(Window window, int x, int y, int radius) {
+        float radius2 = window.glScaleDistance(radius);
+        float x2 = window.glScaleX(x);
+        float y2 = window.glScaleY(y);
         float[] vertices = createCircle(x2, y2, 0.5f, radius2);
         Model circle1 = new Model(vertices);
         circle1.render(vertices);
@@ -25,10 +21,10 @@ public class DrawCircle {
      * @param x the current x position of the centre of the powerUp
      * @param y the current y position of the centre of the powerUp
      */
-    public void paintItem(Graphics game, int x, int y, int radius) {
-        float radius2 = game.changeDistance(radius);
-        float x2 = game.changexCoord(x);
-        float y2 = game.changeyCoord(y);
+    static public void paintItem(Window window, int x, int y, int radius) {
+        float radius2 = window.glScaleDistance(radius);
+        float x2 = window.glScaleX(x);
+        float y2 = window.glScaleY(y);
         float[] vertices = createCircle(x2, y2, 0.3f, radius2);
         Model circle1 = new Model(vertices);
         circle1.render(vertices);

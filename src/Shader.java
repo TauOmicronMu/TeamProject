@@ -10,7 +10,7 @@ import static org.lwjgl.opengl.GL20.*;
  *
  * @author Ella
  */
-public class Shader {
+class Shader {
 
     private int program;
     private int vs; //vertex shader
@@ -21,7 +21,7 @@ public class Shader {
      *
      * @param filename
      */
-    public Shader(String filename) {
+    Shader(String filename) {
         program = glCreateProgram();
 
         vs = glCreateShader(GL_VERTEX_SHADER);
@@ -63,7 +63,7 @@ public class Shader {
     /**
      * Allows you to use the shader
      */
-    public void bind() {
+    void bind() {
         glUseProgram(program);
     }
 
@@ -77,7 +77,7 @@ public class Shader {
         StringBuilder string = new StringBuilder();
         BufferedReader br;
         try {
-            br = new BufferedReader(new FileReader(new File("src/PhysicsAndGraphics/shaders/" + filename)));
+            br = new BufferedReader(new FileReader(new File("src/shaders/" + filename)));
             String line;
             while ((line = br.readLine()) != null) {
                 string.append(line);

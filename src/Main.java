@@ -1,12 +1,29 @@
 public class Main {
 
-    public static void main(String[] args) {
-        Graphics graphics = new Graphics();
-        graphics.init();
-        graphics.start();
-        graphics.run();
+    private static final int windowHeight = 800;
+    private static final int windowWidth = 800;
 
-        graphics.end();
+
+    private void play() {
+        Window window = new Window(windowHeight, windowWidth);
+        GameState game = new GameState(window);
+
+        game.setUp();
+        window.init(game);
+
+        Menu.drawAll();
+        while (!window.shouldClose()) {
+            window.handleInput(game);
+            game.updateLogic();
+            game.updatePhysics();
+            window.repaint(game);
+        }
+        window.end();
     }
 
+
+    public static void main(String[] args) {
+        Main main = new Main();
+        main.play();
+    }
 }

@@ -1,4 +1,4 @@
-public class Ball {
+class Ball {
 
 
     private int x = 400;
@@ -7,30 +7,69 @@ public class Ball {
     private double dy = 0;
     private int radius = 20;
     private double gravity = 15;
-    private double energyloss = 1;
-    private double dt = .2;
-    private double xFriction = 0.9;
-    private double gameDy = -75;
+    private static final double energyloss = 1;
+    private static final double dt = .2;
+    private static final double xFriction = 0.9;
+    private static final double gameDy = -75;
     private int agility = 3;
     private int maxSpeed = 10;
 
 
-    public Ball() {
-        // TODO Auto-generated constructor stub
-    }
-
-    public Ball(int i, int j) {
+    Ball(int i, int j) {
         x = i;
         y = j;
     }
 
 
-    public double getGameDy() {
-        return gameDy;
+    void moveRight() {
+        if (dx + agility < maxSpeed) {
+            dx += agility;
+
+        }
     }
 
-    public void setGameDy(double gameDy) {
-        this.gameDy = gameDy;
+    void moveLeft() {
+        if (dx - agility > -maxSpeed) {
+            dx -= agility;
+        }
+    }
+
+
+    void update(GameState game) {
+
+        int height = game.getWindowHeight();
+        int width = game.getWindowWidth();
+
+        if (x + dx > width - radius - 1) {
+            x = width - radius - 1;
+            dx = -dx;
+        } else if (x + dx < radius) {
+            x = radius;
+            dx = -dx;
+        } else {
+            x += dx;
+        }
+        if (y == height - radius - 1) {
+            dx *= xFriction;
+            if (Math.abs(dx) < 0.8) {
+                dx = 0;
+            }
+        }
+
+        if (y > height - radius - 1) {
+            y = height - radius - 1;
+            dy *= energyloss;
+            dy = -dy;
+        } else {
+            // Calculate new velocity in Y direction:
+            dy += gravity * dt;
+            // Calculate new Y position:
+            y += dy * dt + .5 * gravity * dt * dt;
+        }
+    }
+
+    double getGameDy() {
+        return gameDy;
     }
 
     public int getX() {
@@ -41,103 +80,35 @@ public class Ball {
         this.x = x;
     }
 
-    public int getY() {
+    int getY() {
         return y;
     }
 
-    public void setY(int y) {
+    void setY(int y) {
         this.y = y;
     }
 
-    public double getDx() {
-        return dx;
-    }
-
-    public double getDy() {
-        return dy;
-    }
-
-    public void setDx(double dx) {
-        this.dx = dx;
-    }
-
-    public void setDy(double dy) {
+    void setDy(double dy) {
         this.dy = dy;
     }
 
-    public double getGravity() {
+    double getGravity() {
         return gravity;
     }
 
-    public void setGravity(double gravity) {
+    void setGravity(double gravity) {
         this.gravity = gravity;
     }
 
-    public int getRadius() {
+    int getRadius() {
         return radius;
     }
 
-    public void setRadius(int radius) {
-        this.radius = radius;
-    }
-
-    public int getAgility() {
+    int getAgility() {
         return agility;
     }
 
-    public void setAgility(int agility) {
+    void setAgility(int agility) {
         this.agility = agility;
-    }
-
-    public int getMaxSpeed() {
-        return maxSpeed;
-    }
-
-    public void setMaxSpeed(int maxSpeed) {
-        this.maxSpeed = maxSpeed;
-    }
-
-    public void moveRight() {
-        if (dx + agility < maxSpeed) {
-            dx += agility;
-
-        }
-    }
-
-    public void moveLeft() {
-        if (dx - agility > -maxSpeed) {
-            dx -= agility;
-        }
-    }
-
-
-    public void update(Graphics game) {
-
-        if (x + dx > game.getWidth() - radius - 1) {
-            x = game.getWidth() - radius - 1;
-            dx = -dx;
-        } else if (x + dx < 0 + radius) {
-            x = 0 + radius;
-            dx = -dx;
-        } else {
-            x += dx;
-        }
-        if (y == game.getHeight() - radius - 1) {
-            dx *= xFriction;
-            if (Math.abs(dx) < 0.8) {
-                dx = 0;
-            }
-        }
-
-        if (y > game.getHeight() - radius - 1) {
-            y = game.getHeight() - radius - 1;
-            dy *= energyloss;
-            dy = -dy;
-        } else {
-            //velocity formula
-            dy += gravity * dt;
-            //position formula
-            y += dy * dt + .5 * gravity * dt * dt;
-        }
     }
 }
