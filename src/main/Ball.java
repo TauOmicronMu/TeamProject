@@ -1,21 +1,25 @@
-class Ball {
+package main;
+
+import java.io.Serializable;
+
+class Ball implements Serializable {
 
 
-    private int x = 400;
-    private int y = 25;
+    private double x = 400;
+    private double y = 25;
     private double dx = 0;
     private double dy = 0;
     private int radius = 20;
     private double gravity = 15;
     private static final double energyloss = 1;
-    private static final double dt = .2;
+    private static final double dt = 0.2;
     private static final double xFriction = 0.9;
     private static final double gameDy = -75;
     private int agility = 3;
     private int maxSpeed = 10;
 
 
-    Ball(int i, int j) {
+    Ball(double i, double j) {
         x = i;
         y = j;
     }
@@ -72,19 +76,19 @@ class Ball {
         return gameDy;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    void setX(double x) {
         this.x = x;
     }
 
-    int getY() {
+    public double getY() {
         return y;
     }
 
-    void setY(int y) {
+    void setY(double y) {
         this.y = y;
     }
 
@@ -108,7 +112,4 @@ class Ball {
         return agility;
     }
 
-    void setAgility(int agility) {
-        this.agility = agility;
-    }
 }

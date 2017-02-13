@@ -1,9 +1,12 @@
+package main;
+
+import java.io.Serializable;
 import java.util.Random;
 
 import static org.lwjgl.opengl.GL11.glColor4f;
 
 
-public class Item {
+class Item implements Serializable {
 
     private int x, y, dy, radius;
 
@@ -16,7 +19,7 @@ public class Item {
         Random r = new Random();
         x = r.nextInt(700) + radius + 100;
         radius = 10;
-        dy = 2;
+        dy = 3;
     }
 
     /*
@@ -66,12 +69,12 @@ public class Item {
      * @param ball
      */
     private void checkForCollision(Ball ball, GameState game) {
-        int ballX = ball.getX();
-        int ballY = ball.getY();
+        double ballX = ball.getX();
+        double ballY = ball.getY();
         int ballR = ball.getRadius();
 
-        int a = x - ballX;
-        int b = y - ballY;
+        double a = x - ballX;
+        double b = y - ballY;
         int collide = radius + ballR;
         //distance between object centers
         double c = Math.sqrt((double) (a * a) + (double) (b * b));
@@ -94,7 +97,7 @@ public class Item {
      * Paints the powerUps
      */
     void paint(Window window) {
-        float[] vertices = createCircle(window.glScaleX(x), window.glScaleY(y), 0.2f, 0.02f);
+        double[] vertices = createCircle(window.glScaleX(x), window.glScaleY(y), 0.2f, 0.02f);
         Model circle1 = new Model(vertices);
 
         circle1.render(vertices);
@@ -108,26 +111,23 @@ public class Item {
      * @param posz the current z position of the centre of the powerUp
      * @return all the points of the circle
      */
-    private static float[] createCircle(float posx, float posy, float posz, double radius) {
+    private static double[] createCircle(double posx, double posy, double posz, double radius) {
         int noSides = 360;
         int noVertices = noSides + 2;
-        float doublePI = (float) Math.PI * 2;
+        double doublePI = Math.PI * 2;
 
         int i = 1;
-        float[] vertices = new float[noVertices * 3];
-        float x = posx;
-        float y = posy;
-        float z = posz;
-        vertices[0] = x;
-        vertices[1] = y;
-        vertices[2] = z;
+        double[] vertices = new double[noVertices * 3];
+        vertices[0] = posx;
+        vertices[1] = posy;
+        vertices[2] = posz;
         for (int j = 3; j < (noVertices * 3); j = j + 3) {
 
             glColor4f(0, 0, 1, 0);
 
-            vertices[j] = (float) (x + (radius * Math.cos(i * doublePI / noSides)));
-            vertices[j + 1] = (float) (y + (radius * Math.sin(i * doublePI / noSides)));
-            vertices[j + 2] = z;
+            vertices[j] = posx + (radius * Math.cos(i * doublePI / noSides));
+            vertices[j + 1] = posy + (radius * Math.sin(i * doublePI / noSides));
+            vertices[j + 2] = posz;
             i++;
         }
 

@@ -68,7 +68,7 @@ your source and object code) to Oculus VR or any third parties; provided, howeve
 Oculus VR retains all rights to the RIFT SDK and the RIFT SDK Derivatives that may 
 be incorporated into your Developer Content.
 
-1.4  You agree to and you will use  the Flash Screen Warning and the Health and 
+1.4  You agree to and you will use  the Flash main.Screen Warning and the Health and
 Safety Warnings (collectively the "Oculus Warnings") and the Oculus VR health and 
 safety protocols found in the Oculus Best Practices Guide ("Oculus H&S Protocols"), 
 and your use of the Oculus Warnings and the Oculus end user license agreement 

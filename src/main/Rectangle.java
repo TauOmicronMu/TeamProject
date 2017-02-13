@@ -1,9 +1,11 @@
+package main;
+
 /**
  * Class for creating all the shapes in the game
  *
  * @author Ella
  */
-public class Rectangle {
+class Rectangle {
 
 
     /**
@@ -11,7 +13,7 @@ public class Rectangle {
      *
      * @param vertices the float points of the corners of the rectangle
      */
-    public static void drawrectangle(float[] vertices) {
+    static void drawrectangle(double[] vertices) {
         Model rectangle1 = new Model(vertices);
         rectangle1.render(vertices);
     }

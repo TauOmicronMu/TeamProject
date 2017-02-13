@@ -1,6 +1,9 @@
+package main;
+
+import java.io.Serializable;
 import java.util.Random;
 
-class GameState {
+public class GameState implements Serializable {
 
     private Screen screen = Screen.MAIN_MENU;
     private final int windowWidth;
@@ -12,12 +15,11 @@ class GameState {
 
     private static final int PLATFORM_WIDTH = 120;
     private static final int PLATFORM_HEIGHT = 10;
-    private boolean initial;
 
 
-    GameState(Window window) {
-        this.windowWidth = window.getWidth();
-        this.windowHeight = window.getHeight();
+    GameState(int width, int height) {
+        this.windowWidth = width;
+        this.windowHeight = height;
     }
 
 
@@ -31,17 +33,15 @@ class GameState {
 
 
     /**
-     * Sets up a GameState by creating a ball, platforms, and items.
+     * Sets up a main.GameState by creating a ball, platforms, and items.
      */
     public void setUp() {
         ball = new Ball(windowWidth / 2, windowHeight / 2);
-        generatePlatforms();
-        generateItems();
     }
 
 
     /**
-     * Retrieve the current screen: either the Main Menu or the Game.
+     * Retrieve the current screen: either the main.Main main.Menu or the Game.
      */
     Screen getScreen() {
         return screen;
@@ -54,7 +54,7 @@ class GameState {
      * in the Y direction, have a random position in the X direction,
      * and be of a uniform width and height.
      */
-    private void generatePlatforms() {
+    void generatePlatforms() {
         for (int i = 0; i < platforms.length; i++) {
             // Todo: understand and refactor these "magic numbers".
             int xPosition = random.nextInt(windowWidth - 220) - 100;
@@ -74,7 +74,7 @@ class GameState {
     private void updateItems() {
         Item[] items = this.getItems();
         for (int i = 0; i < items.length; i++) {
-            if (items[i].getY() == windowHeight + 100) {
+            if (items[i] == null || items[i].getY() == windowHeight + 100) {
                 items[i] = null;
                 switch (random.nextInt(4)) {
                     case 0:
@@ -102,11 +102,11 @@ class GameState {
 
     void updatePhysics() {
         for (Platform platform : platforms) {
-            platform.update(this);
+            if (platform != null) platform.update(this);
         }
 
         for (Item item : items) {
-            item.update(this);
+            if (item != null) item.update(this);
         }
 
         ball.update(this);
@@ -114,10 +114,10 @@ class GameState {
 
 
     /**
-     * Populates the list of items in this GameState with a set of
+     * Populates the list of items in this main.GameState with a set of
      * power-ups. Currently, it's just using the GravUp power-up.
      */
-    private void generateItems() {
+    void generateItems() {
         for (int i = 0; i < items.length; i++) {
             // Todo: understand and refactor this "magic number".
             items[i] = new GravDown(-1000 * i);
@@ -136,7 +136,7 @@ class GameState {
     /**
      * Retrieve the ball that's currently on-screen.
      */
-    Ball getBall() {
+    public Ball getBall() {
         return ball;
     }
 
@@ -154,13 +154,5 @@ class GameState {
      */
     void setScreen(Screen screen) {
         this.screen = screen;
-    }
-
-    boolean getInitial() {
-        return initial;
-    }
-
-    void setInitial(boolean initial) {
-        this.initial = initial;
     }
 }

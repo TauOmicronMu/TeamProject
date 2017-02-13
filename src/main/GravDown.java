@@ -1,3 +1,5 @@
+package main;
+
 class GravDown extends Item {
 
     GravDown(int x) {

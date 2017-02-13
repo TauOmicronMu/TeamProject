@@ -1,3 +1,5 @@
+package main;
+
 class Circle {
 
     /**
@@ -6,11 +8,11 @@ class Circle {
      * @param x the current x position of the centre of the pinball
      * @param y the current y position of the centre of the pinball
      */
-    static void paintPinball(Window window, int x, int y, int radius) {
-        float radius2 = window.glScaleDistance(radius);
-        float x2 = window.glScaleX(x);
-        float y2 = window.glScaleY(y);
-        float[] vertices = createCircle(x2, y2, 0.5f, radius2);
+    static void paintPinball(Window window, double x, double y, double radius) {
+        double radius2 = window.glScaleDistance(radius);
+        double x2 = window.glScaleX(x);
+        double y2 = window.glScaleY(y);
+        double[] vertices = createCircle(x2, y2, 0.5f, radius2);
         Model circle1 = new Model(vertices);
         circle1.render(vertices);
     }
@@ -22,10 +24,10 @@ class Circle {
      * @param y the current y position of the centre of the powerUp
      */
     static public void paintItem(Window window, int x, int y, int radius) {
-        float radius2 = window.glScaleDistance(radius);
-        float x2 = window.glScaleX(x);
-        float y2 = window.glScaleY(y);
-        float[] vertices = createCircle(x2, y2, 0.3f, radius2);
+        double radius2 = window.glScaleDistance(radius);
+        double x2 = window.glScaleX(x);
+        double y2 = window.glScaleY(y);
+        double[] vertices = createCircle(x2, y2, 0.3f, radius2);
         Model circle1 = new Model(vertices);
         circle1.render(vertices);
     }
@@ -38,16 +40,16 @@ class Circle {
      * @param posz the current z position of the centre of the pinball
      * @return all the points of the circle
      */
-    private static float[] createCircle(float posx, float posy, float posz, double radius) {
+    private static double[] createCircle(double posx, double posy, double posz, double radius) {
         int noSides = 360;
         int noVertices = noSides + 2;
-        float doublePI = (float) Math.PI * 2;
+        double doublePI = Math.PI * 2;
 
         int i = 1;
-        float[] vertices = new float[noVertices * 3];
-        float x = posx;
-        float y = posy;
-        float z = posz;
+        double[] vertices = new double[noVertices * 3];
+        double x = posx;
+        double y = posy;
+        double z = posz;
         vertices[0] = x;
         vertices[1] = y;
         vertices[2] = z;
