@@ -48,6 +48,8 @@ public class ServerMain extends NetworkServer implements Runnable {
             handleMouseClick((Point2D.Float) o);
         } else if (o.getClass() == String.class) {
             handleKeyPress((String) o);
+        } else {
+            System.out.println("Message didn't translate properly");
         }
     }
 
