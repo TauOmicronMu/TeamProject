@@ -1,3 +1,5 @@
+package networking.demo;
+
 import networking.Message;
 import networking.NetworkClient;
 
