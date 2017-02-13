@@ -1,4 +1,4 @@
-public class GravUp extends Item{
+public class GravUp extends Item {
 
     public GravUp(int x) {
         super(x);

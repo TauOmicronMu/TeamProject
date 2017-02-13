@@ -1,6 +1,6 @@
-import static org.lwjgl.opengl.GL11.glColor4f;
-
 import java.util.Random;
+
+import static org.lwjgl.opengl.GL11.glColor4f;
 
 
 public class Platform {
@@ -15,7 +15,7 @@ public class Platform {
      *@param width the width of the platform
      *@param height the height of the platform
      */
-    public Platform(int x, int y, int width, int height){
+    public Platform(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -30,6 +30,7 @@ public class Platform {
         width = 120;
         height = 40;
     }
+
     /*
      *Updates the position of the platform
      *@param game the game class object
@@ -37,21 +38,22 @@ public class Platform {
      */
     public void update(Graphics game, Ball ball) {
         //System.out.println(ball.getDy());
-        if(ball.getAgility()>3){
+        if (ball.getAgility() > 3) {
             y += ball.getAgility();
-        }else{
-            y+=dx;
+        } else {
+            y += dx;
         }
-         checkForCollision(ball);
-         if(y > game.getHeight() ){
+        checkForCollision(ball);
+        if (y > game.getHeight()) {
 
-             Random r = new Random();
-             y = 0 + 40;
-             x = game.getWidth() - r.nextInt(game.getWidth()-100);
+            Random r = new Random();
+            y = 0 + 40;
+            x = game.getWidth() - r.nextInt(game.getWidth() - 100);
 
-         }
+        }
 
     }
+
     /*
      * Checks if any ball has collided with the platform
      * @param ball the ball object
@@ -61,29 +63,30 @@ public class Platform {
         int ballY = ball.getY();
         int radius = ball.getRadius();
 
-        if (ballY + radius > y && ballY+radius < y + height){
+        if (ballY + radius > y && ballY + radius < y + height) {
             //System.out.println("Y true");
-            if(ballX > x && ballX < x + width){
+            if (ballX > x && ballX < x + width) {
 
                 //System.out.println("Collision");
 
-                double newDy= ball.getGameDy();
+                double newDy = ball.getGameDy();
                 ball.setDy(newDy);
                 ball.setY(y - radius);
             }
         }
     }
+
     /*
      * Draws the platform
      */
-    public void paint(Graphics game){
+    public void paint(Graphics game) {
         float floatx = game.changexCoord(x);
         float floaty = game.changeyCoord(y);
         float widthGl = game.changeDistance(width);
         float heightGl = game.changeDistance(height);
 
-        float[] verticesb = {floatx,floaty,0.3f,floatx,(floaty - heightGl),0.3f,(floatx + widthGl),(floaty - heightGl),0.3f,(floatx + widthGl),floaty,0.3f};
-        glColor4f(1,0,0,0);
+        float[] verticesb = {floatx, floaty, 0.3f, floatx, (floaty - heightGl), 0.3f, (floatx + widthGl), (floaty - heightGl), 0.3f, (floatx + widthGl), floaty, 0.3f};
+        glColor4f(1, 0, 0, 0);
         Rectangle.drawrectangle(verticesb);
     }
 }

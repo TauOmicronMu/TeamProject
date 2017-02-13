@@ -1,15 +1,17 @@
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL20.*;
+import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
 
-import org.lwjgl.BufferUtils;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+
 /**
  * The model class
- * @author Ella
  *
+ * @author Ella
  */
 public class Model {
 
@@ -19,11 +21,11 @@ public class Model {
 
     /**
      * Creates the buffers and puts the data inside
+     *
      * @param vertices the edges of the pinball
      */
-    public Model(float[] vertices)
-    {
-        draw_count = vertices.length/3;
+    public Model(float[] vertices) {
+        draw_count = vertices.length / 3;
 
         FloatBuffer buffer = BufferUtils.createFloatBuffer(vertices.length);
         buffer.put(vertices);
@@ -40,33 +42,32 @@ public class Model {
         glEnableVertexAttribArray(0);
 
 
-        glBindBuffer(GL_ARRAY_BUFFER,0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
 
     }
+
     /**
      * Draws the circle from many traingle fans
      */
-    public void draw()
-    {
+    public void draw() {
         glDrawArrays(GL_TRIANGLE_FAN, 0, draw_count);
     }
 
     /**
      * Binds the buffers, allows them to be active
      */
-    public void bind()
-    {
+    public void bind() {
         glBindVertexArray(vao_id);
         glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
     }
 
     /**
      * Draws the objects and then unbinds everything!
+     *
      * @param vertices
      */
-    public void render(float[] vertices)
-    {
+    public void render(float[] vertices) {
         bind();
         glVertexPointer(3, GL_FLOAT, 0, vertices);
 
@@ -75,7 +76,8 @@ public class Model {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
 
-        glDisableVertexAttribArray(0);;
+        glDisableVertexAttribArray(0);
+        ;
     }
 
 }

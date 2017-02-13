@@ -1,4 +1,4 @@
-public class AgilityDown extends Item{
+public class AgilityDown extends Item {
 
     public AgilityDown(int x) {
         super(x);
@@ -6,7 +6,7 @@ public class AgilityDown extends Item{
     }
 
     public void performActio(Ball ball) {
-        if(ball.getAgility()>=2){
+        if (ball.getAgility() >= 2) {
             ball.setAgility(ball.getAgility() - 1);
         }
     }

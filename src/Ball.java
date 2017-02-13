@@ -28,42 +28,55 @@ public class Ball {
     public double getGameDy() {
         return gameDy;
     }
+
     public void setGameDy(double gameDy) {
         this.gameDy = gameDy;
     }
-    public int getX(){
+
+    public int getX() {
         return x;
     }
+
     public void setX(int x) {
         this.x = x;
     }
+
     public int getY() {
         return y;
     }
+
     public void setY(int y) {
         this.y = y;
     }
+
     public double getDx() {
         return dx;
     }
+
     public double getDy() {
         return dy;
     }
+
     public void setDx(double dx) {
         this.dx = dx;
     }
+
     public void setDy(double dy) {
         this.dy = dy;
     }
+
     public double getGravity() {
         return gravity;
     }
+
     public void setGravity(double gravity) {
         this.gravity = gravity;
     }
+
     public int getRadius() {
         return radius;
     }
+
     public void setRadius(int radius) {
         this.radius = radius;
     }
@@ -85,13 +98,14 @@ public class Ball {
     }
 
     public void moveRight() {
-        if(dx+agility < maxSpeed){
+        if (dx + agility < maxSpeed) {
             dx += agility;
 
         }
     }
+
     public void moveLeft() {
-        if( dx - agility > -maxSpeed){
+        if (dx - agility > -maxSpeed) {
             dx -= agility;
         }
     }
@@ -99,33 +113,31 @@ public class Ball {
 
     public void update(Graphics game) {
 
-            if( x + dx > game.getWidth()-radius-1){
-                x= game.getWidth()-radius-1;
-                dx = -dx;
-            }else if (x+ dx <0+radius){
-                x = 0 + radius;
-                dx = -dx;
+        if (x + dx > game.getWidth() - radius - 1) {
+            x = game.getWidth() - radius - 1;
+            dx = -dx;
+        } else if (x + dx < 0 + radius) {
+            x = 0 + radius;
+            dx = -dx;
+        } else {
+            x += dx;
+        }
+        if (y == game.getHeight() - radius - 1) {
+            dx *= xFriction;
+            if (Math.abs(dx) < 0.8) {
+                dx = 0;
             }
+        }
 
-            else{
-                x += dx;
-            }
-            if( y == game.getHeight()- radius - 1){
-                dx *= xFriction;
-                if(Math.abs(dx) < 0.8){
-                    dx = 0;
-                }
-            }
-
-            if(y>game.getHeight() - radius - 1){
-                y = game.getHeight() - radius - 1;
-                dy *= energyloss;
-                dy = -dy;
-            }else{
-                //velocity formula
-                dy += gravity *dt;
-                //position formula
-                y += dy*dt + .5*gravity*dt*dt;
-            }
+        if (y > game.getHeight() - radius - 1) {
+            y = game.getHeight() - radius - 1;
+            dy *= energyloss;
+            dy = -dy;
+        } else {
+            //velocity formula
+            dy += gravity * dt;
+            //position formula
+            y += dy * dt + .5 * gravity * dt * dt;
+        }
     }
 }
