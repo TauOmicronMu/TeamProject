@@ -50,7 +50,7 @@ public class Item {
     /*
      * Updates the position of the PowerUp
      */
-    public void update(Graphics game, Ball3 ball) {
+    public void update(Graphics game, Ball ball) {
         y += dy;
         this.game = game;
          checkForCollision(ball);
@@ -66,7 +66,7 @@ public class Item {
      * Checks for collision between the ball and the powerUp
      * @param ball
      */
-    private void checkForCollision(Ball3 ball) {
+    private void checkForCollision(Ball ball) {
         int ballX = ball.getX();
         int ballY = ball.getY();
         int ballR = ball.getRadius();
@@ -87,7 +87,7 @@ public class Item {
      * Changes the behaviour of the ball depending on the powerUp
      * @param ball
      */
-    private void performAction(Ball3 ball) {
+    private void performAction(Ball ball) {
     }
 
     /*

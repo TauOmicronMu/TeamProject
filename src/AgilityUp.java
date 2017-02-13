@@ -5,7 +5,7 @@ public class AgilityUp extends Item{
         // TODO Auto-generated constructor stub
     }
 
-    public void performActio(Ball3 ball) {
+    public void performActio(Ball ball) {
         if(ball.getAgility() < 8){
             ball.setAgility(ball.getAgility() + 1);
         }

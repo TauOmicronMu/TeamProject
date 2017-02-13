@@ -35,7 +35,7 @@ public class Platform {
      *@param game the game class object
      *@param ball the ball class object
      */
-    public void update(Graphics game, Ball3 ball) {
+    public void update(Graphics game, Ball ball) {
         //System.out.println(ball.getDy());
         if(ball.getAgility()>3){
             y += ball.getAgility();
@@ -56,7 +56,7 @@ public class Platform {
      * Checks if any ball has collided with the platform
      * @param ball the ball object
      */
-    private void checkForCollision(Ball3 ball) {
+    private void checkForCollision(Ball ball) {
         int ballX = ball.getX();
         int ballY = ball.getY();
         int radius = ball.getRadius();

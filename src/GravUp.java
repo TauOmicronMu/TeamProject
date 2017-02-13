@@ -5,7 +5,7 @@ public class GravUp extends Item{
         // TODO Auto-generated constructor stub
     }
 
-    public void performActio(Ball3 ball) {
+    public void performActio(Ball ball) {
         ball.setGravity(ball.getGravity() + 3);
     }
 

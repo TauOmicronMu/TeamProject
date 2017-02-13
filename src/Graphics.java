@@ -30,7 +30,7 @@ public class Graphics {
             GAME
         };
         private static STATE state = STATE.MENU;
-        private Ball3 b;
+        private Ball b;
         private GLFWVidMode videoMode;
         private Platform p[] = new Platform[10];
         private Item item[] = new Item[3];
@@ -86,7 +86,7 @@ public class Graphics {
                 menu.drawall();
             }
 
-            b = new Ball3(windowWidth/2,windowHeight/2);
+            b = new Ball(windowWidth/2,windowHeight/2);
             for(int i = 0; i < p.length; i++){
                 p[i] = new Platform(r.nextInt(windowWidth-220) -100, windowHeight - 200 * i, 120, 10);
             }

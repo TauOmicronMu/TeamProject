@@ -1,4 +1,4 @@
-public class Ball3 {
+public class Ball {
 
 
     private int x = 400;
@@ -15,11 +15,11 @@ public class Ball3 {
     private int maxSpeed = 10;
 
 
-    public Ball3() {
+    public Ball() {
         // TODO Auto-generated constructor stub
     }
 
-    public Ball3(int i, int j) {
+    public Ball(int i, int j) {
         x = i;
         y = j;
     }

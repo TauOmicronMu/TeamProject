@@ -5,7 +5,7 @@ public class GravDown extends Item{
         // TODO Auto-generated constructor stub
     }
 
-    public void performActio(Ball3 ball) {
+    public void performActio(Ball ball) {
         if(ball.getGravity()>3) {
         ball.setGravity(ball.getGravity() - 3);
             if(ball.getGravity() < 3){
