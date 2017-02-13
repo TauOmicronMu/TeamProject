@@ -20,7 +20,7 @@ class NetworkServerEngine extends NetworkEngine implements Runnable {
      */
     void initialize(int port) {
         ServerSocket serverSocket;
-        Socket socket;
+        Socket socket = null;
 
         try {
             serverSocket = new ServerSocket(port);
@@ -28,7 +28,7 @@ class NetworkServerEngine extends NetworkEngine implements Runnable {
         } catch (IOException e) {
             System.err.println("Couldn't initialize socket (connection to server).");
             e.printStackTrace();
-            return;
+            System.exit(1);
         }
 
         super.initialize(socket);

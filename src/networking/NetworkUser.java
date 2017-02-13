@@ -1,5 +1,7 @@
 package networking;
 
+import main.GameState;
+
 import java.util.Optional;
 
 /**
@@ -13,8 +15,12 @@ abstract class NetworkUser implements MessageHandler {
      * Wrapper method around the NetworkEngine's sendMessage method.
      * @param m The message to send to our connected device.
      */
-    protected void sendMessage(Message m) {
-        engine.sendMessage(m);
+    public boolean sendMessage(Message m) {
+        if (m.getObject().getClass() == GameState.class) {
+            GameState g = (GameState) m.getObject();
+            System.out.println("Sending game state with ball: " + g.getBall());
+        }
+        return engine.sendMessage(m);
     }
 
     /**

@@ -19,7 +19,7 @@ abstract public class NetworkClient extends NetworkUser {
      * Setup a NetworkClientEngine, initialize it, then assign it to the
      * NetworkEngine of this particular NetworkUser.
      */
-    protected void initialize() {
+    public void initialize() {
         NetworkClientEngine engine = new NetworkClientEngine();
         engine.initialize(host, port);
         this.engine = engine;

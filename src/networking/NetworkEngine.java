@@ -1,6 +1,7 @@
 package networking;
 
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -29,7 +30,7 @@ abstract class NetworkEngine implements Runnable {
 
     /**
      * Essentially this method is a "poll" for messages. It returns an
-     * Optional Message: either the next message in our received queue,
+     * Optional networking.Message: either the next message in our received queue,
      * or Empty.
      */
     Optional<Message> nextMessage() {
@@ -43,13 +44,14 @@ abstract class NetworkEngine implements Runnable {
      *
      * @param m The message to send.
      */
-    void sendMessage(Message m) {
+    boolean sendMessage(Message m) {
         try {
             outputStream.writeObject(m);
         } catch (IOException e) {
-            System.out.println("Failed to write message. Stopping...");
-            System.exit(0);
+            System.out.println("Failed to write message.");
+            return false;
         }
+        return true;
     }
 
     /**
@@ -63,8 +65,12 @@ abstract class NetworkEngine implements Runnable {
             try {
                 Message m = (Message) inputStream.readObject();
                 messages.add(m);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (EOFException e) {
+                System.out.println("EOFException. Continuing...");
+            } catch (ClassNotFoundException e) {
+                System.err.println("Invalid object. Continuing...");
+            } catch (IOException e) {
+                System.err.println("IOException. Stopping...");
                 stop();
             }
         }

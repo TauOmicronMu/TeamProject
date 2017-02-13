@@ -76,7 +76,7 @@ class Client extends NetworkClient implements Runnable {
 
     /**
      * Utility method to send a player's input to the server, wrapped in a
-     * Message object.
+     * networking.Message object.
      *
      * @param input The player's input.
      */

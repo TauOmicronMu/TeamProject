@@ -1,14 +1,20 @@
+package main;
+
+import networking.Message;
+import networking.NetworkClient;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+
+import java.awt.geom.Point2D;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
 
 /**
- * Main class for graphics
+ * main.Main class for graphics
  *
  * @author Ella
  */
@@ -42,7 +48,7 @@ class Window {
     /**
      * Initializes the GLFW library, creating a window and any necessary shaders.
      */
-    void init(GameState gameState) {
+    void init(GameState gameState, NetworkClient client) {
         if (!glfwInit()) {
             System.err.println("Failed to initialise GLFW");
             System.exit(1);
@@ -65,7 +71,7 @@ class Window {
         GL.createCapabilities();
         shader = new Shader("shader");
 
-        registerInputCallbacks(gameState);
+        registerInputCallbacks(gameState, client);
     }
 
 
@@ -92,13 +98,13 @@ class Window {
     private void drawAllItems(GameState gameState) {
         Item[] items = gameState.getItems();
         for (Item item : items) {
-            item.paint(this);
+            if (item != null) item.paint(this);
         }
     }
 
 
     /**
-     * Redraw the screen with data from the given GameState.
+     * Redraw the screen with data from the given main.GameState.
      * @param gameState Information about the position about each item.
      */
     void repaint(GameState gameState) {
@@ -119,7 +125,7 @@ class Window {
 
 
     /**
-     * Utility method to delegate to Circle in order to render the ball.
+     * Utility method to delegate to main.Circle in order to render the ball.
      * @param gameState The game-state containing the ball.
      */
     private void drawBall(GameState gameState) {
@@ -135,7 +141,7 @@ class Window {
     private void drawAllPlatforms(GameState gameState) {
         Platform[] platforms = gameState.getPlatforms();
         for (Platform platform : platforms) {
-            platform.paint(this);
+            if (platform != null) platform.paint(this);
         }
     }
 
@@ -143,15 +149,13 @@ class Window {
     /**
      * Use GLFW to handle the current state of the keyboard.
      */
-    private void handleKeyboardInput(GameState gameState) {
-        if (gameState.getInitial() && glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_TRUE) {
-            gameState.setInitial(false);
-        }
-
+    private void handleKeyboardInput(GameState gameState, NetworkClient client) {
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_TRUE) {
             gameState.getBall().moveLeft();
+            client.sendMessage(new Message("a"));
         } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_TRUE) {
             gameState.getBall().moveRight();
+            client.sendMessage(new Message("d"));
         }
     }
 
@@ -159,10 +163,10 @@ class Window {
     /**
      * Utility/wrapper method to handle both types of input.
      */
-    void handleInput(GameState gameState) {
+    void handleInput(GameState gameState, NetworkClient client) {
         glfwPollEvents();
-        handleMouseInput(gameState);
-        handleKeyboardInput(gameState);
+        handleMouseInput(gameState, client);
+        handleKeyboardInput(gameState, client);
     }
 
 
@@ -187,7 +191,7 @@ class Window {
      * @param y The coordinate's Y component.
      * @return Whether the coordinate is within the button.
      */
-    private boolean onPlayGameButton(float x, float y) {
+    private boolean onPlayGameButton(double x, double y) {
         return withinBounds(x, y, -0.4, 0.4, -0.2, 0);
     }
 
@@ -197,17 +201,17 @@ class Window {
      * @param y The coordinate's Y component.
      * @return Whether the coordinate is within the button.
      */
-    private boolean onQuitButton(float x, float y) {
+    private boolean onQuitButton(double x, double y) {
         return withinBounds(x, y, -0.4, 0.4, -0.7, -0.5);
     }
 
     /**
-     * Test whether the coordinate (x, y) is within the Back To Menu button.
+     * Test whether the coordinate (x, y) is within the Back To main.Menu button.
      * @param x The coordinate's X component.
      * @param y The coordinate's Y component.
      * @return Whether the coordinate is within the button.
      */
-    private boolean onBackToMenuButton(float x, float y) {
+    private boolean onBackToMenuButton(double x, double y) {
         return withinBounds(x, y, -0.95, -0.85, 0.9, 0.95);
     }
 
@@ -215,15 +219,16 @@ class Window {
      * Handle the left mouse button being pressed.
      * @param gameState The game state, in case we need to retrieve or set any
      *                  information about the objects which it comprises.
+     * @param client
      */
-    private void handleMouseInput(GameState gameState) {
+    private void handleMouseInput(GameState gameState, NetworkClient client) {
 
         // Only handle mouse input if the left mouse button has been pressed.
         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) != GLFW_PRESS) return;
 
         // Todo: can't we just get cursor position from GLFW here?
-        float x = glScaleX(cursorXPosition);
-        float y = glScaleY(cursorYPosition);
+        double x = glScaleX(cursorXPosition);
+        double y = glScaleY(cursorYPosition);
 
         // Handle mouse input depending on which screen we're on.
         switch(gameState.getScreen()) {
@@ -235,6 +240,7 @@ class Window {
                 } else if (onQuitButton(x, y)) {
                     shouldQuit = true;
                 }
+                break;
             }
 
             // If we're in the game:
@@ -242,6 +248,7 @@ class Window {
                 if (onBackToMenuButton(x, y)) {
                     shouldChangeToMenu = true;
                 } else {
+                    // Todo: N.B. This is for demonstrating the server-client synch.
                     gameState.getBall().setX(cursorXPosition);
                     gameState.getBall().setY(cursorYPosition);
                 }
@@ -255,7 +262,7 @@ class Window {
      * for the cursor position changing.
      * @param gameState The game state, which may be needed inside the callbacks.
      */
-    private void registerInputCallbacks(GameState gameState) {
+    private void registerInputCallbacks(GameState gameState, NetworkClient client) {
         // Callback for when the left mouse button is released:
         GLFWMouseButtonCallbackI mousecallback = (window1, button, action, mods) -> {
             if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
@@ -263,8 +270,9 @@ class Window {
                     gameState.setScreen(Screen.MAIN_MENU);
                     shouldChangeToMenu = false;
                 } else if (shouldChangeToGame) {
+                    System.out.println("Changing to game...");
+                    client.initialize();
                     gameState.setScreen(Screen.GAME);
-                    gameState.setInitial(true);
                     shouldChangeToGame = false;
                 } else if (shouldQuit) {
                     glfwSetWindowShouldClose(window1, true);
@@ -289,8 +297,8 @@ class Window {
      * @param x The X coordinate to scale to the OpenGL viewport.
      * @return The converted coordinate.
      */
-    float glScaleX(int x) {
-        return -1.0f + (float) x / (float) (windowWidth / 2);
+    double glScaleX(double x) {
+        return -1.0f + x / (float) (windowWidth / 2);
     }
 
     /**
@@ -299,8 +307,8 @@ class Window {
      * @param y The Y coordinate to scale to the OpenGL viewport.
      * @return The converted coordinate.
      */
-    float glScaleY(int y) {
-        return 1.0f - (float) y / (float) (windowHeight / 2);
+    double glScaleY(double y) {
+        return 1.0f - y / (float) (windowHeight / 2);
     }
 
 
@@ -309,8 +317,8 @@ class Window {
      * @param distance The onscreen distance.
      * @return The scaled distance.
      */
-    float glScaleDistance(int distance) {
-        return 1.0f * (float) distance / (windowWidth / 2);
+    double glScaleDistance(double distance) {
+        return 1.0f * (double) distance / (windowWidth / 2);
     }
 
 

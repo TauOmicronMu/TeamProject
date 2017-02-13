@@ -1,9 +1,12 @@
+package main;
+
+import java.io.Serializable;
 import java.util.Random;
 
 import static org.lwjgl.opengl.GL11.glColor4f;
 
 
-class Platform {
+class Platform implements Serializable {
 
     private int dx;
     private int x, y, width, height;
@@ -61,8 +64,8 @@ class Platform {
      * @param ball the ball object
      */
     private void checkForCollision(Ball ball) {
-        int ballX = ball.getX();
-        int ballY = ball.getY();
+        int ballX = (int) ball.getX();
+        int ballY = (int) ball.getY();
         int radius = ball.getRadius();
 
         if (ballY + radius > y && ballY + radius < y + height) {
@@ -82,12 +85,12 @@ class Platform {
      * Draws the platform
      */
     void paint(Window game) {
-        float floatx = game.glScaleX(x);
-        float floaty = game.glScaleY(y);
-        float widthGl = game.glScaleDistance(width);
-        float heightGl = game.glScaleDistance(height);
+        double scaledX = game.glScaleX(x);
+        double scaledY = game.glScaleY(y);
+        double widthGl = game.glScaleDistance(width);
+        double heightGl = game.glScaleDistance(height);
 
-        float[] verticesb = {floatx, floaty, 0.3f, floatx, (floaty - heightGl), 0.3f, (floatx + widthGl), (floaty - heightGl), 0.3f, (floatx + widthGl), floaty, 0.3f};
+        double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
         glColor4f(1, 0, 0, 0);
         Rectangle.drawrectangle(verticesb);
     }
