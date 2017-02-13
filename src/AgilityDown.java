@@ -1,5 +1,3 @@
-package PhysicsandGraphics;
-
 public class AgilityDown extends Item{
 
 	public AgilityDown(int x) {

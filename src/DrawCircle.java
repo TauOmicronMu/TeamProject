@@ -1,5 +1,3 @@
-package PhysicsandGraphics;
-
 public class DrawCircle {
 	
 	public DrawCircle(){
@@ -11,7 +9,7 @@ public class DrawCircle {
 	 * @param x the current x position of the centre of the pinball
 	 * @param y the current y position of the centre of the pinball
 	 */
-	public void paintPinball(PhysicsandGraphics.Graphics graphics, int x, int y, int radius)
+	public void paintPinball(Graphics graphics, int x, int y, int radius)
 	{
 		float radius2 = graphics.changeDistance(radius);
 		float x2 = graphics.changexCoord(x);

@@ -1,5 +1,3 @@
-package PhysicsandGraphics;
-
 public class AgilityUp extends Item{
 
 	public AgilityUp(int x) {

@@ -1,5 +1,3 @@
-package PhysicsandGraphics;
-
 public class Menu {
 	
 	public Menu(){

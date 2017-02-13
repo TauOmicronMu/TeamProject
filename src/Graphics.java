@@ -1,42 +1,105 @@
 import static org.lwjgl.glfw.GLFW.*;
-
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
-import static org.lwjgl.opengl.GL11.*;
+import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.opengl.GL;
 
-import java.util.ArrayList;
+
+import static org.lwjgl.opengl.GL11.*;
+import java.util.Random;
+
 /**
  * Main class for graphics
  * @author Ella
  *
  */
-public class Graphics{
+public class Graphics {
 
-		private static float x = 0f;
-		private static float y = -0.615f;
-		private static float invisiblex;
-		private static float invisibley;
-		private static boolean buttondown = false;
-		private static boolean drawrec = true;
-		private static float changey = -0.01f;
-		private static float changex = 0;
-		private static boolean started = false;
-		private static ArrayList<ArrayList<Float>> obstacles = new ArrayList<ArrayList<Float>>();
-		private static Shader shader = new Shader("shader");
+		private static int invisiblex;
+		private static int invisibley;
+		private static Shader shader;
+		private long window;
+		private int windowHeight = 800;
+		private int windowWidth = 800;
+		private static boolean changetogame = false;
+		private static boolean changetoquit = false;
+		private static boolean changetomenu = false;
+		private static boolean initial = true;
+		private enum STATE{
+			MENU,
+			GAME
+		};
+		private static STATE state = STATE.MENU;
+		private Ball3 b;
+		private GLFWVidMode videoMode;
+		private Platform p[] = new Platform[10];
+		private Item item[] = new Item[3];
+		private Random r = new Random();
+		private DrawCircle drawc = new DrawCircle();
+		private Menu menu = new Menu();
+		
+		public Graphics() {
+		}
+			
+		public int getHeight() {
+			return windowHeight;
+		}
+		public int getWidth() {
+			return windowWidth;
+		}
 		
 		/**
-		 * Sets up the screen, placing the ball in the initial position and creating the obstacles
+		 * Sets up the screen
 		 * @param window
 		 */
-		public static void init(long window)
-		{						
-			setscreen(window,4);
+		public void init()
+		{		
+			if(!glfwInit())
+			{
+				System.err.println("Failed to initialise GLFW");
+				System.exit(1);
+			}
+			glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+			window = glfwCreateWindow(windowWidth, windowHeight, "Pinball", 0, 0);
+			if(window == 0)
+			{
+				throw new IllegalStateException("Failed to create window");
+			}
+
+			videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+			glfwSetWindowPos(window, (videoMode.width()- windowWidth)/2, (videoMode.height() - windowHeight)/2);
+			
+			glfwShowWindow(window);
+			glfwMakeContextCurrent(window);
+			
+			GL.createCapabilities();
+			shader = new Shader("shader");
+			
+		}
+		/**
+		 * Creates the ball object
+		 * Creates the platforms
+		 * Creates the power-ups
+		 */
+		public void start() {
+			if(state==STATE.MENU){
+				menu.drawall();
+			}
+			
+			b = new Ball3(windowWidth/2,windowHeight/2);
+			for(int i = 0; i < p.length; i++){
+				p[i] = new Platform(r.nextInt(windowWidth-220) -100, windowHeight - 200 * i, 120, 10);
+			}
+			
+			for(int i = 0; i < item.length; i++){
+				item[i] = new GravUp( -1000 * i);
+			}
 		}
 		
 		/**
 		 * Closes down the graphics
 		 */
-		public static void end()
+		public void end()
 		{
 			glfwTerminate();
 		}
@@ -44,102 +107,93 @@ public class Graphics{
 		/**
 		 * Called every run of the main game loop to update 
 		 * the position of the ball, create new obstacles, 
-		 * move the window etc.
-		 * @param window
+		 * move the obstacles, power-ups etc.
 		 */
-		public static void update(long window)
+		public void run()
 		{
-			setup(shader);
-			Ball.drawCircle(x, y);
-			
-			for(int i = 0; i <obstacles.size(); i++)
+			while(!glfwWindowShouldClose(window))
 			{
-				ArrayList <Float> vert = obstacles.get(i);		
-				PlatformE.drawobstacle(vert.get(0),vert.get(1),vert.get(2),vert.get(3));
-			}
-			
-			
-			if(drawrec)
-			{
-				float[] verticesr = {-1.0f,-0.6f,0.3f,-1.0f,-0.63f,0.3f,1.0f,-0.63f,0.3f,1.0f,-0.6f,0.3f};
-				Rectangle.drawrectangle(verticesr);
-			}
-			mousenavigation(window);
-			
-			glfwSwapBuffers(window);
-		}
-		
-		/**
-		 * Called at first to create the initial screen with the obstacles
-		 * @param window
-		 * @param numobs the number of obstacles wanted
-		 */
-		private static void setscreen(long window, int numobs) 
-		{
-			int i = 0;
-			while(i < numobs)
-			{
-				float[] verticeso = Rectangle.getvertices();
-				if(! tooclose(verticeso))
-				{
-					PlatformE.drawobstacle(verticeso[0],verticeso[1],verticeso[2],verticeso[3]);
+				setup(shader);
+				mousenavigation();
+				if(state==STATE.MENU){
+					menu.drawall();
 					glfwSwapBuffers(window);
-					PlatformE.drawobstacle(verticeso[0],verticeso[1],verticeso[2],verticeso[3]);
-					ArrayList<Float> vert = new ArrayList<Float>();
-					vert.add(verticeso[0]);
-					vert.add(verticeso[1]);
-					vert.add(verticeso[2]);
-					vert.add(verticeso[3]);
-					obstacles.add(vert);
-					i++;
-				}
-			}
-			
-		}
-		
-		/**
-		 * Checks if the proposed obstacle would be too close to any existing obstacles
-		 * @param verticeso
-		 * @return true if the proposed obstacle is too close
-		 */
-		private static boolean tooclose(float[] verticeso) {
-			
-			for(int i = 0; i < 2; i++)
-			{
-				int count = 0;
-				for(int j = 0; j < obstacles.size(); j++)
-				{
-					ArrayList<Float> current = new ArrayList<Float>(obstacles.get(j));
-					if((current.get(i) - verticeso[i] < 0.3f && current.get(i) - verticeso[i] > 0f) | (current.get(i) - verticeso[i] > -0.3f && current.get(i) - verticeso[i] < 0f))
-					{
-						count++;
+				}else if(initial){
+					drawc.paintPinball(this, b.getX(), b.getY(), b.getRadius());
+					if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_TRUE){
+						initial = false;
+					}glfwSwapBuffers(window);
+				}else if(!initial){
+					for(int i = 0; i< item.length; i++){
+						if(item[i].getY() == windowHeight + 100){
+							item[i]=null;
+							switch (r.nextInt(4)){
+							case 0:
+								item[i]=new GravUp(- 10 * r.nextInt(500));
+								break;
+							case 1:
+								item[i]=new GravDown(-10 * r.nextInt(500));
+								break;
+							case 2:
+								item[i]=new AgilityUp(-10 * r.nextInt(500));
+								break;
+							case 3:
+								item[i]=new AgilityDown(-10 * r.nextInt(500));
+								break;
+							}
+						}
 					}
+					
+					for(int i = 0; i < p.length; i++){
+						p[i].update(this, b);
+					}
+					
+					for(int i = 0; i < item.length; i++){
+						item[i].update(this, b);
+					}
+					
+					if(glfwGetKey(window, GLFW_KEY_A) == GLFW_TRUE){
+						b.moveLeft();
+					}else if(glfwGetKey(window, GLFW_KEY_D) == GLFW_TRUE){
+						b.moveRight();
+					}
+					
+					b.update(this);
+					drawc.paintPinball(this, b.getX(), b.getY(), b.getRadius());
+					for(int i = 0; i < p.length; i++){
+						p[i].paint(this);
+					}
+					
+					for(int i = 0; i < item.length; i++){
+						item[i].paint();
+					}
+					Menu.drawbacktomenu();
+				
+				glfwSwapBuffers(window);
+				
+				try {
+					Thread.sleep(17);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-				if(count > 1)
-				{
-					return true;
 				}
 			}
-			return false;
 		}
-
 		
 
 		/**
 		 * Monitors the mouse, checks for clicks and releases
 		 * @param window
 		 */
-		private static void mousenavigation(long window) {
-		
-			float[] pos;
-			
+		private void mousenavigation() {
+
 			//find current position of cursor
 			GLFWCursorPosCallbackI cursorcallback = new GLFWCursorPosCallbackI(){
 
 				public void invoke(long window, double xpos, double ypos)
 				{
-					invisiblex = (float) xpos;
-					invisibley = (float) ypos;
+					invisiblex = (int) xpos;
+					invisibley = (int) ypos;
 				}
 			};
 			glfwSetCursorPosCallback(window,cursorcallback);
@@ -151,9 +205,17 @@ public class Graphics{
 				{
 					if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
 					{
-						drawrec = false;
-						buttondown = false;
-						started = true;
+						if(changetomenu==true){
+							state=STATE.MENU;
+							changetomenu=false;
+							changetogame=false;
+							initial=true;
+							start();
+						}else if(changetogame==true){
+							state=STATE.GAME;
+						}else if(changetoquit==true){
+							glfwSetWindowShouldClose(window, true);
+						}
 					}
 				}
 				
@@ -163,27 +225,25 @@ public class Graphics{
 			glfwSetMouseButtonCallback(window,mousecallback);
 			if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 			{
-				x = (float)-1+(invisiblex/320);
-				y = (float)1-(invisibley/240);
-				pos = update(x,y,0,0);
-				buttondown = true;
-			}
-			
-			//if the button hasn't been pressed keep moving ball
-			if(!buttondown && started )
-			{
-				
-				pos = update(x,y,changex,changey);
-				
-				if(pos[1] > 0.89 | pos[1] < -0.89)
-				{
-					changey = 0 - changey;
+				float x = changexCoord(invisiblex);
+				float y = changeyCoord(invisibley);
+				if(state==STATE.MENU && -0.4<=x && x<=0.4 && -0.2<=y && y<=0){
+					changetogame = true;
+					menu.drawall();
+				}else if(state==STATE.MENU && -0.4<=x && x<=0.4 && -0.7<=y && y<=-0.5){
+					changetoquit=true;
+					menu.drawall();
+				}else if(state==STATE.GAME && -0.95<=x && x<=-0.85 && 0.9<=y && y<=0.95){
+					changetomenu = true;
+				}else if(state==STATE.GAME){
+					b.setX(invisiblex);
+					b.setY(invisibley);
+					//b.update(this);
+					drawc.paintPinball(this, invisiblex, invisibley, b.getRadius());
 				}
-				x = pos[0];
-				y = pos[1];
 			}
 		}
-
+		
 		/**
 		 * Clears the colour from the screen and binds the shader
 		 * Necessary each time you draw
@@ -196,32 +256,45 @@ public class Graphics{
 			shader.bind();
 			
 		}
-		
+		/**
+		 * Converts an x-coordinate to float equivalent (needed for drawing with openGL)
+		 * @param x
+		 * @return the converted coordinate
+		 */
+		public float changexCoord(int x) {
+			float newx = (float)(-1.0f) + ((float)x/(float)(windowWidth/2));
+			return newx;
+		}
 		
 		/**
-		 * Calculates the new centre positions the pinball
-		 * @param posx the current x position of the centre of the pinball
-		 * @param posy the current y position of the centre of the pinball
-		 * @param changex how much the x coordinate should change by
-		 * @param changey how much the y coordinate should change by
-		 * @return the new centre coordinates of the pinball
+		 * Converts an x-coordinate to float equivalent (needed for drawing with openGL)
+		 * @param x
+		 * @return the converted coordinate
 		 */
-		public static float[] update(float posx, float posy, float changex, float changey)
-		{				
-				posx = posx + changex;
-				posy = posy + changey;
-			
-				float [] positions = {posx,posy};
-				return(positions);
+		public float changexCoord2(int x) {
+			float newx = 0f;
+			if(x > windowWidth/2)
+			{
+				newx = (float)(float)x/(float)(windowWidth/2);
+			}
+			//float newx = (float)-1.0f + ((float)x/(float)(windowwidth/2));
+			return newx;
 		}
 		
-		public static void collision(float posx, float posy, float changex, float changey)
-		{
-			float[] newpoints = update(posx,posy,changex,changey);
-			Ball.drawCircle(newpoints[0],newpoints[1]);
+		/**
+		 * Converts an y-coordinate to float equivalent (needed for drawing with openGL)
+		 * @param y
+		 * @return the converted coordinate
+		 */
+		public float changeyCoord(int y) {
+			float newy = (float)1.0f - ((float)y/(float)(windowHeight/2));
+			return newy;
 		}
 		
-		/*
-		 * Moving the screen?????
-		 */
+		public float changeDistance(int distance){
+			float newDistance = (1.0f * (float)distance)/(windowWidth/2);
+			return newDistance;
+		}
+		
+		
 }

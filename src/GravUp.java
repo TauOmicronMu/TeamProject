@@ -1,5 +1,3 @@
-package PhysicsandGraphics;
-
 public class GravUp extends Item{
 
 	public GravUp(int x) {
