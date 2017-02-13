@@ -1,10 +1,5 @@
 package PhysicsandGraphics;
 
-import static org.lwjgl.opengl.GL11.glColor4f;
-
-import Integration.Graphics;
-import Integration.Model;
-
 public class DrawCircle {
 	
 	public DrawCircle(){
@@ -13,8 +8,8 @@ public class DrawCircle {
 	
 	/**
 	 * Draws the pinball
-	 * @param posx the current x position of the centre of the pinball
-	 * @param posy the current y position of the centre of the pinball
+	 * @param x the current x position of the centre of the pinball
+	 * @param y the current y position of the centre of the pinball
 	 */
 	public void paintPinball(PhysicsandGraphics.Graphics graphics, int x, int y, int radius)
 	{
@@ -28,8 +23,8 @@ public class DrawCircle {
 	
 	/**
 	 * Draws the powerUp(item class) 
-	 * @param posx the current x position of the centre of the powerUp
-	 * @param posy the current y position of the centre of the powerUp
+	 * @param x the current x position of the centre of the powerUp
+	 * @param y the current y position of the centre of the powerUp
 	 */
 	public void paintItem(Graphics game, int x, int y, int radius)
 	{	

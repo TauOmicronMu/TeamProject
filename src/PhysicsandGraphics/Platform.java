@@ -3,7 +3,6 @@ import static org.lwjgl.opengl.GL11.glColor4f;
 
 import java.util.Random;
 
-import Integration.Rectangle;
 
 public class Platform {
 

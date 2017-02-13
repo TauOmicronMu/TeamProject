@@ -82,7 +82,7 @@ public class Shader {
 		StringBuilder string = new StringBuilder();
 		BufferedReader br;
 		try{
-			br = new BufferedReader(new FileReader(new File("C:/Users/Jennifer/workspace/TeamProject/src/shaders/" + filename)));
+			br = new BufferedReader(new FileReader(new File("src/PhysicsAndGraphics/shaders/" + filename)));
 			String line;
 			while((line = br.readLine()) != null)
 			{
