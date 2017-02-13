@@ -19,7 +19,7 @@ class Shader {
     /**
      * Uses the shader files to create a shader which can then be used to bring colour
      *
-     * @param filename
+     * @param filename The filename (minus extension) of the shader files.
      */
     Shader(String filename) {
         program = glCreateProgram();

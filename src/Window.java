@@ -23,11 +23,6 @@ class Window {
     private static boolean shouldChangeToGame = false;
     private static boolean shouldQuit = false;
     private static boolean shouldChangeToMenu = false;
-    private static boolean initial = true;
-
-    private GLFWVidMode videoMode;
-
-    private Menu menu = new Menu();
 
 
     Window(int windowHeight, int windowWidth) {
@@ -42,6 +37,7 @@ class Window {
     int getWidth() {
         return windowWidth;
     }
+
 
     /**
      * Initializes the GLFW library, creating a window and any necessary shaders.
@@ -58,7 +54,7 @@ class Window {
             System.exit(1);
         }
 
-        videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         int windowXPosition = (videoMode.width() - windowWidth) / 2;
         int windowYPosition = (videoMode.height() - windowHeight) / 2;
         glfwSetWindowPos(window, windowXPosition, windowYPosition);
