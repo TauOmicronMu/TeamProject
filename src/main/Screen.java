@@ -1,6 +1,8 @@
 package main;
 
-public enum Screen {
+import java.io.Serializable;
+
+public enum Screen implements Serializable {
     MAIN_MENU,
     GAME
 }

@@ -15,6 +15,7 @@ public class ServerMain extends NetworkServer implements Runnable {
     }
 
     public void run() {
+        System.out.println("Waiting for client to connect...");
         initialize();
         gameState = new GameState(800, 800);
         gameState.setUp();
@@ -23,21 +24,27 @@ public class ServerMain extends NetworkServer implements Runnable {
         gameState.generateItems();
 
         while (true) {
-            if (!sendMessage(new Message(gameState))) {
+            if (!sendGameState()) {
                 System.err.println("Lost connection to client.");
                 break;
             }
 
-            handleMessages();
+            if (!handleMessages()) break;
             gameState.updateLogic();
             gameState.updatePhysics();
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1/60);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private boolean sendGameState() {
+        Message m = new Message(gameState);
+        boolean result = sendMessage(m);
+        return result;
     }
 
 

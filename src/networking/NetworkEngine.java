@@ -1,13 +1,14 @@
 package networking;
 
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import main.GameState;
+
+import java.io.*;
 import java.net.Socket;
 import java.util.Optional;
+import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 
 /**
@@ -19,7 +20,7 @@ abstract class NetworkEngine implements Runnable {
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private boolean running;
-    private final ConcurrentLinkedQueue<Message> messages = new ConcurrentLinkedQueue<>();
+    private final BlockingDeque<Message> messages = new LinkedBlockingDeque<>();
 
     /**
      * Stop our message-reception loop from continuing at the next iteration.
@@ -35,8 +36,9 @@ abstract class NetworkEngine implements Runnable {
      */
     Optional<Message> nextMessage() {
         Message m = messages.poll();
-        if (m != null) return Optional.of(m);
-        return Optional.empty();
+        if (m == null) return Optional.empty();
+        System.out.println(((GameState) m.getObject()).getBall().getY());
+        return Optional.of(m);
     }
 
     /**
@@ -46,7 +48,24 @@ abstract class NetworkEngine implements Runnable {
      */
     boolean sendMessage(Message m) {
         try {
+            System.out.println("Bottom level. Sending Y="+((GameState)m.getObject()).getBall().getY());
+
+// N.B.: this code tests that the message will serialize correctly. It's probably slow.
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//            ObjectOutputStream oos = new ObjectOutputStream((byteArrayOutputStream));
+//            oos.writeObject(m);
+//            oos.close();
+//            byte[] messageBytes = byteArrayOutputStream.toByteArray();
+//
+//            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(messageBytes);
+//            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+//            Message serializedMessage = (Message) objectInputStream.readObject();
+//
+//            double serializedY = ((GameState) serializedMessage.getObject()).getBall().getY();
+//            System.out.println("After serialization, y="+serializedY);
+
             outputStream.writeObject(m);
+            outputStream.reset();
         } catch (IOException e) {
             System.out.println("Failed to write message.");
             return false;
@@ -66,7 +85,8 @@ abstract class NetworkEngine implements Runnable {
                 Message m = (Message) inputStream.readObject();
                 messages.add(m);
             } catch (EOFException e) {
-                System.out.println("EOFException. Continuing...");
+                System.out.println("EOFException. Stopping...");
+                stop();
             } catch (ClassNotFoundException e) {
                 System.err.println("Invalid object. Continuing...");
             } catch (IOException e) {
@@ -93,5 +113,9 @@ abstract class NetworkEngine implements Runnable {
             return;
         }
         new Thread(this).start();
+    }
+
+    boolean isRunning() {
+        return running;
     }
 }
