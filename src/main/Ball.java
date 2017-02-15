@@ -2,8 +2,7 @@ package main;
 
 import java.io.Serializable;
 
-class Ball implements Serializable {
-
+public class Ball implements Serializable {
 
     private double x = 400;
     private double y = 25;
@@ -76,7 +75,7 @@ class Ball implements Serializable {
         return gameDy;
     }
 
-    public double getX() {
+    double getX() {
         return x;
     }
 

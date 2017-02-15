@@ -28,11 +28,18 @@ public class Main extends NetworkClient {
         while (!window.shouldClose()) {
             if (game.getScreen() == Screen.GAME) {
                 handleMessages();
-                //game.updateLogic();
-                //game.updatePhysics();
+                game.updateLogic();
+                game.updatePhysics();
             }
             window.handleInput(game, this);
             window.repaint(game);
+
+
+            try {
+                Thread.sleep(1/60);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         window.end();
     }
@@ -46,6 +53,8 @@ public class Main extends NetworkClient {
     public void handleMessage(Message m) {
         // Todo: This is probably really inefficient.
         System.out.println("Updating with gamestate from server");
+        System.out.println("Ball was at y="+game.getBall().getY());
         game = (GameState) m.getObject();
+        System.out.println("Ball is at y="+game.getBall().getY());
     }
 }
