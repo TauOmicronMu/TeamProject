@@ -57,7 +57,7 @@ public class GameState implements Serializable {
     void generatePlatforms() {
         for (int i = 0; i < platforms.length; i++) {
             // Todo: understand and refactor these "magic numbers".
-            int xPosition = random.nextInt(windowWidth - 220) - 100;
+            int xPosition = random.nextInt(windowWidth - 220);
             int yPosition = windowHeight - 200 * i;
             platforms[i] = new Platform(
                     xPosition,
