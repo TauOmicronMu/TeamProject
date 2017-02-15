@@ -3,6 +3,14 @@ package main;
 import java.io.Serializable;
 import java.util.Random;
 
+
+/**
+ * A GameState stores all the information about the current level,
+ * the ball position, the positions of each platform etc. It also
+ * provides utility methods for generating these positions at the
+ * start, and update methods which delegate to the update methods
+ * provided by the Items and Platforms themselves.
+ */
 public class GameState implements Serializable {
 
     private Screen screen = Screen.MAIN_MENU;
@@ -136,7 +144,7 @@ public class GameState implements Serializable {
     /**
      * Retrieve the ball that's currently on-screen.
      */
-    public Ball getBall() {
+    Ball getBall() {
         return ball;
     }
 

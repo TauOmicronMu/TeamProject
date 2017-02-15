@@ -8,6 +8,7 @@ package networking;
  */
 public abstract class NetworkServer extends NetworkUser {
     private final int port;
+    private NetworkServerEngine serverEngine;
 
     public NetworkServer(int port) {
         this.port = port;
@@ -22,5 +23,13 @@ public abstract class NetworkServer extends NetworkUser {
         NetworkServerEngine netEngine = new NetworkServerEngine();
         netEngine.initialize(port);
         engine = netEngine;
+    }
+
+    /**
+     * Wrapper method around the NetworkServerEngine to block until a new
+     * client has connected.
+     */
+    protected void waitForClient() {
+        engine.accept();
     }
 }
