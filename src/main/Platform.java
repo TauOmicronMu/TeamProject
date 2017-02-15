@@ -51,9 +51,10 @@ class Platform implements Serializable {
         checkForCollision(ball);
         if (y > game.getWindowHeight()) {
 
-            Random r = new Random();
+            // Random r = new Random();
             y = 40;
-            x = game.getWindowWidth() - r.nextInt(game.getWindowWidth() - 100);
+            // x = game.getWindowWidth() - r.nextInt(game.getWindowWidth() - 100);
+            // x = game.getWindowWidth()/2;
 
         }
 

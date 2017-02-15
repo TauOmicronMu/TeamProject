@@ -34,7 +34,7 @@ public class ServerMain extends NetworkServer implements Runnable {
             gameState.updatePhysics();
 
             try {
-                Thread.sleep(1/60);
+                Thread.sleep(1000/120);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
