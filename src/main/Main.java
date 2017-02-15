@@ -15,6 +15,10 @@ public class Main extends NetworkClient {
         super(host, port);
     }
 
+    /**
+     * Setup the game by creating a Window and a GameState,
+     * and initializing both of them.
+     */
     private void initializeGame() {
         window = new Window(windowHeight, windowWidth);
         game = new GameState(windowWidth, windowHeight);
@@ -22,6 +26,9 @@ public class Main extends NetworkClient {
         window.init(game, this);
     }
 
+    /**
+     * The play() method implements the main game loop.
+     */
     private void play() {
         initializeGame();
         Menu.drawAll();
@@ -49,9 +56,13 @@ public class Main extends NetworkClient {
         main.play();
     }
 
+    /**
+     * This method is called whenever we receive a message from the Server.
+     * @param message The message we've just received.
+     */
     @Override
-    public void handleMessage(Message m) {
+    public void handleMessage(Message message) {
         // Todo: This is probably really inefficient.
-        game = (GameState) m.getObject();
+        game = (GameState) message.getObject();
     }
 }

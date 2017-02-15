@@ -15,8 +15,6 @@ import static org.lwjgl.opengl.GL20.*;
 class Shader {
 
     private int program;
-    private int vs; //vertex shader
-    private int fs; //fragment shader
 
     /**
      * Uses the shader files to create a shader which can then be used to bring colour
@@ -26,7 +24,7 @@ class Shader {
     Shader(String filename) {
         program = glCreateProgram();
 
-        vs = glCreateShader(GL_VERTEX_SHADER);
+        int vs = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vs, readFile(filename + ".vs"));
         glCompileShader(vs);
         if (glGetShaderi(vs, GL_COMPILE_STATUS) != 1) {
@@ -35,7 +33,7 @@ class Shader {
         }
 
 
-        fs = glCreateShader(GL_FRAGMENT_SHADER);
+        int fs = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fs, readFile(filename + ".fs"));
         glCompileShader(fs);
         if (glGetShaderi(fs, GL_COMPILE_STATUS) != 1) {
