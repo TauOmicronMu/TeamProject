@@ -16,10 +16,6 @@ abstract class NetworkUser implements MessageHandler {
      * @param m The message to send to our connected device.
      */
     public boolean sendMessage(Message m) {
-        if (m.getObject().getClass() == GameState.class) {
-            GameState g = (GameState) m.getObject();
-            System.out.println("Sending game state with ball: " + g.getBall());
-        }
         return engine.sendMessage(m);
     }
 

@@ -37,7 +37,6 @@ abstract class NetworkEngine implements Runnable {
     Optional<Message> nextMessage() {
         Message m = messages.poll();
         if (m == null) return Optional.empty();
-        System.out.println(((GameState) m.getObject()).getBall().getY());
         return Optional.of(m);
     }
 
@@ -48,8 +47,6 @@ abstract class NetworkEngine implements Runnable {
      */
     boolean sendMessage(Message m) {
         try {
-            System.out.println("Bottom level. Sending Y="+((GameState)m.getObject()).getBall().getY());
-
 // N.B.: this code tests that the message will serialize correctly. It's probably slow.
 //            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 //            ObjectOutputStream oos = new ObjectOutputStream((byteArrayOutputStream));

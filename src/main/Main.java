@@ -36,7 +36,7 @@ public class Main extends NetworkClient {
 
 
             try {
-                Thread.sleep(1/60);
+                Thread.sleep(1000/120);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -52,9 +52,6 @@ public class Main extends NetworkClient {
     @Override
     public void handleMessage(Message m) {
         // Todo: This is probably really inefficient.
-        System.out.println("Updating with gamestate from server");
-        System.out.println("Ball was at y="+game.getBall().getY());
         game = (GameState) m.getObject();
-        System.out.println("Ball is at y="+game.getBall().getY());
     }
 }
