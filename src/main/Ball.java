@@ -15,7 +15,7 @@ public class Ball implements Serializable {
     private static final double xFriction = 0.9;
     private static final double gameDy = -75;
     private int agility = 3;
-    private int maxSpeed = 10;
+    private int maxSpeed = 5;
 
 
     Ball(double i, double j) {

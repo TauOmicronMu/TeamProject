@@ -18,7 +18,7 @@ public class GameState implements Serializable {
     private final int windowHeight;
     private Random random = new Random();
     private Ball ball;
-    private Platform platforms[] = new Platform[10];
+    private Platform platforms[] = new Platform[4];
     private Item items[] = new Item[3];
 
     private static final int PLATFORM_WIDTH = 120;

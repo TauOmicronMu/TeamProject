@@ -10,6 +10,13 @@ class Platform implements Serializable {
 
     private int dx;
     private int x, y, width, height;
+    
+    private boolean tracksSet = false;
+    private AudioEngine audio = new AudioEngine();
+    
+    private final String bounceFP = "bounce.wav";
+   
+    private int bounce; // Reference to the bounce sound.
 
     /*
      *Constructor for platform object
@@ -19,19 +26,33 @@ class Platform implements Serializable {
      *@param height the height of the platform
      */
     Platform(int x, int y, int width, int height) {
+    	if(!tracksSet) {
+    		setTracks();
+    		this.tracksSet = true;
+    	}
+    	
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        dx = 3;
+        dx = 3;    
     }
 
     public Platform() {
+    	if(!tracksSet) {
+    		setTracks();
+    		this.tracksSet = true;
+    	}
+    	
         dx = 3;
         x = 300;
         y = 300;
         width = 120;
         height = 40;
+    }
+    
+    void setTracks() {
+    	this.bounce = audio.createTrack(this.bounceFP);
     }
 
     /*
@@ -75,6 +96,8 @@ class Platform implements Serializable {
 
                 //System.out.println("Collision");
 
+            	audio.playTrack(bounce);
+            	
                 double newDy = ball.getGameDy();
                 ball.setDy(newDy);
                 ball.setY(y - radius);
@@ -92,7 +115,6 @@ class Platform implements Serializable {
         double heightGl = game.glScaleDistance(height);
 
         double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
-        glColor4f(1, 0, 0, 0);
         Rectangle.drawrectangle(verticesb);
     }
 }
