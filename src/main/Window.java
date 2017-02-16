@@ -26,12 +26,12 @@ class Window {
 	private static RectangleShader rshader;
 	private static PowerUpShader pshader;
     private long window;
-    private int windowHeight = 800;
-    private int windowWidth = 800;
+    private int windowHeight = 600;
+    private int windowWidth = 600;
     private static boolean shouldChangeToGame = false;
     private static boolean shouldQuit = false;
     private static boolean shouldChangeToMenu = false;
-
+    private static boolean initial = true;
 
     Window(int windowHeight, int windowWidth) {
         this.windowHeight = windowHeight;
@@ -116,7 +116,14 @@ class Window {
         rshader.bind();
 
         if (gameState.getScreen() == Screen.MAIN_MENU) {
-            Menu.drawAll();
+        	Menu.drawAll();
+            
+        } else if(initial){
+        	Ball ball = gameState.getBall();
+			Circle.paintPinball(this, windowWidth/2, windowHeight/2, ball.getRadius());
+			if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_TRUE){
+				initial = false;
+			} 
         } else {
         	drawAllPlatforms(gameState);
         	rshader.stop();
@@ -246,6 +253,7 @@ class Window {
             case MAIN_MENU: {
                 if (onPlayGameButton(x, y)) {
                     shouldChangeToGame = true;
+                    shouldChangeToMenu = false;
                 } else if (onQuitButton(x, y)) {
                     shouldQuit = true;
                 }
@@ -255,7 +263,10 @@ class Window {
             // If we're in the game:
             case GAME: {
                 if (onBackToMenuButton(x, y)) {
-                    shouldChangeToMenu = true;
+                	shouldChangeToMenu = true;
+                	shouldChangeToGame = false;
+                	initial = true;
+                	gameState.setScreen(Screen.MAIN_MENU);
                 } else {
                     // Todo: N.B. This is for demonstrating the server-client synch.
                     gameState.getBall().setX(cursorXPosition);
@@ -278,6 +289,8 @@ class Window {
                 if (shouldChangeToMenu) {
                     gameState.setScreen(Screen.MAIN_MENU);
                     shouldChangeToMenu = false;
+                    shouldChangeToGame = false;
+                    repaint(gameState);
                 } else if (shouldChangeToGame) {
                     System.out.println("Changing to game...");
                     client.initialize();
