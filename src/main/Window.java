@@ -7,6 +7,10 @@ import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
+import PhysicsandGraphics.CircleShader;
+import PhysicsandGraphics.PowerUpShader;
+import PhysicsandGraphics.RectangleShader;
+
 import java.awt.geom.Point2D;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -22,7 +26,9 @@ class Window {
 
     private static int cursorXPosition;
     private static int cursorYPosition;
-    private static Shader shader;
+    private static CircleShader cshader;
+	private static RectangleShader rshader;
+	private static PowerUpShader pshader;
     private long window;
     private int windowHeight = 800;
     private int windowWidth = 800;
@@ -69,7 +75,9 @@ class Window {
         glfwMakeContextCurrent(window);
 
         GL.createCapabilities();
-        shader = new Shader("shader");
+        cshader = new CircleShader();
+		rshader = new RectangleShader();
+		pshader = new PowerUpShader();
 
         registerInputCallbacks(gameState, client);
     }
@@ -109,14 +117,19 @@ class Window {
      */
     void repaint(GameState gameState) {
         glClear(GL_COLOR_BUFFER_BIT);
-        shader.bind();
+        rshader.bind();
 
         if (gameState.getScreen() == Screen.MAIN_MENU) {
             Menu.drawAll();
         } else {
+        	drawAllPlatforms(gameState);
+        	rshader.stop();
+        	pshader.bind();
             drawAllItems(gameState);
-            drawAllPlatforms(gameState);
+            pshader.stop();
+            cshader.bind();
             drawBall(gameState);
+            cshader.stop();
             Menu.drawBackToMenuButton();
         }
 
