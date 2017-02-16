@@ -75,7 +75,7 @@ public class EDA {
     		}
     	}
     	
-    	return score.get(bestAngle);
+    	return angle.get(bestAngle);
     }
     
     private double[] sampleRange(double[] a){
