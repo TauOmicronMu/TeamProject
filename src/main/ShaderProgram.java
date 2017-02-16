@@ -97,7 +97,7 @@ public abstract class ShaderProgram {
 		StringBuilder string = new StringBuilder();
 		BufferedReader br;
 		try{
-			br = new BufferedReader(new FileReader(new File("C:/Users/Ella/workspace/EngineTry3/src/" + filename)));
+			br = new BufferedReader(new FileReader(new File("src/" + filename)));
 			String line;
 			while((line = br.readLine()) != null)
 			{
