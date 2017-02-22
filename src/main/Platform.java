@@ -14,14 +14,14 @@ class Platform implements Serializable {
     private boolean tracksSet = false;
     private AudioEngine audio = new AudioEngine();
     
-    private final String bounceFP = "bounce.wav";
+    private final String bounceFP = "boing.wav";
    
     private int bounce; // Reference to the bounce sound.
 
     /*
      *Constructor for platform object
      *@param x the current x position of the platform(the top left corner of the platform)
-     *@param y the current y position of the platform(the top left corner of the platform)
+     *@param y the current y positiosn of the platform(the top left corner of the platform)
      *@param width the width of the platform
      *@param height the height of the platform
      */

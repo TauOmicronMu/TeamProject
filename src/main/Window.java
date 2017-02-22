@@ -7,12 +7,6 @@ import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
-import PhysicsandGraphics.CircleShader;
-import PhysicsandGraphics.PowerUpShader;
-import PhysicsandGraphics.RectangleShader;
-
-import java.awt.geom.Point2D;
-
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
