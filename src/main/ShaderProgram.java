@@ -1,4 +1,4 @@
-package PhysicsandGraphics;
+package main;
 import static org.lwjgl.opengl.GL20.*;
 
 import java.io.BufferedReader;
@@ -11,7 +11,7 @@ import java.io.IOException;
  * @author Ella
  *
  */
-public class Shader {
+public abstract class ShaderProgram {
 	
 	private int program;
 	private int vs; //vertex shader
@@ -21,34 +21,16 @@ public class Shader {
 	 * Uses the shader files to create a shader which can then be used to bring colour
 	 * @param filename
 	 */
-	public Shader(String filename)
+	public ShaderProgram(String vertexFile, String fragmentFile)
 	{
 		program = glCreateProgram();
+		vs = loadShader(vertexFile, GL_VERTEX_SHADER);
+		fs = loadShader(fragmentFile,GL_FRAGMENT_SHADER);
 		
-		vs = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vs, readFile(filename+".vs"));
-		glCompileShader(vs);
-		if(glGetShaderi(vs,GL_COMPILE_STATUS) != 1)
-		{
-			System.err.println(glGetShaderInfoLog(vs));
-			System.exit(1);
-		}
-		
-		
-		fs = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fs, readFile(filename+".fs"));
-		glCompileShader(fs);
-		if(glGetShaderi(fs,GL_COMPILE_STATUS) != 1)
-		{
-			System.err.println(glGetShaderInfoLog(fs));
-			System.exit(1);
-		}
 		
 		glAttachShader(program,vs);
 		glAttachShader(program, fs);
-		
 		glBindAttribLocation(program, 0, "vertices");
-		
 		glLinkProgram(program);
 		if(glGetProgrami(program,GL_LINK_STATUS) != 1)
 		{
@@ -57,32 +39,66 @@ public class Shader {
 		}
 		
 		
-		glValidateProgram(program);
-		if(glGetProgrami(program,GL_VALIDATE_STATUS) != 1)
+
+	}
+
+	private static int loadShader(String filename, int type)
+	{
+		int id = glCreateShader(type);
+		glShaderSource(id, readFile(filename));
+		glCompileShader(id);
+		if(glGetShaderi(id,GL_COMPILE_STATUS) != 1)
 		{
-			System.err.println(glGetProgramInfoLog(program));
+			System.err.println(glGetShaderInfoLog(id));
 			System.exit(1);
 		}
+		return id;
 	}
 	/**
 	 * Allows you to use the shader
 	 */
 	public void bind()
 	{
+		glValidateProgram(program);
+		if(glGetProgrami(program,GL_VALIDATE_STATUS) != 1)
+		{
+			System.err.println(glGetProgramInfoLog(program));
+			System.exit(1);
+		}
+		glAttachShader(program,vs);
+		glAttachShader(program, fs);
+		glLinkProgram(program);
 		glUseProgram(program);
 	}
 	
+	
+	public void stop()
+	{
+		glUseProgram(0);
+		glDetachShader(program,vs);
+		glDetachShader(program,fs);
+	}
+	
+	public void cleanUp()
+	{
+		stop();
+		glDetachShader(program,vs);
+		glDetachShader(program,fs);
+		glDeleteShader(vs);
+		glDeleteShader(fs);
+		glDeleteProgram(program);
+	}
 	/**
 	 * Reads the shader files
 	 * @param filename
 	 * @return the file contents
 	 */
-	private String readFile(String filename)
+	private static String readFile(String filename)
 	{
 		StringBuilder string = new StringBuilder();
 		BufferedReader br;
 		try{
-			br = new BufferedReader(new FileReader(new File("C:/Users/Jennifer/workspace/TeamProject/src/shaders/" + filename)));
+			br = new BufferedReader(new FileReader(new File("src/" + filename)));
 			String line;
 			while((line = br.readLine()) != null)
 			{

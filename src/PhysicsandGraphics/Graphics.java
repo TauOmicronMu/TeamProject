@@ -1,15 +1,13 @@
 package PhysicsandGraphics;
-
 import static org.lwjgl.glfw.GLFW.*;
+
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
-
-
 import static org.lwjgl.opengl.GL11.*;
-import java.util.Random;
 
+import java.util.Random;
 /**
  * Main class for graphics
  * @author Ella
@@ -19,39 +17,33 @@ public class Graphics {
 
 		private static int invisiblex;
 		private static int invisibley;
-		private static Shader shader;
+		private static boolean buttondown = false;
+		private static boolean started = false;
+		private static CircleShader cshader;
+		private static RectangleShader rshader;
+		private static PowerUpShader pshader;
 		private long window;
-		private int windowHeight = 800;
-		private int windowWidth = 800;
-		private static boolean changetogame = false;
-		private static boolean changetoquit = false;
-		private static boolean changetomenu = false;
-		private static boolean initial = true;
-		private enum STATE{
-			MENU,
-			GAME
-		};
-		private static STATE state = STATE.MENU;
+		private int windowheight = 600;
+		private int windowwidth = 600;
 		private Ball3 b;
 		private GLFWVidMode videoMode;
 		private Platform p[] = new Platform[10];
 		private Item item[] = new Item[3];
 		private Random r = new Random();
 		private DrawCircle drawc = new DrawCircle();
-		private Menu menu = new Menu();
 		
 		public Graphics() {
 		}
 			
 		public int getHeight() {
-			return windowHeight;
+			return windowheight;
 		}
 		public int getWidth() {
-			return windowWidth;
+			return windowwidth;
 		}
 		
 		/**
-		 * Sets up the screen
+		 * Sets up the screen, placing the ball in the initial position and creating the obstacles
 		 * @param window
 		 */
 		public void init()
@@ -62,20 +54,24 @@ public class Graphics {
 				System.exit(1);
 			}
 			glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-			window = glfwCreateWindow(windowWidth, windowHeight, "Pinball", 0, 0);
+			window = glfwCreateWindow(windowwidth, windowheight, "Pinball", 0, 0);
 			if(window == 0)
 			{
 				throw new IllegalStateException("Failed to create window");
+				
 			}
 
 			videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-			glfwSetWindowPos(window, (videoMode.width()- windowWidth)/2, (videoMode.height() - windowHeight)/2);
+			glfwSetWindowPos(window, (videoMode.width()- windowwidth)/2, (videoMode.height() - windowheight)/2);
 			
 			glfwShowWindow(window);
 			glfwMakeContextCurrent(window);
 			
 			GL.createCapabilities();
-			shader = new Shader("shader");
+			cshader = new CircleShader();
+			rshader = new RectangleShader();
+			pshader = new PowerUpShader();
+
 			
 		}
 		/**
@@ -84,18 +80,15 @@ public class Graphics {
 		 * Creates the power-ups
 		 */
 		public void start() {
-			if(state==STATE.MENU){
-				menu.drawall();
-			}
-			
-			b = new Ball3(windowWidth/2,windowHeight/2);
+			b = new Ball3(windowwidth/3,25);
 			for(int i = 0; i < p.length; i++){
-				p[i] = new Platform(r.nextInt(windowWidth-220) -100, windowHeight - 200 * i, 120, 10);
+				System.out.println(p[i] = new Platform(windowwidth- r.nextInt(windowwidth-50), windowheight - 200 * i, 140, 20));
 			}
 			
 			for(int i = 0; i < item.length; i++){
 				item[i] = new GravUp( -1000 * i);
 			}
+			
 		}
 		
 		/**
@@ -115,71 +108,62 @@ public class Graphics {
 		{
 			while(!glfwWindowShouldClose(window))
 			{
-				setup(shader);
-				mousenavigation();
-				if(state==STATE.MENU){
-					menu.drawall();
-					glfwSwapBuffers(window);
-				}else if(initial){
-					drawc.paintPinball(this, b.getX(), b.getY(), b.getRadius());
-					if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_TRUE){
-						initial = false;
-					}glfwSwapBuffers(window);
-				}else if(!initial){
-					for(int i = 0; i< item.length; i++){
-						if(item[i].getY() == windowHeight + 100){
-							item[i]=null;
-							switch (r.nextInt(4)){
-							case 0:
-								item[i]=new GravUp(- 10 * r.nextInt(500));
-								break;
-							case 1:
-								item[i]=new GravDown(-10 * r.nextInt(500));
-								break;
-							case 2:
-								item[i]=new AgilityUp(-10 * r.nextInt(500));
-								break;
-							case 3:
-								item[i]=new AgilityDown(-10 * r.nextInt(500));
-								break;
-							}
+				setup();
+				for(int i = 0; i< item.length; i++){
+					if(item[i].getY() == windowheight + 100){
+						item[i]=null;
+						switch (r.nextInt(4)){
+						case 0:
+							item[i]=new GravUp(- 10 * r.nextInt(500));
+							break;
+						case 1:
+							item[i]=new GravDown(-10 * r.nextInt(500));
+							break;
+						case 2:
+							item[i]=new AgilityUp(-10 * r.nextInt(500));
+							break;
+						case 3:
+							item[i]=new AgilityDown(-10 * r.nextInt(500));
+							break;
 						}
 					}
-					
-					for(int i = 0; i < p.length; i++){
-						p[i].update(this, b);
-					}
-					
-					for(int i = 0; i < item.length; i++){
-						item[i].update(this, b);
-					}
-					
-					if(glfwGetKey(window, GLFW_KEY_A) == GLFW_TRUE){
-						b.moveLeft();
-					}else if(glfwGetKey(window, GLFW_KEY_D) == GLFW_TRUE){
-						b.moveRight();
-					}
-					
-					b.update(this);
-					drawc.paintPinball(this, b.getX(), b.getY(), b.getRadius());
-					for(int i = 0; i < p.length; i++){
-						p[i].paint(this);
-					}
-					
-					for(int i = 0; i < item.length; i++){
-						item[i].paint();
-					}
-					Menu.drawbacktomenu();
-				
-				glfwSwapBuffers(window);
-				
-				try {
-					Thread.sleep(17);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
 				}
+				rshader.bind();
+				for(int i = 0; i < p.length; i++){
+					p[i].update(this, b);
 				}
+								
+				for(int i = 0; i < p.length; i++){
+					p[i].paint(this);
+				}
+				rshader.stop();
+				pshader.bind();
+				for(int i = 0; i < item.length; i++){
+					item[i].update(this, b);
+				}
+				
+				for(int i = 0; i < item.length; i++){
+					item[i].paint();
+				}
+				pshader.stop();
+				cshader.bind();
+				drawc.paintPinball(this, b.getX(), b.getY());
+				b.update(this);
+				mousenavigation();
+				cshader.stop();
+				
+			
+			glfwSwapBuffers(window);
+			
+			
+			try {
+				Thread.sleep(17);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
+			}
+			cshader.cleanUp();
+			rshader.cleanUp();
 		}
 		
 
@@ -207,17 +191,8 @@ public class Graphics {
 				{
 					if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
 					{
-						if(changetomenu==true){
-							state=STATE.MENU;
-							changetomenu=false;
-							changetogame=false;
-							initial=true;
-							start();
-						}else if(changetogame==true){
-							state=STATE.GAME;
-						}else if(changetoquit==true){
-							glfwSetWindowShouldClose(window, true);
-						}
+						buttondown = false;
+						started = true;
 					}
 				}
 				
@@ -227,35 +202,27 @@ public class Graphics {
 			glfwSetMouseButtonCallback(window,mousecallback);
 			if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 			{
-				float x = changexCoord(invisiblex);
-				float y = changeyCoord(invisibley);
-				if(state==STATE.MENU && -0.4<=x && x<=0.4 && -0.2<=y && y<=0){
-					changetogame = true;
-					menu.drawall();
-				}else if(state==STATE.MENU && -0.4<=x && x<=0.4 && -0.7<=y && y<=-0.5){
-					changetoquit=true;
-					menu.drawall();
-				}else if(state==STATE.GAME && -0.95<=x && x<=-0.85 && 0.9<=y && y<=0.95){
-					changetomenu = true;
-				}else if(state==STATE.GAME){
-					b.setX(invisiblex);
-					b.setY(invisibley);
-					//b.update(this);
-					drawc.paintPinball(this, invisiblex, invisibley, b.getRadius());
-				}
+				b.setX(invisiblex);
+				b.setY(invisibley);
+				b.update(this);
+				buttondown = true;
+			}
+			
+			//if the button hasn't been pressed keep moving ball
+			if(!buttondown && started )
+			{		
+				b.update(this);
 			}
 		}
-		
 		/**
 		 * Clears the colour from the screen and binds the shader
 		 * Necessary each time you draw
 		 * @param shader
 		 */
-		public static void setup(Shader shader)
+		public static void setup()
 		{
 			glfwPollEvents();
 			glClear(GL_COLOR_BUFFER_BIT);
-			shader.bind();
 			
 		}
 		/**
@@ -264,7 +231,7 @@ public class Graphics {
 		 * @return the converted coordinate
 		 */
 		public float changexCoord(int x) {
-			float newx = (float)(-1.0f) + ((float)x/(float)(windowWidth/2));
+			float newx = (float)(-1.0f) + ((float)x/(float)(windowwidth/2));
 			return newx;
 		}
 		
@@ -275,9 +242,9 @@ public class Graphics {
 		 */
 		public float changexCoord2(int x) {
 			float newx = 0f;
-			if(x > windowWidth/2)
+			if(x > windowwidth/2)
 			{
-				newx = (float)(float)x/(float)(windowWidth/2);
+				newx = (float)(float)x/(float)(windowwidth/2);
 			}
 			//float newx = (float)-1.0f + ((float)x/(float)(windowwidth/2));
 			return newx;
@@ -289,13 +256,8 @@ public class Graphics {
 		 * @return the converted coordinate
 		 */
 		public float changeyCoord(int y) {
-			float newy = (float)1.0f - ((float)y/(float)(windowHeight/2));
+			float newy = (float)1.0f - ((float)y/(float)(windowheight/2));
 			return newy;
-		}
-		
-		public float changeDistance(int distance){
-			float newDistance = (1.0f * (float)distance)/(windowWidth/2);
-			return newDistance;
 		}
 		
 		

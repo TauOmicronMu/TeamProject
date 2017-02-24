@@ -2,9 +2,6 @@ package PhysicsandGraphics;
 
 import static org.lwjgl.opengl.GL11.glColor4f;
 
-import Integration.Graphics;
-import Integration.Model;
-
 public class DrawCircle {
 	
 	public DrawCircle(){
@@ -16,27 +13,18 @@ public class DrawCircle {
 	 * @param posx the current x position of the centre of the pinball
 	 * @param posy the current y position of the centre of the pinball
 	 */
-	public void paintPinball(PhysicsandGraphics.Graphics graphics, int x, int y, int radius)
+	public void paintPinball(Graphics game, int x, int y)
 	{
-		float radius2 = graphics.changeDistance(radius);
-		float x2 = graphics.changexCoord(x);
-		float y2 = graphics.changeyCoord(y);
-		float[] vertices = createCircle(x2,y2,0.5f,radius2);
+		System.out.println("Old X: " + x);
+		System.out.println("New X: " + game.changexCoord(x));
+		float[] vertices = createCircle(game.changexCoord(x),game.changeyCoord(y),0.5f,0.08f);
 		Model circle1 = new Model(vertices);
 		circle1.render(vertices);
 	}
 	
-	/**
-	 * Draws the powerUp(item class) 
-	 * @param posx the current x position of the centre of the powerUp
-	 * @param posy the current y position of the centre of the powerUp
-	 */
-	public void paintItem(Graphics game, int x, int y, int radius)
-	{	
-		float radius2 = game.changeDistance(radius);
-		float x2 = game.changexCoord(x);
-		float y2 = game.changeyCoord(y);
-		float[] vertices = createCircle(x2,y2,0.3f,radius2);
+	public void paintItem(Graphics game, int x, int y)
+	{
+		float[] vertices = createCircle(game.changexCoord(x),game.changeyCoord(y),0.3f,0.03f);
 		Model circle1 = new Model(vertices);
 		circle1.render(vertices);
 	}
