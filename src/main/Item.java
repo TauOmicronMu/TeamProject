@@ -8,20 +8,32 @@ import static org.lwjgl.opengl.GL11.glColor4f;
 
 class Item implements Serializable {
 
-    private int x, y, dy, radius;
+    private int x, y, dy, radius, type, highestPoint;
 
     /*
      * Constructor for item class(PowerUps)
      * @param y the y position of the powerUp
+     * @param type, the type of the powerUp
      */
-    Item(int y) {
+    Item(int y, int type) {
         this.y = y;
+        this.type=type;
         Random r = new Random();
         x = r.nextInt(700) + radius + 100;
         radius = 10;
         dy = 3;
+        highestPoint = 200;
     }
 
+    /*
+     * Return the type of powerUp
+     * 1 for GraveDown
+     * 2 for GraveUp
+     * 3 for FlyUp
+     */
+    public int getType() {
+		return type;
+	}
     /*
      * Get method for Y
      */
@@ -48,21 +60,37 @@ class Item implements Serializable {
      * Updates the position of the PowerUp
      */
     void update(GameState game) {
-        int height = game.getWindowHeight();
-        int width = game.getWindowWidth();
+        
         Ball ball = game.getBall();
-
-        y += dy;
-
-        checkForCollision(ball, game);
-        if (y > height - radius) {
-            Random r = new Random();
-            y = -height - 100 - r.nextInt(300);
-            x = r.nextInt(width - 100) + radius + 100;
-
+        
+        if(ball.gameOver() == false) {
+        	if(ball.getY() < highestPoint && ball.getDy() < 0){
+            	
+            	if(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 < -3){
+            		
+            		y +=Math.abs(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1);
+            	} else {
+            		y += dy;
+            	}
+            	
+         		if(ball.getCountFlyPower() == 0)
+         		 checkForCollision(ball, game);
+         		else y += 20;         
+            	
+           } else {
+        	   y += dy;
+        		if(ball.getCountFlyPower() == 0)
+        		 checkForCollision(ball, game);
+        		else y += 20;
+                }
+            
+        } else {
+        	if(y>-100){
+        		y-=6;
+        	}
         }
-
-    }
+       }
+        
 
     /*
      * Checks for collision between the ball and the powerUp
@@ -80,7 +108,6 @@ class Item implements Serializable {
         double c = Math.sqrt((double) (a * a) + (double) (b * b));
         if (c < collide) {
             performAction(ball);
-            x = 0;
             y = game.getWindowHeight() + 100;
         }
 
@@ -90,13 +117,13 @@ class Item implements Serializable {
      * Changes the behaviour of the ball depending on the powerUp
      * @param ball
      */
-    private void performAction(Ball ball) {
+    public void performAction(Ball ball) {
     }
 
     /*
      * Paints the powerUps
      */
-    void paint(Window window) {
+    public void paint(Window window) {
         double[] vertices = createCircle(window.glScaleX(x), window.glScaleY(y), 0.2f, 0.02f);
         Model circle1 = new Model(vertices);
 
