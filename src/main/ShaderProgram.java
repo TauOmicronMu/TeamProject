@@ -39,7 +39,12 @@ public abstract class ShaderProgram {
 		}
 		
 		
-
+		glValidateProgram(program);
+		if(glGetProgrami(program,GL_VALIDATE_STATUS) != 1)
+		{
+			System.err.println(glGetProgramInfoLog(program));
+			System.exit(1);
+		}
 	}
 
 	private static int loadShader(String filename, int type)
@@ -59,12 +64,6 @@ public abstract class ShaderProgram {
 	 */
 	public void bind()
 	{
-		glValidateProgram(program);
-		if(glGetProgrami(program,GL_VALIDATE_STATUS) != 1)
-		{
-			System.err.println(glGetProgramInfoLog(program));
-			System.exit(1);
-		}
 		glAttachShader(program,vs);
 		glAttachShader(program, fs);
 		glLinkProgram(program);

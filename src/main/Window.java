@@ -7,12 +7,6 @@ import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
-import PhysicsandGraphics.CircleShader;
-import PhysicsandGraphics.PowerUpShader;
-import PhysicsandGraphics.RectangleShader;
-
-import java.awt.geom.Point2D;
-
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
@@ -28,6 +22,8 @@ class Window {
     private static int cursorYPosition;
     private static CircleShader cshader;
 	private static RectangleShader rshader;
+	private static PowerUpShader pshader;
+	private static Texture tex;
     private long window;
     private int windowHeight = 600;
     private int windowWidth = 600;
@@ -75,9 +71,9 @@ class Window {
 
         GL.createCapabilities();
         
-        
         cshader = new CircleShader();
 		rshader = new RectangleShader();
+		pshader = new PowerUpShader();
 
         registerInputCallbacks(gameState, client);
     }
@@ -131,7 +127,9 @@ class Window {
         } else {
         	drawAllPlatforms(gameState);
         	rshader.stop();
+        	pshader.bind();
             drawAllItems(gameState);
+            pshader.stop();
             cshader.bind();
             drawBall(gameState);
             cshader.stop();
