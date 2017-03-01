@@ -24,6 +24,7 @@ public class GameState implements Serializable {
 
     private static final int PLATFORM_WIDTH = 140;
     private static final int PLATFORM_HEIGHT = 20;
+    public int score;
 
 
     GameState(int width, int height) {
@@ -221,13 +222,18 @@ public class GameState implements Serializable {
         this.screen = screen;
     }
     
-    public void printScore() {
-    		if(ball.gameOver()== false)
-    			System.out.println("The score is = " + platforms[0].getScore()/30);
-    		else 
-    			System.out.println("Your final score is = " + platforms[0].getScore()/30);
+    void printScore() {
+        if (gameOver())
+            System.out.println("Your final score is = " + score);
     }
-    
+
+    /**
+     * Returns the score of the player
+     */
+    public int getScore() {
+        return score;
+    }
+
     public boolean gameOver(){
     	return ball.gameOver();
     }    
