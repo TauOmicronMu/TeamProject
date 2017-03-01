@@ -30,6 +30,8 @@ class Window {
     private static boolean shouldChangeToGame = false;
     private static boolean shouldQuit = false;
     private static boolean shouldChangeToMenu = false;
+    private static boolean shouldChangeToSettings = false;
+    private static boolean changeAudio = false;
     private static boolean initial = true;
 
     Window(int windowHeight, int windowWidth) {
@@ -117,7 +119,11 @@ class Window {
 
         if (gameState.getScreen() == Screen.MAIN_MENU) {
         	Menu.drawAll();
-            
+        } else if(gameState.getScreen() == Screen.SETTINGS){
+        	Menu.drawBackToMenuButton();
+        	Settings.drawAudioBar();
+        	Settings.drawSlider();
+        	//Alphanumerics.drawA(-0.8, 0.025, 0.1);
         } else if(initial){
         	Ball ball = gameState.getBall();
 			Circle.paintPinball(this, windowWidth/2, windowHeight/2, ball.getRadius());
@@ -210,6 +216,16 @@ class Window {
     private boolean onPlayGameButton(double x, double y) {
         return withinBounds(x, y, -0.4, 0.4, -0.2, 0);
     }
+    
+    /**
+     * Test whether the coordinate (x, y) is wihtin the Settings button.
+     * @param x The coordinate's X component.
+     * @param y The coordinate's Y component.
+     * @return Whether the coordinate is within the button.
+     */
+    private boolean onSettingsButton(double x, double y){
+    	return withinBounds(x, y, -0.4, 0.4, -0.45, -0.25);
+    }
 
     /**
      * Test whether the coordinate (x, y) is within the Quit button.
@@ -229,6 +245,16 @@ class Window {
      */
     private boolean onBackToMenuButton(double x, double y) {
         return withinBounds(x, y, -0.95, -0.85, 0.9, 0.95);
+    }
+    
+    /**
+     * Test whether the coordinate (x, y) is within the Audio Slider button.
+     * @param x The coordinate's X component.
+     * @param y The coordinate's Y component.
+     * @return Whether the coordinate is within the button.
+     */
+    private boolean onAudioBar(double x, double y) {
+        return withinBounds(x, y, 0, 0.8, -0.05, 0);
     }
 
     /**
@@ -256,8 +282,24 @@ class Window {
                     shouldChangeToMenu = false;
                 } else if (onQuitButton(x, y)) {
                     shouldQuit = true;
+                } else if(onSettingsButton(x, y)) {
+                	shouldChangeToSettings = true;
                 }
                 break;
+            }
+            
+            // If we're on the settings page:
+            case SETTINGS: {
+            	if (onBackToMenuButton(x, y)){
+            		shouldChangeToMenu = true;
+            	} else if (onAudioBar(x, y)){
+            		changeAudio = true;
+            	}
+            	
+            	if(changeAudio){
+        			Settings.setXLower(x-0.025);
+            		Settings.drawSlider();
+        		}
             }
 
             // If we're in the game:
@@ -296,6 +338,11 @@ class Window {
                     client.initialize();
                     gameState.setScreen(Screen.GAME);
                     shouldChangeToGame = false;
+                } else if (shouldChangeToSettings) {
+                	gameState.setScreen(Screen.SETTINGS);
+                	shouldChangeToSettings = false;
+                } else if (gameState.getScreen() == Screen.SETTINGS){
+                	changeAudio = false;
                 } else if (shouldQuit) {
                     glfwSetWindowShouldClose(window1, true);
                 }
