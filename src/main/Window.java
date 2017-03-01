@@ -7,6 +7,8 @@ import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
+import java.awt.geom.Point2D;
+
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
@@ -23,16 +25,14 @@ class Window {
     private static CircleShader cshader;
 	private static RectangleShader rshader;
 	private static PowerUpShader pshader;
-	private static Texture tex;
+	private static PowerUpShader2 pshader2;
     private long window;
-    private int windowHeight = 600;
-    private int windowWidth = 600;
+    private int windowHeight = 800;
+    private int windowWidth = 800;
     private static boolean shouldChangeToGame = false;
     private static boolean shouldQuit = false;
     private static boolean shouldChangeToMenu = false;
-    private static boolean shouldChangeToSettings = false;
-    private static boolean changeAudio = false;
-    private static boolean initial = true;
+
 
     Window(int windowHeight, int windowWidth) {
         this.windowHeight = windowHeight;
@@ -72,10 +72,10 @@ class Window {
         glfwMakeContextCurrent(window);
 
         GL.createCapabilities();
-        
         cshader = new CircleShader();
 		rshader = new RectangleShader();
 		pshader = new PowerUpShader();
+		pshader2 = new PowerUpShader2();
 
         registerInputCallbacks(gameState, client);
     }
@@ -118,18 +118,7 @@ class Window {
         rshader.bind();
 
         if (gameState.getScreen() == Screen.MAIN_MENU) {
-        	Menu.drawAll();
-        } else if(gameState.getScreen() == Screen.SETTINGS){
-        	Menu.drawBackToMenuButton();
-        	Settings.drawAudioBar();
-        	Settings.drawSlider();
-        	//Alphanumerics.drawA(-0.8, 0.025, 0.1);
-        } else if(initial){
-        	Ball ball = gameState.getBall();
-			Circle.paintPinball(this, windowWidth/2, windowHeight/2, ball.getRadius());
-			if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_TRUE){
-				initial = false;
-			} 
+            Menu.drawAll();
         } else {
         	drawAllPlatforms(gameState);
         	rshader.stop();
@@ -164,6 +153,10 @@ class Window {
         Platform[] platforms = gameState.getPlatforms();
         for (Platform platform : platforms) {
             if (platform != null) platform.paint(this);
+        }
+        MovingPlatform[] movingPlatforms = gameState.getMovingPlatforms();
+        for (MovingPlatform movingPlatform : movingPlatforms) {
+            if (movingPlatform != null) movingPlatform.paint(this);
         }
     }
 
@@ -216,16 +209,6 @@ class Window {
     private boolean onPlayGameButton(double x, double y) {
         return withinBounds(x, y, -0.4, 0.4, -0.2, 0);
     }
-    
-    /**
-     * Test whether the coordinate (x, y) is wihtin the Settings button.
-     * @param x The coordinate's X component.
-     * @param y The coordinate's Y component.
-     * @return Whether the coordinate is within the button.
-     */
-    private boolean onSettingsButton(double x, double y){
-    	return withinBounds(x, y, -0.4, 0.4, -0.45, -0.25);
-    }
 
     /**
      * Test whether the coordinate (x, y) is within the Quit button.
@@ -245,16 +228,6 @@ class Window {
      */
     private boolean onBackToMenuButton(double x, double y) {
         return withinBounds(x, y, -0.95, -0.85, 0.9, 0.95);
-    }
-    
-    /**
-     * Test whether the coordinate (x, y) is within the Audio Slider button.
-     * @param x The coordinate's X component.
-     * @param y The coordinate's Y component.
-     * @return Whether the coordinate is within the button.
-     */
-    private boolean onAudioBar(double x, double y) {
-        return withinBounds(x, y, 0, 0.8, -0.05, 0);
     }
 
     /**
@@ -279,36 +252,16 @@ class Window {
             case MAIN_MENU: {
                 if (onPlayGameButton(x, y)) {
                     shouldChangeToGame = true;
-                    shouldChangeToMenu = false;
                 } else if (onQuitButton(x, y)) {
                     shouldQuit = true;
-                } else if(onSettingsButton(x, y)) {
-                	shouldChangeToSettings = true;
                 }
                 break;
-            }
-            
-            // If we're on the settings page:
-            case SETTINGS: {
-            	if (onBackToMenuButton(x, y)){
-            		shouldChangeToMenu = true;
-            	} else if (onAudioBar(x, y)){
-            		changeAudio = true;
-            	}
-            	
-            	if(changeAudio){
-        			Settings.setXLower(x-0.025);
-            		Settings.drawSlider();
-        		}
             }
 
             // If we're in the game:
             case GAME: {
                 if (onBackToMenuButton(x, y)) {
-                	shouldChangeToMenu = true;
-                	shouldChangeToGame = false;
-                	initial = true;
-                	gameState.setScreen(Screen.MAIN_MENU);
+                    shouldChangeToMenu = true;
                 } else {
                     // Todo: N.B. This is for demonstrating the server-client synch.
                     gameState.getBall().setX(cursorXPosition);
@@ -331,18 +284,11 @@ class Window {
                 if (shouldChangeToMenu) {
                     gameState.setScreen(Screen.MAIN_MENU);
                     shouldChangeToMenu = false;
-                    shouldChangeToGame = false;
-                    repaint(gameState);
                 } else if (shouldChangeToGame) {
                     System.out.println("Changing to game...");
                     client.initialize();
                     gameState.setScreen(Screen.GAME);
                     shouldChangeToGame = false;
-                } else if (shouldChangeToSettings) {
-                	gameState.setScreen(Screen.SETTINGS);
-                	shouldChangeToSettings = false;
-                } else if (gameState.getScreen() == Screen.SETTINGS){
-                	changeAudio = false;
                 } else if (shouldQuit) {
                     glfwSetWindowShouldClose(window1, true);
                 }

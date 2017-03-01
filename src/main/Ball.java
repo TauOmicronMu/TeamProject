@@ -76,7 +76,7 @@ public class Ball implements Serializable {
                     dy *= energyloss;
                     //if you dont want the game to end when the ball touches the ground,
                     //just comment the next line of code("gameOver = true;")
-                    gameOver = true;
+                    //gameOver = true;
                     dy = -dy;
                 } else {
                 		// Calculate new velocity in Y direction:

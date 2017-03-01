@@ -56,6 +56,7 @@ public class GameState implements Serializable {
         return screen;
     }
 
+  
 
     /**
      * Populates the list of platforms in this game state with a set
@@ -115,6 +116,7 @@ public class GameState implements Serializable {
                 xPosition -200,
                 xPosition + 200
         );
+        
     }
 
     /**
@@ -123,18 +125,18 @@ public class GameState implements Serializable {
     private void updateItems() {
         Item[] items = this.getItems();
         for (int i = 0; i < items.length; i++) {
-            if (items[i] == null || items[i].getY() == windowHeight + 100) {
+            if (items[i] == null || items[i].getY() > windowHeight ) {
                 items[i] = null;
                 switch (random.nextInt(3)) {
-                case 0:
-					items[i]=new main.GravDown(- 10 * random.nextInt(500), 1);
-					break;
-				case 1:
-					items[i]=new main.GravUp(-10 * random.nextInt(500), 2);
-					break;
-				case 2:
-					items[i]=new main.FlyUpPower(-10 * random.nextInt(500), 3);
-					break;
+                    case 0:
+						items[i]=new main.GravDown(- 10 * random.nextInt(500), 1);
+						break;
+					case 1:
+						items[i]=new main.GravUp(-10 * random.nextInt(500), 2);
+						break;
+					case 2:
+						items[i]=new main.FlyUpPower(-10 * random.nextInt(500), 3);
+						break;
                 }
             }
         }
@@ -158,7 +160,7 @@ public class GameState implements Serializable {
         for (Item item : items) {
             if (item != null) item.update(this);
         }
-     
+  
     }
 
 
@@ -218,18 +220,15 @@ public class GameState implements Serializable {
     void setScreen(Screen screen) {
         this.screen = screen;
     }
-    /*
-     * Prints the score
-     */
+    
     public void printScore() {
-		if(ball.gameOver()== false)
-			System.out.println("The score is = " + platforms[0].getScore()/30);
-		else 
-			System.out.println("Your final score is = " + platforms[0].getScore()/30);
+    		if(ball.gameOver()== false)
+    			System.out.println("The score is = " + platforms[0].getScore()/30);
+    		else 
+    			System.out.println("Your final score is = " + platforms[0].getScore()/30);
     }
     
     public boolean gameOver(){
     	return ball.gameOver();
-    }
-    
+    }    
 }

@@ -2,10 +2,8 @@ package main;
 
 import org.lwjgl.BufferUtils;
 
-import java.io.FileInputStream;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
-//import org.newdawn.slick.opengl;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -51,11 +49,7 @@ class Model {
         glBindVertexArray(0);
 
     }
-    /*
-    public int loadTexture(String fileName){
-    	//Texture texture = null;
-    	//texture = TextureLoader.getTexture("PNG",new FileInputStream("res/" + fileName + ".png"));
-    }*/
+
     private float[] toFloatArray(double[] doubles) {
         float[] floatArray = new float[doubles.length];
         for (int i = 0 ; i < doubles.length; i++)
