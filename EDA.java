@@ -7,15 +7,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class EDA {
-	private final int S = 100; // number of NEW samples per iteration
+	private final int A = 100; // number of NEW samples per iteration: angel
+	private final int P = 5;
     private final int Dim = 2; // dimension of vectors: Power & Angle
     
     private ArrayList<Double> score = new ArrayList<>(); //store score which show where the ball hit
-    private ArrayList<Double> angle = new ArrayList<>(); //angle coor to score list
-    //private ArrayList<Double[]> anglePower = new ArrayList<Double[]>(); //Store arrays of angle and power
+    private ArrayList<Double> angle = new ArrayList<>(); //angle corresponding to score list
+    private ArrayList<Double> power = new ArrayList<>(); //power corresponding to score list 
     
     //Getter//
     public EDA(){
+    	
     	
     }
     
@@ -27,45 +29,60 @@ public class EDA {
     	return angle;
     }
     
+    public ArrayList<Double> getPower(){
+    	return power;
+    }
+    
     /*
     public ArrayList<Double[]> getAnglePower(){
     	return anglePower;
     }*/
 
-    public double simpleEDA(toScoreFunction f,double[] a, /*double[] power,*/ int time){//time: times of iteration
-    	int iterationCounter = 0;
+    public double simpleEDA(toScoreFunction f,double[] a, int time){//time: times of iteration
+    	int iterationCounter = 0;//count how many time of iteration it did
     	//double[] keepAngle = a;
     	ArrayList<Double> keepAngle = new ArrayList<Double>();
     	for(int i = 0; i < a.length-1; i++){
     		keepAngle.add(a[i]);
     	}
+    	/*
     	double[] temp = new double[keepAngle.size()];
     	for(int i = 0; i < keepAngle.size()-1;i++){
     		temp[i] = keepAngle.get(i);
     	}
-    	
+    	*/
     	while (iterationCounter < time)
     	{
-    		double meanD = StatUtils.mean(temp);
-
-            double varianceD = StatUtils.variance(temp) % keepAngle.size(); 
+    		double meanD = mean(keepAngle);
+            double varianceD = variance(keepAngle) % keepAngle.size(); 
+            //NormalDistribution M = new NormalDistribution(meanD,varianceD); //Normal distribution of parameter
             NormalDistribution M = new NormalDistribution(meanD,varianceD); //Normal distribution of parameter
-            double[] sampleArray = sampleRange(M.sample(S)); // choose S samples angle from M distribution
-            double[] result = f.apply(sampleArray); // apply sample into function f
+            ArrayList<Double> sampleArray = sampleRange(M.sample(A)); // choose S samples angle from M distribution
+
+            ArrayList<Double> result = f.apply(sampleArray); // apply sample into function f
+        
+            System.out.println("Sample Angle:");
+            printArray(sampleArray);
+            System.out.println("Result:");
+            printArray(result);
             
             keepAngle = new ArrayList<Double>();
-            double meanResult = StatUtils.mean(result);
+            double meanResult = mean(result);
             int maxIndex = 0;
-            for(int i = 0; i < result.length-1; i++){
-            	if(result[i] > 100){
-            		keepAngle.add(sampleArray[i]);
+            for(int i = 0; i < result.size(); i++){
+            	if(result.get(i) > meanResult){
+            		keepAngle.add(sampleArray.get(i));
             	}
-            	if(result[i] > result[maxIndex]){
+            	if(result.get(i) > result.get(maxIndex)){
             		maxIndex = i;
             	}
             }
-            score.add(result[maxIndex]);
-            angle.add(sampleArray[maxIndex]);
+            
+            System.out.println("Next sample:");
+            printArray(keepAngle);
+            
+            score.add(result.get(maxIndex));
+            angle.add(sampleArray.get(maxIndex));
             iterationCounter++;
     	}
     	int bestAngle = 0;//index of angle
@@ -78,21 +95,35 @@ public class EDA {
     	return angle.get(bestAngle);
     }
     
-    private double[] sampleRange(double[] a){
-    	double[] result = new double[a.length];
-    	int c = 0;
+    private ArrayList<Double> sampleRange(double[] a){
+    	ArrayList<Double> result = new ArrayList<Double>();
     	for(int i = 0; i < a.length -1 ; i++){
     		if(a[i] > 0 && a[i] <= 180){
-    			result[c] = a[i];
-    			c++;
+    			result.add(a[i]);
     		}
     	}
     	return result;
     }
     
-    /*
-    private double[] listToArray(ArrayList<Double> a){
-    	
+    private double mean(ArrayList<Double> l){
+    	double[] a = new double[l.size()];
+    	for(int i = 0; i < l.size()-1;i++){
+    		a[i] = l.get(i);
+    	}
+    	return StatUtils.mean(a);
     }
-    */
+    
+    private double variance(ArrayList<Double> l){
+    	double[] a = new double[l.size()];
+    	for(int i = 0; i < l.size()-1;i++){
+    		a[i] = l.get(i);
+    	}
+    	return StatUtils.variance(a);
+    }
+    
+    private void printArray(ArrayList<Double> l){
+    	for(int i = 0; i < l.size(); i++){
+    		System.out.println(l.get(i));
+    	}
+    }
 }
