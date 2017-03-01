@@ -11,7 +11,6 @@ class Platform implements Serializable {
     private int dy;
     private int width, height;
     private double x, y;
-    private int score = 0;
     private double highestPoint;
 
     /*
@@ -57,7 +56,7 @@ class Platform implements Serializable {
             if(ball.getY() < highestPoint && ball.getDy() < 0){
             	if(ball.getCountFlyPower() >0){
         			y+=20;
-        			score+=20;
+        			game.score+=20;
                 } else {
                 	
                 	ball.setPermission(true);
@@ -66,10 +65,10 @@ class Platform implements Serializable {
                 	if(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 < -3){
                 		
                 		y +=Math.abs(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1);
-                		score+=ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 ;
+                		game.score+=ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 ;
                 	}
                 	else y += dy;
-                	score += dy;
+                	game.score += dy;
                 	//System.out.println((ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1));
                      
                     
@@ -86,10 +85,10 @@ class Platform implements Serializable {
             } else {
             	if(ball.getCountFlyPower() >0){
         			y+=20;
-        			score+=20;
+        			game.score+=20;
                 } else {
                     y += dy;
-                    score+= dy;
+                    game.score+= dy;
                 checkForCollision(ball);
                 }
                 if (y > game.getWindowHeight()) {
@@ -107,12 +106,6 @@ class Platform implements Serializable {
         }
     }
 
-    /*
-     * Returns the score of the player
-     */
-    public int getScore() {
-		return score;
-	}
     /*
      * Checks if any ball has collided with the platform
      * @param ball the ball object

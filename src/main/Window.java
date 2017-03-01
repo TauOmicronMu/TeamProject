@@ -129,6 +129,7 @@ class Window {
             drawBall(gameState);
             cshader.stop();
             Menu.drawBackToMenuButton();
+            Menu.printScore(gameState.score, gameState.getBall());
         }
 
         glfwSwapBuffers(window);
