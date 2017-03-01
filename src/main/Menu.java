@@ -54,4 +54,30 @@ class Menu {
         drawQuitButton();
     }
 
+
+    /**
+     * Prints the score, given a ball and platform.
+     * @param ball
+     * @param platforms
+     */
+    public static void printScore(Ball ball, Platform[] platforms) {
+        if(!ball.gameOver())
+        {
+            System.out.println("here");
+            //System.out.println("The score is = " + platforms[0].getScore()/30);
+            String score = Integer.toString(platforms[0].getScore()/30);
+            TextShader2 tshader2 = new TextShader2();
+            Text text = new Text();
+
+            tshader2.bind();
+
+            text.draw(score, 4.8f, 6.3f, 0.6f, 3f);
+            tshader2.stop();
+        }
+        else
+        {
+            //System.out.println("Your final score is = " + platforms[0].getScore()/30);
+        }
+    }
+
 }

@@ -32,7 +32,7 @@ public class ServerMain extends NetworkServer implements Runnable {
         waitForClient();
 
         // Create a GameState for the client.
-        gameState = new GameState(800, 800);
+        gameState = new GameState(1000, 1000);
         gameState.setUp();
         gameState.setScreen(Screen.GAME);
         gameState.generatePlatforms();
@@ -52,8 +52,6 @@ public class ServerMain extends NetworkServer implements Runnable {
             gameState.updateLogic();
             gameState.updatePhysics();
             
-            gameState.printScore();
-
             // Sleep for a fixed duration. Todo: think about variable timestep!
             try {
                 Thread.sleep(1000/120);

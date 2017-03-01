@@ -25,8 +25,8 @@ class Window {
 	private static PowerUpShader pshader;
 	private static Texture tex;
     private long window;
-    private int windowHeight = 600;
-    private int windowWidth = 600;
+    private int windowHeight = 1000;
+    private int windowWidth = 1000;
     private static boolean shouldChangeToGame = false;
     private static boolean shouldQuit = false;
     private static boolean shouldChangeToMenu = false;
@@ -134,6 +134,7 @@ class Window {
             drawBall(gameState);
             cshader.stop();
             Menu.drawBackToMenuButton();
+            Menu.printScore(gameState.getBall(), gameState.getPlatforms());
         }
 
         glfwSwapBuffers(window);

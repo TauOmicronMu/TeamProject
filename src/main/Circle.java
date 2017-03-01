@@ -9,6 +9,7 @@ class Circle {
      * @param y the current y position of the centre of the pinball
      */
     static void paintPinball(Window window, double x, double y, double radius) {
+        //System.out.println(x + "  " + y + " " + radius);
         double radius2 = window.glScaleDistance(radius);
         double x2 = window.glScaleX(x);
         double y2 = window.glScaleY(y);

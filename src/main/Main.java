@@ -5,8 +5,8 @@ import networking.NetworkClient;
 
 public class Main extends NetworkClient {
 
-    private static final int windowHeight = 600;
-    private static final int windowWidth = 600;
+    private static final int windowHeight = 1000;
+    private static final int windowWidth = 1000;
 
     private Window window;
     private GameState game;
