@@ -9,5 +9,4 @@ public class PowerUpShader2 extends ShaderProgram{
 		super(VERTEX_FILE, FRAGMENT_FILE);
 		// TODO Auto-generated constructor stub
 	}
-
 }
