@@ -2,12 +2,14 @@ package main;
 
 import networking.Message;
 import networking.NetworkClient;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
 import java.awt.geom.Point2D;
+import java.nio.DoubleBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
@@ -48,10 +50,15 @@ class Window {
     }
 
 
+    void quit() {
+        shouldQuit = true;
+    }
+
+
     /**
      * Initializes the GLFW library, creating a window and any necessary shaders.
      */
-    void init(GameState gameState, NetworkClient client) {
+    void init(GameState gameState, Main client) {
         if (!glfwInit()) {
             System.err.println("Failed to initialise GLFW");
             System.exit(1);
@@ -94,7 +101,7 @@ class Window {
      * @return Whether the window should close now.
      */
     boolean shouldClose() {
-        return glfwWindowShouldClose(window);
+        return glfwWindowShouldClose(window) || shouldQuit;
     }
 
 
@@ -181,7 +188,7 @@ class Window {
      */
     void handleInput(GameState gameState, NetworkClient client) {
         glfwPollEvents();
-        handleMouseInput(gameState, client);
+        // We don't handle mouse input here as that's event-driven.
         handleKeyboardInput(gameState, client);
     }
 
@@ -228,7 +235,7 @@ class Window {
      * @return Whether the coordinate is within the button.
      */
     private boolean onBackToMenuButton(double x, double y) {
-        return withinBounds(x, y, -0.95, -0.85, 0.9, 0.95);
+        return withinBounds(x, y, -0.95, -0.85, 0.85, 0.95);
     }
 
     /**
@@ -237,14 +244,10 @@ class Window {
      *                  information about the objects which it comprises.
      * @param client
      */
-    private void handleMouseInput(GameState gameState, NetworkClient client) {
-
-        // Only handle mouse input if the left mouse button has been pressed.
-        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) != GLFW_PRESS) return;
-
-        // Todo: can't we just get cursor position from GLFW here?
-        double x = glScaleX(cursorXPosition);
-        double y = glScaleY(cursorYPosition);
+    private void handleMouseClick(GameState gameState, Main client, double x, double y) {
+        x = glScaleX(x);
+        y = glScaleY(y);
+        System.out.printf("Mouse press at (%.2f, %.2f).\n", x, y);
 
         // Handle mouse input depending on which screen we're on.
         switch(gameState.getScreen()) {
@@ -252,9 +255,10 @@ class Window {
             // If we're on the main menu:
             case MAIN_MENU: {
                 if (onPlayGameButton(x, y)) {
-                    shouldChangeToGame = true;
+                    client.initialize();
+                    gameState.setScreen(Screen.GAME);
                 } else if (onQuitButton(x, y)) {
-                    shouldQuit = true;
+                    quit();
                 }
                 break;
             }
@@ -262,13 +266,19 @@ class Window {
             // If we're in the game:
             case GAME: {
                 if (onBackToMenuButton(x, y)) {
-                    shouldChangeToMenu = true;
+                    System.out.println("Back to main menu.");
+                    gameState.setScreen(Screen.MAIN_MENU);
+                    // client.stop();
                 } else {
                     // Todo: N.B. This is for demonstrating the server-client synch.
                     gameState.getBall().setX(cursorXPosition);
                     gameState.getBall().setY(cursorYPosition);
                 }
+                break;
             }
+            default:
+                System.err.println("Game screen not initialized!");
+
         }
     }
 
@@ -278,32 +288,19 @@ class Window {
      * for the cursor position changing.
      * @param gameState The game state, which may be needed inside the callbacks.
      */
-    private void registerInputCallbacks(GameState gameState, NetworkClient client) {
+    private void registerInputCallbacks(GameState gameState, Main client) {
         // Callback for when the left mouse button is released:
         GLFWMouseButtonCallbackI mousecallback = (window1, button, action, mods) -> {
-            if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
-                if (shouldChangeToMenu) {
-                    gameState.setScreen(Screen.MAIN_MENU);
-                    shouldChangeToMenu = false;
-                } else if (shouldChangeToGame) {
-                    System.out.println("Changing to game...");
-                    client.initialize();
-                    gameState.setScreen(Screen.GAME);
-                    shouldChangeToGame = false;
-                } else if (shouldQuit) {
-                    glfwSetWindowShouldClose(window1, true);
-                }
-            }
+            // Check that we're handling a left-mouse-button click.
+            if (button != GLFW_MOUSE_BUTTON_LEFT || action != GLFW_RELEASE) return;
+            DoubleBuffer xposbuf = BufferUtils.createDoubleBuffer(1);
+            DoubleBuffer yposbuf = BufferUtils.createDoubleBuffer(1);
+            glfwGetCursorPos(window, xposbuf, yposbuf);
+            double x = xposbuf.get();
+            double y = yposbuf.get();
+            handleMouseClick(gameState, client, x, y);
         };
         glfwSetMouseButtonCallback(window, mousecallback);
-
-        // Callback to save the current position of the cursor.
-        // Todo: does this need to be a callback?
-        GLFWCursorPosCallbackI cursorcallback = (window, xpos, ypos) -> {
-            cursorXPosition = (int) xpos;
-            cursorYPosition = (int) ypos;
-        };
-        glfwSetCursorPosCallback(window, cursorcallback);
     }
 
 
@@ -336,6 +333,5 @@ class Window {
     double glScaleDistance(double distance) {
         return 1.0f * (double) distance / (windowWidth / 2);
     }
-
 
 }

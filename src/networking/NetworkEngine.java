@@ -21,12 +21,18 @@ abstract class NetworkEngine implements Runnable {
     private ObjectOutputStream outputStream;
     private boolean running;
     private final BlockingDeque<Message> messages = new LinkedBlockingDeque<>();
+    private Socket socket;
 
     /**
      * Stop our message-reception loop from continuing at the next iteration.
      */
-    private void stop() {
+    void stop() {
         running = false;
+        try {
+            socket.close();
+        } catch (IOException e) {
+            System.err.println("Closing socket threw an exception. Still closing it.");
+        }
     }
 
     /**
@@ -102,6 +108,7 @@ abstract class NetworkEngine implements Runnable {
      */
     void initialize(Socket socket) {
         try {
+            this.socket = socket;
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             inputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {

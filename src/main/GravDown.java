@@ -17,7 +17,6 @@ public class GravDown extends main.Item{
 				ball.setGravity(7);
 			}
 		}
-		System.out.println("IT WORKS GRAV DOWN");
 	}
 	
 	@Override

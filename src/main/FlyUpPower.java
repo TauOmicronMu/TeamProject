@@ -8,7 +8,6 @@ public class FlyUpPower extends main.Item{
 	public FlyUpPower(int x, int type) {
 		super(x, type);
 		// TODO Auto-generated constructor stub
-		System.out.println("ITs working FLYUP");
 	}
 	
 	@Override

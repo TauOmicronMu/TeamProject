@@ -24,7 +24,10 @@ public class GameState implements Serializable {
 
     private static final int PLATFORM_WIDTH = 140;
     private static final int PLATFORM_HEIGHT = 20;
-    public int score;
+
+    int score;
+    int mouseXPosition;
+    int mouseYPosition;
 
 
     GameState(int width, int height) {
@@ -57,7 +60,6 @@ public class GameState implements Serializable {
         return screen;
     }
 
-  
 
     /**
      * Populates the list of platforms in this game state with a set
