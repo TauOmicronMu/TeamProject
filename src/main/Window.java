@@ -22,6 +22,7 @@ import static org.lwjgl.opengl.GL11.glClear;
  */
 class Window {
 
+    private Screen screen = Screen.MAIN_MENU;
     private static int cursorXPosition;
     private static int cursorYPosition;
     private static CircleShader cshader;
@@ -124,7 +125,7 @@ class Window {
         glClear(GL_COLOR_BUFFER_BIT);
         rshader.bind();
 
-        if (gameState.getScreen() == Screen.MAIN_MENU) {
+        if (screen == Screen.MAIN_MENU) {
             Menu.drawAll();
         } else {
         	drawAllPlatforms(gameState);
@@ -250,13 +251,14 @@ class Window {
         System.out.printf("Mouse press at (%.2f, %.2f).\n", x, y);
 
         // Handle mouse input depending on which screen we're on.
-        switch(gameState.getScreen()) {
+        switch(screen) {
 
             // If we're on the main menu:
             case MAIN_MENU: {
                 if (onPlayGameButton(x, y)) {
                     client.initialize();
-                    gameState.setScreen(Screen.GAME);
+                    screen = Screen.GAME;
+
                 } else if (onQuitButton(x, y)) {
                     quit();
                 }
@@ -267,8 +269,7 @@ class Window {
             case GAME: {
                 if (onBackToMenuButton(x, y)) {
                     System.out.println("Back to main menu.");
-                    gameState.setScreen(Screen.MAIN_MENU);
-                    // client.stop();
+                    screen = Screen.MAIN_MENU;
                 } else {
                     // Todo: N.B. This is for demonstrating the server-client synch.
                     gameState.getBall().setX(cursorXPosition);
@@ -334,4 +335,7 @@ class Window {
         return 1.0f * (double) distance / (windowWidth / 2);
     }
 
+    public Screen getScreen() {
+        return screen;
+    }
 }

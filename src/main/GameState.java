@@ -13,7 +13,6 @@ import java.util.Random;
  */
 public class GameState implements Serializable {
 
-    private Screen screen = Screen.MAIN_MENU;
     private final int windowWidth;
     private final int windowHeight;
     private Random random = new Random();
@@ -50,14 +49,6 @@ public class GameState implements Serializable {
      */
     public void setUp() {
         ball = new Ball(windowWidth / 2, 200);
-    }
-
-
-    /**
-     * Retrieve the current screen: either the main.Main main.Menu or the Game.
-     */
-    Screen getScreen() {
-        return screen;
     }
 
 
@@ -217,13 +208,6 @@ public class GameState implements Serializable {
     }
 
 
-    /**
-     * Set the flag indicating the current screen.
-     */
-    void setScreen(Screen screen) {
-        this.screen = screen;
-    }
-    
     void printScore() {
         if (gameOver())
             System.out.println("Your final score is = " + score);

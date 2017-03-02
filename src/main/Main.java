@@ -37,7 +37,7 @@ public class Main extends NetworkClient {
         initializeGame();
         Menu.drawAll();
         while (!window.shouldClose()) {
-            if (game.getScreen() == Screen.GAME) {
+            if (window.getScreen() == Screen.GAME) {
                 handleMessages();
                 game.updateLogic();
                 game.updatePhysics();
