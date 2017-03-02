@@ -34,7 +34,6 @@ public class ServerMain extends NetworkServer implements Runnable {
         // Create a GameState for the client.
         gameState = new GameState(800, 800);
         gameState.setUp();
-        gameState.setScreen(Screen.GAME);
         gameState.generatePlatforms();
         gameState.generateItems();
  

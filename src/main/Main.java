@@ -8,6 +8,10 @@ public class Main extends NetworkClient {
     private static final int windowHeight = 800;
     private static final int windowWidth = 800;
 
+    public Window getWindow() {
+        return window;
+    }
+
     private Window window;
     private GameState game;
 
@@ -33,14 +37,13 @@ public class Main extends NetworkClient {
         initializeGame();
         Menu.drawAll();
         while (!window.shouldClose()) {
-            if (game.getScreen() == Screen.GAME) {
+            if (window.getScreen() == Screen.GAME) {
                 handleMessages();
                 game.updateLogic();
                 game.updatePhysics();
             }
             window.handleInput(game, this);
             window.repaint(game);
-
 
             try {
                 Thread.sleep(1000/120);

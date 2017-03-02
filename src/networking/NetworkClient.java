@@ -20,8 +20,16 @@ abstract public class NetworkClient extends NetworkUser {
      * NetworkEngine of this particular NetworkUser.
      */
     public void initialize() {
+        if (this.engine != null) {
+            this.engine.stop();
+        }
+
         NetworkClientEngine engine = new NetworkClientEngine();
         engine.initialize(host, port);
         this.engine = engine;
+    }
+
+    public void stop() {
+        this.engine.stop();
     }
 }

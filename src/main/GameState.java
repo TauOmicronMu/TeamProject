@@ -13,7 +13,6 @@ import java.util.Random;
  */
 public class GameState implements Serializable {
 
-    private Screen screen = Screen.MAIN_MENU;
     private final int windowWidth;
     private final int windowHeight;
     private Random random = new Random();
@@ -24,7 +23,10 @@ public class GameState implements Serializable {
 
     private static final int PLATFORM_WIDTH = 140;
     private static final int PLATFORM_HEIGHT = 20;
-    public int score;
+
+    int score;
+    int mouseXPosition;
+    int mouseYPosition;
 
 
     GameState(int width, int height) {
@@ -49,15 +51,6 @@ public class GameState implements Serializable {
         ball = new Ball(windowWidth / 2, 200);
     }
 
-
-    /**
-     * Retrieve the current screen: either the main.Main main.Menu or the Game.
-     */
-    Screen getScreen() {
-        return screen;
-    }
-
-  
 
     /**
      * Populates the list of platforms in this game state with a set
@@ -215,13 +208,6 @@ public class GameState implements Serializable {
     }
 
 
-    /**
-     * Set the flag indicating the current screen.
-     */
-    void setScreen(Screen screen) {
-        this.screen = screen;
-    }
-    
     void printScore() {
         if (gameOver())
             System.out.println("Your final score is = " + score);

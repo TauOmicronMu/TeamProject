@@ -11,7 +11,6 @@ public class GravUp extends main.Item{
 	@Override
 	public void performAction(Ball ball) {
 		ball.setGravity(ball.getGravity() + 2);
-		System.out.println("IT WORKS GRAV UP");
 	}
 	
 	
