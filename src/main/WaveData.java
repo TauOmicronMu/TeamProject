@@ -98,7 +98,7 @@ public class WaveData {
             // due to an issue with AudioSystem.getAudioInputStream
             // and mixing unsigned and signed code
             // we will use the reader directly
-            System.out.println("Path! :D : " + path);
+            //System.out.println("Path! :D : " + path);
             WaveFileReader wfr = new WaveFileReader();
             return create(wfr.getAudioInputStream(new BufferedInputStream(path.openStream())));
         } catch (Exception e) {
@@ -115,11 +115,11 @@ public class WaveData {
      */
     public static WaveData create(String path) {
         Thread currThread = Thread.currentThread();
-        System.out.println(currThread);
+        //System.out.println(currThread);
         java.lang.ClassLoader ccl = currThread.getContextClassLoader();
-        System.out.println(ccl);
+        //System.out.println(ccl);
         URL resource = ccl.getResource(path);
-        System.out.println(resource);
+        //System.out.println(resource);
         return create(resource);
     }
 
