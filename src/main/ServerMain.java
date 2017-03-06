@@ -30,10 +30,27 @@ public class ServerMain extends NetworkServer implements Runnable {
         // Block until a new client has connected.
         System.out.println("Waiting for client to connect...");
         waitForClient();
+        System.out.println("Got past here!");
+
+        // Get opponent type and shiz ~Tom
+        Message opponentTypeMsg = null;
+        try {
+            opponentTypeMsg = waitForMessage();
+        }
+        catch(InterruptedException e) {
+            System.err.println(e);
+            System.exit(1);
+        }
+        OpponentType opponentType = (OpponentType) opponentTypeMsg.getObject();
+
+        System.out.println(opponentType);
+
+        // Handle the creation of matches
+        createMatch(opponentType);
 
         // Create a GameState for the client.
         gameState = new GameState(800, 800);
-        gameState.setUp();
+        gameState.setup();
         gameState.generatePlatforms();
         gameState.generateItems();
  
@@ -61,6 +78,13 @@ public class ServerMain extends NetworkServer implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void createMatch(OpponentType opType) {
+        // If the player is an AI, set up a match straight away
+        // otherwise, wait for another player to connect (that isn't
+        // looking to play with an AI)
+        System.out.println("For now, I'm just printing here, 'cause I'm cool like that");
     }
 
     /**

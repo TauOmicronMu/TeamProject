@@ -35,6 +35,10 @@ abstract class NetworkEngine implements Runnable {
         }
     }
 
+    Message waitForMessage() throws InterruptedException {
+        return messages.take();
+    }
+
     /**
      * Essentially this method is a "poll" for messages. It returns an
      * Optional networking.Message: either the next message in our received queue,
@@ -119,7 +123,9 @@ abstract class NetworkEngine implements Runnable {
         new Thread(this).start();
     }
 
-    void accept() {}
+    void accept() {
+
+    }
 
     boolean isRunning() {
         return running;

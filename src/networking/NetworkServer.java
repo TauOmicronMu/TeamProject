@@ -32,4 +32,13 @@ public abstract class NetworkServer extends NetworkUser {
     protected void waitForClient() {
         engine.accept();
     }
+
+    /**
+     * Wrapper method around the NetworkServerEngine to block until a new
+     * message has been received.
+     * @return The received message
+     */
+    protected Message waitForMessage() throws InterruptedException {
+        return engine.waitForMessage();
+    }
 }

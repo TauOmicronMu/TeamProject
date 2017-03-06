@@ -256,9 +256,8 @@ class Window {
             // If we're on the main menu:
             case MAIN_MENU: {
                 if (onPlayGameButton(x, y)) {
-                    client.initialize();
+                    client.initialize(OpponentType.HUMAN);  // Todo: Different buttons for human/AI.
                     screen = Screen.GAME;
-
                 } else if (onQuitButton(x, y)) {
                     quit();
                 }

@@ -26,7 +26,7 @@ public class Main extends NetworkClient {
     private void initializeGame() {
         window = new Window(windowHeight, windowWidth);
         game = new GameState(windowWidth, windowHeight);
-        game.setUp();
+        game.setup();
         window.init(game, this);
     }
 
@@ -36,6 +36,7 @@ public class Main extends NetworkClient {
     private void play() {
         initializeGame();
         Menu.drawAll();
+
         while (!window.shouldClose()) {
             if (window.getScreen() == Screen.GAME) {
                 handleMessages();

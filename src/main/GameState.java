@@ -47,7 +47,7 @@ public class GameState implements Serializable {
     /**
      * Sets up a main.GameState by creating a ball, platforms, and items.
      */
-    public void setUp() {
+    public void setup() {
         ball = new Ball(windowWidth / 2, 200);
     }
 
