@@ -1,3 +1,5 @@
+package main;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.*;
 import org.lwjgl.util.WaveData;
@@ -11,6 +13,13 @@ import java.util.ArrayList;
  * Object to handle the audio of a game.
  */
 public class AudioEngine {
+
+    // Set up an AudioEngine following the singleton pattern.
+    private static final AudioEngine AUDIO_ENGINE = new AudioEngine();
+    // Returns the AudioEngine instance
+    public static AudioEngine getInstance() { return AUDIO_ENGINE; }
+    // Set up the sounds for the AudioEngine
+    public static final int BOING = AUDIO_ENGINE.createTrack("boing.wav");
 
     /** Holds the device and context through which to play the audio. */
     private long device;
@@ -195,7 +204,7 @@ public class AudioEngine {
      * (Use this as the default!)
      * Create an AudioEngine with a static listener at the default location (0,0,0).
      */
-    public AudioEngine() {
+    private AudioEngine() {
         setDeviceAndContext();
 
         /**
@@ -220,7 +229,7 @@ public class AudioEngine {
      * @param listenerOri Custom orientation of the listener - (Float, Float, Float, Float, Float, Float)
      *                    First three floats - "at"; Second three Floats - "up".
      */
-    public AudioEngine(FloatBuffer listenerPos, FloatBuffer listenerVel, FloatBuffer listenerOri) {
+    private AudioEngine(FloatBuffer listenerPos, FloatBuffer listenerVel, FloatBuffer listenerOri) {
         setDeviceAndContext();
 
         this.listenerPos = listenerPos;
@@ -234,7 +243,7 @@ public class AudioEngine {
      * Create a Track in the audio engine with the wav file at filepath.
      * @param filepath The path to the wav file to create a Track with.
      */
-    public int createTrack(String filepath) {
+    private int createTrack(String filepath) {
         /** Create a new Track and add it to tracks.*/
         Track track = new Track(filepath);
         tracks.add(track);

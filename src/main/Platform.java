@@ -80,7 +80,6 @@ class Platform implements Serializable {
                     y = -300;
                     x = r.nextInt(game.getWindowWidth()-140);
                     //x = game.getWindowWidth()/2;
-                    
                 }
             } else {
             	if(ball.getCountFlyPower() >0){
@@ -122,8 +121,11 @@ class Platform implements Serializable {
                 //System.out.println("Collision");
 
                 double newDy = ball.getGameDy();
+
+                // If the ball has collided with the top of the platform ~Tom
                 if(ball.getDy()>0){
-                	ball.setDy(newDy);
+                    AudioEngine.getInstance().playTrack(AudioEngine.BOING); // Play the boing sound
+                    ball.setDy(newDy);
                 }
                 ball.setY(y - radius);
             }
