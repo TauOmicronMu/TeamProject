@@ -2,8 +2,10 @@ package main;
 
 import networking.Message;
 import networking.NetworkServer;
+import networking.Client;
 
 import java.awt.geom.Point2D;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * This is the main class for the server. Run it, then run a Main client
@@ -12,6 +14,7 @@ import java.awt.geom.Point2D;
 public class ServerMain extends NetworkServer implements Runnable {
 
     private GameState gameState;
+    private BlockingQueue<Client> players;
 
     private ServerMain(int port) {
         super(port);
@@ -30,7 +33,6 @@ public class ServerMain extends NetworkServer implements Runnable {
         // Block until a new client has connected.
         System.out.println("Waiting for client to connect...");
         waitForClient();
-        System.out.println("Got past here!");
 
         // Get opponent type and shiz ~Tom
         Message opponentTypeMsg = null;
@@ -42,8 +44,6 @@ public class ServerMain extends NetworkServer implements Runnable {
             System.exit(1);
         }
         OpponentType opponentType = (OpponentType) opponentTypeMsg.getObject();
-
-        System.out.println(opponentType);
 
         // Handle the creation of matches
         createMatch(opponentType);
@@ -80,11 +80,14 @@ public class ServerMain extends NetworkServer implements Runnable {
         }
     }
 
+    /**
+     * Handles the creation of matches with two players.
+     * @param opType The type of opponent the player should be playing against
+     */
     private void createMatch(OpponentType opType) {
         // If the player is an AI, set up a match straight away
         // otherwise, wait for another player to connect (that isn't
         // looking to play with an AI)
-        System.out.println("For now, I'm just printing here, 'cause I'm cool like that");
     }
 
     /**
@@ -97,23 +100,7 @@ public class ServerMain extends NetworkServer implements Runnable {
     }
 
 
-    /**
-     * This method is called whenever we receive a message from a client.
-     * We should check whether the client has sent keyboard or mouse input
-     * and act accordingly.
-     * @param message The message we've been sent by the Client.
-     */
-    @Override
-    public void handleMessage(Message message) {
-        Object o = message.getObject();
-        if (o.getClass() == Point2D.Float.class) {
-            handleMouseClick((Point2D.Float) o);
-        } else if (o.getClass() == String.class) {
-            handleKeyPress((String) o);
-        } else {
-            System.out.println("Message didn't translate properly");
-        }
-    }
+
 
     /**
      * This function handles the behaviour of a user pressing a key on their keyboard.
@@ -138,7 +125,6 @@ public class ServerMain extends NetworkServer implements Runnable {
      */
     private void handleMouseClick(Point2D.Float coords) {
         gameState.getBall().setX(coords.getX());
-
     }
 
     public static void main(String... args) {
