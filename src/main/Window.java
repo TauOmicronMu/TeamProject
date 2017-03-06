@@ -27,8 +27,9 @@ class Window {
     private static int cursorYPosition;
     private static CircleShader cshader;
 	private static RectangleShader rshader;
-	private static PowerUpShader pshader;
-	private static PowerUpShader2 pshader2;
+	private static PowerUpShader pshader1;
+	private static PowerUpShader pshader2;
+	private static PowerUpShader pshader3;
     private long window;
     private int windowHeight = 800;
     private int windowWidth = 800;
@@ -82,8 +83,9 @@ class Window {
         GL.createCapabilities();
         cshader = new CircleShader();
 		rshader = new RectangleShader();
-		pshader = new PowerUpShader();
-		pshader2 = new PowerUpShader2();
+		pshader1 = new PowerUpShader("pshader");
+		pshader2 = new PowerUpShader("pshader2");
+		pshader3 = new PowerUpShader("pshader3");
 
         registerInputCallbacks(gameState, client);
     }
@@ -112,7 +114,28 @@ class Window {
     private void drawAllItems(GameState gameState) {
         Item[] items = gameState.getItems();
         for (Item item : items) {
-            if (item != null) item.paint(this);
+            if (item != null)
+            {
+            	int type = item.getType();
+            	if(type == 1)
+            	{
+            		pshader1.bind();
+            		item.paint(this);
+            		pshader1.stop();
+            	}
+            	if(type == 2)
+            	{
+            		pshader2.bind();
+            		item.paint(this);
+            		pshader2.stop();
+            	}
+            	else
+            	{
+            		pshader3.bind();
+            		item.paint(this);
+            		pshader3.stop();
+            	}
+            }
         }
     }
 
@@ -130,9 +153,7 @@ class Window {
         } else {
         	drawAllPlatforms(gameState);
         	rshader.stop();
-        	pshader.bind();
             drawAllItems(gameState);
-            pshader.stop();
             cshader.bind();
             drawBall(gameState);
             cshader.stop();
