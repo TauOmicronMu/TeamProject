@@ -5,8 +5,8 @@ import networking.NetworkClient;
 
 public class Main extends NetworkClient {
 
-    private static final int windowHeight = 800;
-    private static final int windowWidth = 800;
+    private static final int windowHeight = 600;
+    private static final int windowWidth = 600;
 
     public Window getWindow() {
         return window;

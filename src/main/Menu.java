@@ -7,14 +7,23 @@ class Menu {
     static RectangleShader rshader = new RectangleShader();
     static Text text = new Text();
 
+    private static void drawSinglePlayerButton(){
+        double[] vertices = {-0.4f, 0.25, 0, 0.4f, 0.25, 0, 0.4f, 0.05f, 0, -0.4f, 0.05f, 0};
+        rshader.bind();
+        Rectangle.drawrectangle(vertices);
+        rshader.stop();
+        tshader.bind();
+        text.draw("singleplayer", -2.8f, 2f, 0.4f, 3.5f);
+        tshader.stop();
+    }
 
-    private static void drawPlayButton() {
+    private static void drawMultiplayerButton() {
         double[] vertices = {-0.4f, 0, 0, 0.4f, 0, 0, 0.4f, -0.2f, 0, -0.4f, -0.2f, 0};
         rshader.bind();
         Rectangle.drawrectangle(vertices);
         rshader.stop();
         tshader.bind();
-        text.draw("start", -0.9f, -0.1f, 0.6f, 3.5f);
+        text.draw("multiplayer", -2.5f, -0.3f, 0.45f, 3.5f);
         tshader.stop();
     }
 
@@ -49,7 +58,8 @@ class Menu {
     }
 
     static void drawAll() {
-        drawPlayButton();
+        drawSinglePlayerButton();
+        drawMultiplayerButton();
         drawSettingsButton();
         drawQuitButton();
     }
