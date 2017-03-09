@@ -1,0 +1,49 @@
+package main;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Hashtable;
+
+/**
+ * Call this class
+ * @author ava
+ *
+ */
+public class AI {
+
+	private GameState game;
+	private Hashtable<String, Double> database;
+	private ObjectInputStream ois;
+	
+	@SuppressWarnings("unchecked")
+	/**
+	 * Read database
+	 * @param g GameState
+	 */
+	public AI(GameState g) throws IOException, ClassNotFoundException{
+		this.game = g;
+		FileInputStream fin = new FileInputStream("data.tmp");
+		ois = new ObjectInputStream(fin);
+		this.database = (Hashtable<String, Double>) ois.readObject();
+		System.out.println("Read hashtable success");
+	}
+	
+	/**
+	 * Use this method when the ball bit the platform every time
+	 * @param ball
+	 * @param platform list
+	 * @return
+	 */
+	public double apply(Ball b, Platform[] ps) {		
+		readData rd = new readData();
+		double xVelocity = rd.AI(b,ps,database,game);
+		return xVelocity;
+
+	}
+
+}
