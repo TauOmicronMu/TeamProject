@@ -9,25 +9,25 @@ class Menu {
 
 
     private static void drawPlayButton() {
-        double[] vertices = {-0.4f, 0, 0, 0.4f, 0, 0, 0.4f, -0.2f, 0, -0.4f, -0.2f, 0};
+        double[] vertices = {-0.4f, -0.04f, 0, 0.4f, -0.04f, 0, 0.4f, -0.24f, 0, -0.4f, -0.24f, 0};
         rshader.bind();
         Rectangle.drawrectangle(vertices);
         rshader.stop();
         tshader2.bind();
-        //Text.draw("kvwxz", -6f, 1.5f, 0.5f, 3.5f);
+        //Text.draw("abcdefghijklmnopqrstuvwxyz", -7.5f, 1.5f, 0.5f);
         tshader2.stop();
         tshader.bind();
-        Text.draw("start",-0.9f, -0.2f, 0.5f, 3.5f);
+        Text.draw("start",-1.1f, -0.5f, 0.5f);
         tshader.stop();
     }
 
     private static void drawSettingsButton() {
-        double[] vertices = {-0.4f, -0.25f, 0, 0.4f, -0.25f, 0, 0.4f, -0.45f, 0, -0.4f, -0.45f, 0};
+        double[] vertices = {-0.4f, -0.27f, 0, 0.4f, -0.27f, 0, 0.4f, -0.47f, 0, -0.4f, -0.47f, 0};
         rshader.bind();
         Rectangle.drawrectangle(vertices);
         rshader.stop();
         tshader.bind();
-        Text.draw("settings", -1.9f, -2.2f, 0.5f, 3.5f);
+        Text.draw("settings", -1.9f, -2.4f, 0.5f);
         tshader.stop();
     }
 
@@ -37,7 +37,7 @@ class Menu {
         Rectangle.drawrectangle(vertices);
         rshader.stop();
         tshader.bind();
-        Text.draw("quit", -0.6f, -4.1f, 0.5f, 3.5f);
+        Text.draw("quit", -0.6f, -4.1f, 0.5f);
         tshader.stop();     
     }
 
@@ -47,7 +47,7 @@ class Menu {
         Rectangle.drawrectangle(vertices);
         rshader.stop();
         tshader.bind();
-        Text.draw("<", -5.8f, 6.3f, 0.6f, 3f);
+        Text.draw("<", -5.8f, 6.3f, 0.6f);
         tshader.stop();
     }
 
@@ -70,7 +70,7 @@ class Menu {
             TextShader2 tshader2 = new TextShader2();
             int length = scoreText.length();
             tshader2.bind();
-            Text.draw(scoreText, 5.8f - (length * 0.3f), 6.8f, 0.6f, 3f);
+            Text.draw(scoreText, 5.8f - (length * 0.3f), 6.8f, 0.6f);
             tshader2.stop();
         }
         else

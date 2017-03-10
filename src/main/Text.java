@@ -1,5 +1,7 @@
 package main;
 
+import org.lwjgl.opengl.GL11;
+
 /**
  * 
  * Class to write any text during the game
@@ -22,7 +24,7 @@ class Text{
 	 * @param scale how big the letters should be
 	 * @param width the thickness of the letters
 	 */
-	public static void draw(String s, float x, float y, float scale, float width) {
+	public static void draw(String s, float x, float y, float scale) {
 	      float startX = x;
 	      scale = scale * 0.25f;
 	      boolean lessspace = false;
@@ -62,28 +64,29 @@ class Text{
 	        	  drawF(scale, startX, y);
 	              break;
 	          case 'g':
+	        	  drawO(scale, startX, y);
 	        	  drawG(scale, startX, y);
 	              break;
 	          case 'h':
 	        	  drawH(scale, startX, y);
 	              break;
 	          case 'i':
-	        	  drawI(scale, startX, y,width);
-	        	  lessspace2 = true;
+	        	  startX = startX - (scale*3);
+	        	  drawI(scale, startX, y);
 	              break;
 	          case 'j':
-	        	  drawJ(scale, startX, y,width);
+	        	  startX = startX - (scale*2);
+	        	  drawJ(scale, startX, y);
 	              break;
 	          case 'k':
 	        	  drawK(scale, startX, y);
 	              break;
 	          case 't':
 	        	  drawT(scale, startX, y);
-	        	  lessspace = true;
 	        	  break;
 	          case 'l':
+	        	  startX = startX - (scale*3);
 	        	  drawL(scale, startX, y);
-	        	  lessspace2 = true;
 	              break;
 	          case 'm':
 	        	  drawM(scale, startX, y);
@@ -108,7 +111,6 @@ class Text{
 	              break;
 	          case 'u':
 	        	  drawU(scale, startX, y);
-	        	  lessspace = true;
 	              break;
 	          case 'w':
 	        	  drawW(scale, startX, y);
@@ -161,18 +163,7 @@ class Text{
 	              break;
 	          }
 	          if(!space){
-	        	  if(lessspace)
-	        	  {
-	        		  startX += scale * 0.55/scale;
-	        	  }
-	        	  if(lessspace2)
-	        	  {
-	        		  startX += scale * 0.45/scale;
-	        	  }
-	        	  if(!lessspace && !lessspace2)
-	        	  {
-	        		  startX += scale * 0.65/scale;
-	        	  }
+	        	  startX += scale * 0.65/scale;
 	              charNum++;
 	          }else{
 	              startX += scale * 3/scale;
@@ -183,6 +174,7 @@ class Text{
 	          lessspace2 = false;
 	      }
 	   }
+
 	/**
 	 * Draws the back button within the main game
 	 * @param scale passed from draw method
@@ -191,9 +183,16 @@ class Text{
 	 */
 	private static void drawBack(float scale, float startX, float y)
 	{
-        convert(scale * startX, scale * (y-0.3f),scale * (startX - 0.5f), scale * (y-0.3f));
-        convert(scale * (startX - 0.5f), scale * (y-0.3f),scale * (startX - 0.2f), scale * (y - 0.1f));
-        convert(scale * (startX - 0.5f), scale * (y - 0.3f),scale * (startX - 0.2f), scale * (y - 0.5f));
+        convert(scale * startX, scale * (y-0.33f),scale * (startX - 0.5f), scale * (y-0.33f));
+        
+        GL11.glLineWidth(3.5f);
+        GL11.glBegin(GL11.GL_LINE_STRIP);
+        GL11.glEnable(GL11.GL_LINE_WIDTH);
+        GL11.glVertex2f(scale * (startX - 0.5f), scale * (y-0.3f));
+        GL11.glVertex2f(scale * (startX - 0.2f), scale * (y - 0.1f));
+        GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 0.3f));
+        GL11.glVertex2f(scale * (startX - 0.2f), scale * (y - 0.5f));
+        GL11.glEnd();
 	}
 	
 	/*
@@ -280,26 +279,26 @@ class Text{
 	 */
 	private static void drawA(float scale, float startX, float y)
 	{
-		convert((scale * (startX - 0.5f)),(scale * (y-0.54f)),(scale * (startX - 0.5f)), (scale * (y-1f)));
-		convert((scale * (startX - 0.5f)),(scale * (y-1f)),(scale * (startX - 0.05f)), (scale * (y-1f)));
-        convert((scale * (startX - 0.05f)),(scale * (y-1f)),(scale * (startX - 0.05f)), (scale * (y-0.6f)));
-        convert((scale * (startX - 0.05f)),(scale * (y-0.6f)),(scale * (startX - 0.5f)), (scale * (y-0.6f)));
-        convert((scale * (startX - 0.05f)),(scale * (y-0.6f)),(scale * (startX - 0.05f)), (scale * (y-0.3f)));
-        convert((scale * (startX - 0.05f)),(scale * (y-0.3f)),(scale * (startX - 0.5f)), (scale * (y-0.3f)));
+		convert((scale * (startX - 0.45f)),(scale * (y-0.64f)),(scale * (startX - 0.45f)), (scale * (y-1)));
+		convert((scale * (startX - 0.45f)),(scale * (y-1)),(scale * (startX - 0f)), (scale * (y-1)));
+        convert((scale * (startX - 0f)),(scale * (y-1)),(scale * (startX - 0f)), (scale * (y-0.7f)));
+        convert((scale * (startX - 0f)),(scale * (y-0.7f)),(scale * (startX - 0.45f)), (scale * (y-0.7f)));
+        convert((scale * (startX - 0f)),(scale * (y-0.7f)),(scale * (startX - 0f)), (scale * (y-0.4f)));
+        convert((scale * (startX - 0f)),(scale * (y-0.4f)),(scale * (startX - 0.45f)), (scale * (y-0.4f)));
 	}
 	
 	private static void drawB(float scale, float startX, float y)
 	{
         convert(scale * (startX - 0.5f), scale * (y + 0.2f),scale * (startX - 0.5f), scale * (y - 1));
         convert(scale * (startX - 0.5f), scale * (y - 1),scale * (startX), scale * (y - 1));
-        convert(scale * (startX), scale * (y - 1),scale * (startX), scale * (y-0.4f));
-        convert(scale * (startX), scale * (y-0.4f),scale * (startX - 0.5f), scale * (y-0.4f));
+        convert(scale * (startX), scale * (y - 1),scale * (startX), scale * (y-0.5f));
+        convert(scale * (startX), scale * (y-0.5f),scale * (startX - 0.5f), scale * (y-0.5f));
 	}
 	
 	private static void drawC(float scale, float startX, float y)
 	{
-        convert(scale * startX, scale * (y-0.4f),scale * (startX - 0.5f), scale * (y-0.4f));
-        convert(scale * (startX - 0.5f), scale * (y-0.35f),scale * (startX - 0.5f), scale * (y - 1));
+        convert(scale * startX, scale * (y-0.5f),scale * (startX - 0.5f), scale * (y-0.5f));
+        convert(scale * (startX - 0.5f), scale * (y-0.45f),scale * (startX - 0.5f), scale * (y - 1));
         convert(scale * (startX - 0.5f), scale * (y - 1),scale * (startX-0.05f), scale * (y - 1));
 	}
 	
@@ -310,92 +309,97 @@ class Text{
 	
 	private static void drawE(float scale, float startX, float y)
 	{
-        convert(scale * startX, scale * (y-0.32f),scale * (startX - 0.5f), scale * (y-0.32f));
-        convert(scale * startX, scale * (y-0.3f),scale * startX, scale * (y - 0.75f));
-        convert(scale * startX, scale * (y - 0.7f),scale * (startX - 0.5f), scale * (y - 0.7f));
-        convert(scale * (startX - 0.5f), scale * (y-0.3f),scale * (startX - 0.5f), scale * (y - 0.8f));
-        convert(scale * (startX - 0.5f), scale * (y - 0.7f),scale * (startX - 0.5f), scale * (y - 1f));
-        convert(scale * (startX - 0.5f), scale * (y - 1f),scale * (startX), scale * (y - 1f));
+        convert(scale * startX, scale * (y-0.42f),scale * (startX - 0.4f), scale * (y-0.42f));
+        convert(scale * startX, scale * (y-0.4f),scale * startX, scale * (y - 0.85f));
+        convert(scale * startX, scale * (y - 0.8f),scale * (startX - 0.4f), scale * (y - 0.8f));
+        convert(scale * (startX - 0.4f), scale * (y-0.4f),scale * (startX - 0.4f), scale * (y - 0.9f));
+        convert(scale * (startX - 0.4f), scale * (y - 0.8f),scale * (startX - 0.4f), scale * (y - 1f));
+        convert(scale * (startX - 0.4f), scale * (y - 1f),scale * (startX), scale * (y - 1f));
 	}
 	
 	private static void drawF(float scale, float startX, float y)
 	{
         convert(scale * (startX + 0.15f), scale * (y - 0.1f),scale * (startX - 0.25f), scale * (y - 0.1f));
-        convert(scale * (startX - 0.25f), scale * (y - 0.0f),scale * (startX - 0.25f), scale * (y - 1.1f));
-        convert(scale * (startX - 0.4f), scale * (y - 0.45f),scale * (startX-0.1f), scale * (y - 0.45f));
+        convert(scale * (startX - 0.25f), scale * (y - 0.1f),scale * (startX - 0.25f), scale * (y - 1.1f));
+        convert(scale * (startX - 0.4f), scale * (y - 0.45f),scale * (startX), scale * (y - 0.45f));
 	}
 	
 	private static void drawG(float scale, float startX, float y)
 	{
-        convert(scale * (startX), scale * (y-0.4f),scale * (startX), scale * (y - 1.2f));
-        convert(scale * (startX), scale * (y - 1.2f),scale * (startX - 0.5f), scale * (y - 1.2f));
-        convert(scale * (startX), scale * (y-0.45f),scale * (startX - 0.5f), scale * (y-0.45f));
-        convert(scale * (startX - 0.5f), scale * (y-0.4f),scale * (startX - 0.5f), scale * (y - 1f));
-        convert(scale * (startX - 0.5f), scale * (y - 1f),scale * (startX), scale * (y - 1f));
+        convert(scale * (startX), scale * (y-1f),scale * (startX), scale * (y - 1.2f));
+        convert(scale * (startX), scale * (y - 1.2f),scale * (startX - 0.4f), scale * (y - 1.2f));
 	}
 	
 	private static void drawH(float scale, float startX, float y)
 	{
         convert(scale * (startX - 0.5f), scale * (y + 0.3f),scale * (startX - 0.5f), scale * (y - 1.1f));
-        convert(scale * (startX - 0.5f), scale * (y-0.4f),scale * (startX), scale * (y-0.4f));
-        convert(scale * (startX), scale * (y-0.4f),scale * (startX), scale * (y - 1.1f));
+        convert(scale * (startX - 0.5f), scale * (y-0.5f),scale * (startX), scale * (y-0.5f));
+        convert(scale * (startX), scale * (y-0.5f),scale * (startX), scale * (y - 1.1f));
 	}
 	
-	private static void drawI(float scale, float startX, float y, float width)
+	private static void drawI(float scale, float startX, float y)
 	{
-        convert(scale * (startX - 0.35f), scale * (y-0.4f),scale * (startX - 0.35f), scale * (y - 1.1f));
-        convert(scale * (startX - 0.35f), scale * (y - 0.15f),scale * (startX - 0.34f), scale * (y - 0.15f));
+        convert(scale * (startX), scale * (y-0.4f),scale * (startX), scale * (y - 1.1f));
+        convert(scale * (startX), scale * (y - 0.15f),scale * (startX), scale * (y - 0.15f));
         
 	}
 	
-	private static void drawJ(float scale, float startX, float y, float width)
+	private static void drawJ(float scale, float startX, float y)
 	{
-        convert(scale * (startX - 0.25f), scale * (y-0.4f),scale * (startX - 0.25f), scale * (y - 1.1f));
-        convert(scale * (startX - 0.25f), scale * (y - 1.1f),scale * (startX - 0.5f), scale * (y - 1.1f));
-        convert(scale * (startX - 0.25f), scale * (y - 0.15f),scale * (startX - 0.24f), scale * (y - 0.15f));
+        convert(scale * (startX), scale * (y-0.4f),scale * (startX), scale * (y - 1.1f));
+        convert(scale * (startX), scale * (y - 1.1f),scale * (startX - 0.25f), scale * (y - 1.1f));
+        convert(scale * (startX), scale * (y - 0.15f),scale * (startX), scale * (y - 0.15f));
         
 	}
 	
 	private static void drawK(float scale, float startX, float y)
 	{
-        convert(scale * (startX - 0.5f), scale * (y + 0.3f),scale * (startX - 0.5f), scale * (y - 1));
-        convert(scale * (startX - 0.5f), scale * (y-0.35f),scale * (startX), scale * (y - 1));
-        convert(scale * (startX - 0.5f), scale * (y-0.35f),scale * (startX), scale * (y + 0.05f));
+        convert(scale * (startX - 0.5f), scale * (y),scale * (startX - 0.5f), scale * (y - 1.1f));
+
+        GL11.glLineWidth(3.5f);
+        GL11.glBegin(GL11.GL_LINE_STRIP);
+        GL11.glEnable(GL11.GL_LINE_WIDTH);
+        GL11.glVertex2f(scale * (startX - 0.4f), scale * (y-0.45f));
+        GL11.glVertex2f(scale * (startX), scale * (y - 1));
+        GL11.glVertex2f(scale * (startX - 0.4f), scale * (y-0.45f));
+        GL11.glVertex2f(scale * (startX), scale * (y  - 0.1f));
+        GL11.glEnd();
+        
 	}
 	
 	private static void drawL(float scale, float startX, float y)
 	{
-        convert(scale * (startX - 0.25f), scale * (y + 0.3f),scale * (startX - 0.25f), scale * (y - 1.1f));
+        convert(scale * (startX), scale * (y + 0.3f),scale * (startX), scale * (y - 1.1f));
 	}
 	
 	private static void drawM(float scale, float startX, float y)
 	{
-        convert(scale * (startX - 0.5f), scale * (y-0.4f),scale * (startX - 0.5f), scale * (y - 1.1f));
-        convert(scale * (startX - 0.5f), scale * (y-0.4f),scale * (startX - 0.25f), scale * (y-0.4f));
-        convert(scale * (startX - 0.25f), scale * (y-0.4f),scale * (startX - 0.25f), scale * (y - 1.1f));
-        convert(scale * (startX - 0.25f), scale * (y-0.4f),scale * (startX), scale * (y-0.4f));
-        convert(scale * (startX), scale * (y-0.4f),scale * (startX), scale * (y - 1.1f));
+        convert(scale * (startX - 0.5f), scale * (y-0.5f),scale * (startX - 0.5f), scale * (y - 1.1f));
+        convert(scale * (startX - 0.5f), scale * (y-0.5f),scale * (startX - 0.25f), scale * (y-0.5f));
+        convert(scale * (startX - 0.25f), scale * (y-0.5f),scale * (startX - 0.25f), scale * (y - 1.1f));
+        convert(scale * (startX - 0.25f), scale * (y-0.5f),scale * (startX), scale * (y-0.5f));
+        convert(scale * (startX), scale * (y-0.5f),scale * (startX), scale * (y - 1.1f));
 	}
 	
 	private static void drawN(float scale, float startX, float y)
 	{
-        convert(scale * (startX - 0.5f), scale * (y-0.4f),scale * (startX - 0.5f), scale * (y - 1.1f));
-        convert(scale * (startX - 0.5f), scale * (y-0.4f),scale * (startX - 0.1f), scale * (y-0.4f));
-        convert(scale * (startX - 0.1f), scale * (y-0.4f),scale * (startX - 0.1f), scale * (y - 1.1f));
+        convert(scale * (startX - 0.4f), scale * (y-0.5f),scale * (startX - 0.4f), scale * (y - 1.1f));
+        convert(scale * (startX - 0.4f), scale * (y-0.5f),scale * (startX), scale * (y-0.5f));
+        convert(scale * (startX), scale * (y-0.5f),scale * (startX), scale * (y - 1.1f));
 	}
 	
 	private static void drawO(float scale, float startX, float y)
 	{
-        convert(scale * (startX - 0.5f), scale * (y - 1f),scale * (startX), scale * (y - 1f));
-        convert(scale * (startX - 0.5f), scale * (y-0.4f),scale * (startX - 0.5f), scale * (y - 1f));
-        convert(scale * (startX - 0.5f), scale * (y-0.4f),scale * (startX), scale * (y-0.4f));
-        convert(scale * (startX), scale * (y-0.4f),scale * (startX), scale * (y - 1f));
+        convert(scale * (startX - 0.4f), scale * (y - 1f),scale * (startX), scale * (y - 1f));
+        convert(scale * (startX - 0.4f), scale * (y-0.5f),scale * (startX - 0.4f), scale * (y - 1f));
+        convert(scale * (startX - 0.4f), scale * (y-0.5f),scale * (startX), scale * (y-0.5f));
+        convert(scale * (startX), scale * (y-0.5f),scale * (startX), scale * (y - 1f));
         
 	}
 	
 	private static void drawP(float scale, float startX, float y)
 	{
-        convert(scale * (startX - 0.5f), scale * (y - 1f),scale * (startX - 0.5f), scale * (y - 1.4f));
+        convert(scale * (startX - 0.4f), scale * (y - 1f),scale * (startX - 0.4f), scale * (y - 1.4f));
 	}
 	
 	private static void drawQ(float scale, float startX, float y)
@@ -405,52 +409,76 @@ class Text{
 	
 	private static void drawR(float scale, float startX, float y)
 	{
-        convert(scale * (startX - 0.5f), scale * (y-0.4f), scale * (startX - 0.5f), scale * (y - 1.1f));
-        convert(scale * (startX - 0.5f), scale * (y - 0.4f),scale * (startX - 0.15f), scale * (y-0.4f));
+        convert(scale * (startX - 0.35f), scale * (y-0.5f), scale * (startX - 0.35f), scale * (y - 1.1f));
+        convert(scale * (startX - 0.35f), scale * (y - 0.5f),scale * (startX), scale * (y-0.5f));
 	}
 	
 	private static void drawS(float scale, float startX, float y)
 	{
-        convert(scale * (startX), scale * (y-0.3f),scale * (startX - 0.5f), scale * (y-0.3f));
-        convert(scale * (startX - 0.5f),scale * (y-0.3f),scale * (startX - 0.5f),scale * (y - 0.65f));
-        convert(scale * (startX - 0.5f), scale * (y - 0.65f), scale * (startX), scale * (y - 0.65f));
-        convert(scale * (startX),scale * (y - 0.65f),scale * (startX),scale * (y - 1));
-        convert(scale * (startX), scale * (y - 1), scale * (startX - 0.5f), scale * (y - 1));
+        convert(scale * (startX), scale * (y-0.4f),scale * (startX - 0.4f), scale * (y-0.4f));
+        convert(scale * (startX - 0.4f),scale * (y-0.4f),scale * (startX - 0.4f),scale * (y - 0.75f));
+        convert(scale * (startX - 0.4f), scale * (y - 0.75f), scale * (startX), scale * (y - 0.75f));
+        convert(scale * (startX),scale * (y - 0.75f),scale * (startX),scale * (y - 1));
+        convert(scale * (startX), scale * (y - 1), scale * (startX - 0.4f), scale * (y - 1));
 	}
 	
 	private static void drawT(float scale, float startX, float y)
 	{
-        convert(scale * (startX - 0.5f),scale * (y - 0.55f),scale * (startX - 0.1f),scale * (y - 0.55f));
-        convert(scale * (startX - 0.3f), scale * (y - 0.2f),scale * (startX - 0.3f), scale * (y - 1.1f));
+        convert(scale * (startX - 0.4f),scale * (y - 0.55f),scale * (startX),scale * (y - 0.55f));
+        convert(scale * (startX - 0.2f), scale * (y - 0.2f),scale * (startX - 0.2f), scale * (y - 1.1f));
 	}
 	
 	private static void drawU(float scale, float startX, float y)
 	{
-        convert(scale * (startX - 0.4f), scale * (y-0.35f),scale * (startX - 0.4f), scale * (y - 1f));
+        convert(scale * (startX - 0.4f), scale * (y-0.45f),scale * (startX - 0.4f), scale * (y - 1f));
         convert(scale * (startX - 0.4f), scale * (y - 1f),scale * (startX), scale * (y - 1f));
-        convert(scale * (startX), scale * (y-0.35f),scale * (startX), scale * (y - 1f));
+        convert(scale * (startX), scale * (y-0.45f),scale * (startX), scale * (y - 1f));
 	}
 	
 	private static void drawV(float scale, float startX, float y)
-	{
-        convert(scale * (startX - 0.5f), scale * (y-0.3f),scale * (startX - 0.25f), scale * (y - 1));
-        convert(scale * (startX - 0.25f), scale * (y - 1),scale * (startX), scale * (y-0.3f));
+	{        
+        GL11.glLineWidth(3.5f);
+        GL11.glBegin(GL11.GL_LINE_STRIP);
+        GL11.glEnable(GL11.GL_LINE_WIDTH);
+        GL11.glVertex2f(scale * (startX - 0.3f), scale * (y-0.4f));
+        GL11.glVertex2f(scale * (startX - 0.15f), scale * (y - 1));
+        GL11.glVertex2f(scale*(startX - 0.15f), scale * (y - 1));
+        GL11.glVertex2f(scale * (startX), scale * (y-0.4f));
+        GL11.glEnd();
 	}
 	
 	private static void drawW(float scale, float startX, float y)
 	{
-        convert(scale * (startX - 0.6f), scale * (y-0.3f),scale * (startX - 0.4f), scale * (y - 1));
-        convert(scale * (startX - 0.4f), scale * (y - 1),scale * (startX - 0.2f), scale * (y-0.3f));
-        convert(scale * (startX - 0.2f), scale * (y-0.3f),scale * (startX + 0f), scale * (y - 1));
-        convert(scale * (startX + 0f), scale * (y - 1),scale * (startX + 0.2f), scale * (y-0.3f));
+        
+        GL11.glLineWidth(3.5f);
+        GL11.glBegin(GL11.GL_LINE_STRIP);
+        GL11.glEnable(GL11.GL_LINE_WIDTH);
+        GL11.glVertex2f(scale * (startX - 0.52f), scale * (y-0.4f));
+        GL11.glVertex2f(scale * (startX - 0.39f), scale * (y - 1));
+        GL11.glVertex2f(scale * (startX - 0.39f), scale * (y - 1));
+        GL11.glVertex2f(scale * (startX - 0.26f), scale * (y-0.4f));
+        
+        GL11.glVertex2f(scale * (startX - 0.26f), scale * (y-0.4f));
+        GL11.glVertex2f(scale * (startX - 0.13f), scale * (y - 1));
+        GL11.glVertex2f(scale * (startX - 0.13f), scale * (y - 1));
+        GL11.glVertex2f(scale * (startX), scale * (y-0.4f));
+        GL11.glEnd();
         
 	}
 	
 	private static void drawX(float scale, float startX, float y)
-	{        
-        convert(scale * (startX - 0.4f), scale * (y-0.3f),scale * (startX - 0.4f), scale * (y - 1.1f));
-        convert(scale * (startX - 0.4f), scale * (y-0.75f),scale * (startX-0.1f), scale * (y - 0.75f));
-        convert(scale * (startX-0.1f), scale * (y-0.3f),scale * (startX-0.1f), scale * (y - 1.1f));
+	{                
+        GL11.glLineWidth(3.5f);
+        GL11.glBegin(GL11.GL_LINE_STRIP);
+        GL11.glEnable(GL11.GL_LINE_WIDTH);
+        GL11.glVertex2f(scale * (startX - 0.5f), scale * (y-0.5f));
+        GL11.glVertex2f(scale * (startX), scale * (y - 1));
+        GL11.glEnd();
+        GL11.glBegin(GL11.GL_LINE_STRIP);
+        GL11.glEnable(GL11.GL_LINE_WIDTH);
+        GL11.glVertex2f(scale * (startX), scale * (y-0.5f));
+        GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
+        GL11.glEnd();
 	}
 	
 	private static void drawY(float scale, float startX, float y)
@@ -461,11 +489,15 @@ class Text{
 	
 	private static void drawZ(float scale, float startX, float y)
 	{
-        convert(scale * (startX), scale * (y-0.3f),scale * (startX - 0.5f), scale * (y-0.3f));
-        convert(scale * (startX - 0f),scale * (y-0.3f),scale * (startX - 0f),scale * (y - 0.65f));
-        convert(scale * (startX - 0.5f), scale * (y - 0.65f), scale * (startX), scale * (y - 0.65f));
-        convert(scale * (startX-0.5f),scale * (y - 0.65f),scale * (startX-0.5f),scale * (y - 1));
+        convert(scale * (startX), scale * (y-0.5f),scale * (startX - 0.5f), scale * (y-0.5f));
         convert(scale * (startX), scale * (y - 1), scale * (startX - 0.5f), scale * (y - 1));
+        
+        GL11.glLineWidth(3.5f);
+        GL11.glBegin(GL11.GL_LINE_STRIP);
+        GL11.glEnable(GL11.GL_LINE_WIDTH);
+        GL11.glVertex2f(scale * (startX - 0.4f), scale * (y-1f));
+        GL11.glVertex2f(scale * (startX), scale * (y - 0.5f));
+        GL11.glEnd();
 	}
 	
 	/**
