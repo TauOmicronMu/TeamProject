@@ -17,11 +17,19 @@ public class GameState implements Serializable {
     private final int windowHeight;
     private Random random = new Random();
     private Ball ball;
-    private Platform platforms[] = new Platform[8];
-    private MovingPlatform movingPlatform[] = new MovingPlatform[4]; 
+    private Platform platforms[] = new Platform[9];
+    private Platform jumpOncePlatform[] = new Platform[2];
+    private Platform movingPlatform[] = new Platform[4];
     private Item items[] = new Item[3];
+    private int[] Level1 = {
+            400, -300, 400,
+            -300, 400, -300,
+            400, -300, 400, -300
+    };
+    private int counter = 0;
 
-    private static final int PLATFORM_WIDTH = 140;
+
+    private static final int PLATFORM_WIDTH = 100;
     private static final int PLATFORM_HEIGHT = 20;
 
     int score;
@@ -63,20 +71,39 @@ public class GameState implements Serializable {
             // Todo: understand and refactor these "magic numbers".
             int xPosition = random.nextInt(windowWidth - 220);
             int yPosition = windowHeight - 200 * i;
-            platforms[i] = new Platform(
+
+            if(i>=7){
+                jumpOncePlatform[i-7] = new JumpOncePlatform(
+                        xPosition+200,
+                        yPosition+50,
+                        PLATFORM_WIDTH,
+                        PLATFORM_HEIGHT
+                );
+            }
+            platforms[i] = new NormalPlatform(
                     xPosition,
                     yPosition,
                     PLATFORM_WIDTH,
                     PLATFORM_HEIGHT
             );
+
+
+
         }
+        platforms[8] = new NormalPlatform(
+                0,
+                400,
+                800,
+                PLATFORM_HEIGHT
+        );
+
         int xPosition = 100 + random.nextInt(windowWidth - 300);
         int yPosition = -800;
         int y2Position = -1000;
         int y3Position = -100;
         int y4Position = -300;
-        
-        movingPlatform[0] = new MovingPlatform(
+
+        movingPlatform[0] = new MovingHorizontallyPlatform(
                 xPosition,
                 yPosition,
                 PLATFORM_WIDTH,
@@ -84,7 +111,7 @@ public class GameState implements Serializable {
                 xPosition -200,
                 xPosition +200
         );
-        movingPlatform[1] = new MovingPlatform(
+        movingPlatform[1] = new MovingHorizontallyPlatform(
                 xPosition,
                 y2Position,
                 PLATFORM_WIDTH,
@@ -92,8 +119,8 @@ public class GameState implements Serializable {
                 xPosition -200,
                 xPosition + 200
         );
-        
-        movingPlatform[2] = new MovingPlatform(
+
+        movingPlatform[2] = new MovingHorizontallyPlatform(
                 xPosition,
                 y3Position,
                 PLATFORM_WIDTH,
@@ -101,8 +128,8 @@ public class GameState implements Serializable {
                 xPosition -200,
                 xPosition + 200
         );
-        
-        movingPlatform[3] = new MovingPlatform(
+
+        movingPlatform[3] = new MovingHorizontallyPlatform(
                 xPosition,
                 y4Position,
                 PLATFORM_WIDTH,
@@ -110,7 +137,6 @@ public class GameState implements Serializable {
                 xPosition -200,
                 xPosition + 200
         );
-        
     }
 
     /**
@@ -143,13 +169,16 @@ public class GameState implements Serializable {
 
 
     void updatePhysics() {
-    	
-    	ball.update(this);
+
+        ball.update(this);
         for (Platform platform : platforms) {
             if (platform != null) platform.update(this);
         }
-        for (MovingPlatform movingPlatform : movingPlatform) {
+        for (Platform movingPlatform : movingPlatform) {
             if (movingPlatform != null) movingPlatform.update(this);
+        }
+        for (Platform jumpOncePlatform : jumpOncePlatform) {
+            if (jumpOncePlatform != null) jumpOncePlatform.update(this);
         }
         for (Item item : items) {
             if (item != null) item.update(this);
@@ -202,9 +231,13 @@ public class GameState implements Serializable {
     Platform[] getPlatforms() {
         return platforms;
     }
-    
-    MovingPlatform[] getMovingPlatforms() {
+
+    Platform[] getMovingPlatforms() {
         return movingPlatform;
+    }
+
+    Platform[] getJumpOncePlatform() {
+        return jumpOncePlatform;
     }
 
 
@@ -222,5 +255,16 @@ public class GameState implements Serializable {
 
     public boolean gameOver(){
     	return ball.gameOver();
-    }    
+    }
+
+    int getCounter(){
+        return counter;
+    }
+    int[] getLevel(){
+        return Level1;
+    }
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
 }
+

@@ -105,6 +105,25 @@ public class ServerMain extends NetworkServer implements Runnable {
                 gameState.getBall().moveRight();
                 break;
             }
+            case "leftshift": {
+
+//            	gameState.getBall().increment();
+////            	if(gameState.getBall().getCOUNTER()==0)gameState.getBall().setCOUNTER(100000);
+////            	if(gameState.getBall().getCOUNTER()>0){
+////            		try {
+////    					Thread.sleep(10	00);
+////    				} catch (InterruptedException e) {
+////    					// TODO Auto-generated catch block
+////    					e.printStackTrace();
+////    				}
+////            	}
+                break;
+            }
+            case "space": {
+                //gameState.getBall().slowMotion();
+                gameState.getBall().doubleJump();
+                break;
+            }
         }
     }
 

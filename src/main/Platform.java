@@ -8,10 +8,12 @@ import static org.lwjgl.opengl.GL11.glColor4f;
 
 class Platform implements Serializable {
 
-    private int dy;
-    private int width, height;
-    private double x, y;
-    private double highestPoint;
+    public int dy;
+    public int width, height;
+    public double x;
+	public double y;
+    public int score = 0;
+    public double highestPoint;
 
     /*
      *Constructor for platform object
@@ -33,8 +35,8 @@ class Platform implements Serializable {
         dy = 3;
         x = 300;
         y = 300;
-        width = 120;
-        height = 40;
+        width = 140;
+        height = 20;
         highestPoint = 200;
     }
 
@@ -44,72 +46,21 @@ class Platform implements Serializable {
      *@param ball the ball class object
      */
     void update(GameState game) {
-        // Todo: Investigate magic numbers here.
-
-        Ball ball = game.getBall();
-       
-        if(ball.gameOver()==false){
-        	
-        	if(ball.getDy() >0)
-        		ball.setPermission(false);
-            
-            if(ball.getY() < highestPoint && ball.getDy() < 0){
-            	if(ball.getCountFlyPower() >0){
-        			y+=20;
-        			game.score+=20;
-                } else {
-                	
-                	ball.setPermission(true);
-                	double newDx = ball.getDy() + ball.getGravity() + 0.1;
-                	
-                	if(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 < -3){
-                		
-                		y +=Math.abs(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1);
-                		game.score+=ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 ;
-                	}
-                	else y += dy;
-                	game.score += dy;
-                	//System.out.println((ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1));
-                     
-                    
-                checkForCollision(ball);
-                }
-                if (y > game.getWindowHeight()) {
-
-                    Random r = new Random();
-                    y = -300;
-                    x = r.nextInt(game.getWindowWidth()-140);
-                    //x = game.getWindowWidth()/2;
-                }
-            } else {
-            	if(ball.getCountFlyPower() >0){
-        			y+=20;
-        			game.score+=20;
-                } else {
-                    y += dy;
-                    game.score+= dy;
-                checkForCollision(ball);
-                }
-                if (y > game.getWindowHeight()) {
-
-                    Random r = new Random();
-                    y = -300;
-                    x = r.nextInt(game.getWindowWidth()-100);
-                    //x = game.getWindowWidth()/2;  
-                }
-            }
-        }  else {
-        	if(y>-100){
-        		y-=6;
-        	}
-        }
+    	
     }
 
+    /*
+     * Returns the score of the player
+     */
+    public int getScore() {
+		return score;
+	}
     /*
      * Checks if any ball has collided with the platform
      * @param ball the ball object
      */
-    private void checkForCollision(Ball ball) {
+    
+    public void checkForCollision(Ball ball, GameState game) {
         int ballX = (int) ball.getX();
         int ballY = (int) ball.getY();
         int radius = ball.getRadius();
@@ -121,11 +72,8 @@ class Platform implements Serializable {
                 //System.out.println("Collision");
 
                 double newDy = ball.getGameDy();
-
-                // If the ball has collided with the top of the platform ~Tom
                 if(ball.getDy()>0){
-                    AudioEngine.getInstance().playTrack(AudioEngine.BOING); // Play the boing sound
-                    ball.setDy(newDy);
+                	ball.setDy(newDy);
                 }
                 ball.setY(y - radius);
             }
