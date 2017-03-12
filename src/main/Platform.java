@@ -73,6 +73,7 @@ class Platform implements Serializable {
 
                 double newDy = ball.getGameDy();
                 if(ball.getDy()>0){
+                    AudioEngine.getInstance().playTrack(AudioEngine.BOING);
                 	ball.setDy(newDy);
                 }
                 ball.setY(y - radius);
