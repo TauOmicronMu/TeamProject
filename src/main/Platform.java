@@ -14,6 +14,7 @@ class Platform implements Serializable {
 	public double y;
     public int score = 0;
     public double highestPoint;
+    public boolean isNull;
 
     /*
      *Constructor for platform object
@@ -22,17 +23,18 @@ class Platform implements Serializable {
      *@param width the width of the platform
      *@param height the height of the platform
      */
-    Platform(int x, int y, int width, int height) {
+    Platform(double x, double y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        dy = 3;
+        dy = 2;
         highestPoint = 200;
+        this.isNull= false;
     }
 
     public Platform() {
-        dy = 3;
+        dy = 2;
         x = 300;
         y = 300;
         width = 140;
@@ -85,17 +87,30 @@ class Platform implements Serializable {
      * Draws the platform
      */
     void paint(Window game) {
-        double scaledX = game.glScaleX(x);
-        double scaledY = game.glScaleY(y);
-        double widthGl = game.glScaleDistance(width);
-        double heightGl = game.glScaleDistance(height);
+        if(isNull == false) {
+            double scaledX = game.glScaleX(x);
+            double scaledY = game.glScaleY(y);
+            double widthGl = game.glScaleDistance(width);
+            double heightGl = game.glScaleDistance(height);
 
-        double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
-        glColor4f(1, 0, 0, 0);
-        Rectangle.drawrectangle(verticesb);
+            double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
+            glColor4f(1, 0, 0, 0);
+            Rectangle.drawrectangle(verticesb);
+        }
     }
     
     public void setDx(int dx){
     	this.dy = dx;
     }
+
+    public double getY() {
+        return y;
+    }
+    public boolean getNull() {
+        return isNull;
+    }
+    public void setNull(boolean x) {
+        isNull = x;
+    }
 }
+

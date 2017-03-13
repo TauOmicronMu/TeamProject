@@ -27,6 +27,8 @@ public class Main extends NetworkClient {
         window = new Window(windowHeight, windowWidth);
         game = new GameState(windowWidth, windowHeight);
         game.setUp();
+        game.generatePlatforms();
+        game.generateItems();
         window.init(game, this);
     }
 

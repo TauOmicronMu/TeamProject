@@ -10,7 +10,7 @@ public class SlowMotionPowerUp extends main.Item{
 	}
 	
 	@Override
-	public void performAction(Ball ball) {
+	public void performAction(GameState game) {
 		
 	}
 	

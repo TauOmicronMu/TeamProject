@@ -4,12 +4,12 @@ import java.util.Random;
 
 public class NormalPlatform extends Platform{
 
-    NormalPlatform(int x, int y, int width, int height) {
+    NormalPlatform(double x, double y, int width, int height) {
         super(x, y, width, height);
     }
 
     public NormalPlatform() {
-        dy = 3;
+        dy = 2;
         x = 300;
         y = 300;
         width = 100;
@@ -43,7 +43,7 @@ public class NormalPlatform extends Platform{
                 	ball.setPermission(true);
                 	double newDx = ball.getDy() + ball.getGravity() + 0.1;
                 	
-                	if(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 < -3){
+                	if(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 < -2){
                 		
                 		y +=Math.abs(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1);
                 		game.score+=ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 ;
@@ -55,21 +55,21 @@ public class NormalPlatform extends Platform{
                     
                 checkForCollision(ball, game);
                 }
-                if (y > game.getWindowHeight()) {
-
-                    Random r = new Random();
-                    
-                   /* x = Level[counter];
-                    y = Level[counter+1];
-                    counter = counter + 2;*/
-                    
-                    y = -300;
-                    x = r.nextInt(game.getWindowWidth()-140);
-                                        
-                    width = 100;
-                    height = 20;                    
-                    
-                }
+//                if (y >= game.getWindowHeight()) {
+//
+////                    Random r = new Random();
+////
+////                   /* x = Level[counter];
+////                    y = Level[counter+1];
+////                    counter = counter + 2;*/
+////
+////                    y = -700;
+////                    x = r.nextInt(game.getWindowWidth()-100);
+//
+//                    width = 100;
+//                    height = 20;
+//
+//                }
             } else {
             	if(ball.getCountFlyPower() >0){
         			y+=20;
@@ -79,19 +79,19 @@ public class NormalPlatform extends Platform{
                     game.score+= dy;
                 checkForCollision(ball, game);
                 }
-                if (y > game.getWindowHeight()) {
-
-                    Random r = new Random();
-                    
-//                    x = Level[counter];
-//                    y = Level[counter+1];
-//                    counter = counter + 2;                    
-                    y = -300;
-                    x = r.nextInt(game.getWindowWidth()-100);
-                    
-                    width = 100;
-                    height = 20;                   
-                }
+//                if (y >= game.getWindowHeight()) {
+//
+//                    Random r = new Random();
+//
+////                    x = Level[counter];
+////                    y = Level[counter+1];
+////                    counter = counter + 2;
+//                    y = -700;
+//                    x = r.nextInt(game.getWindowWidth()-100);
+//
+//                    width = 100;
+//                    height = 20;
+//                }
             }
         }  else {
         	if(y>-100){

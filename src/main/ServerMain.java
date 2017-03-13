@@ -36,7 +36,7 @@ public class ServerMain extends NetworkServer implements Runnable {
         gameState.setUp();
         gameState.generatePlatforms();
         gameState.generateItems();
- 
+
 
         // Main loop:
         while (true) {
@@ -49,6 +49,7 @@ public class ServerMain extends NetworkServer implements Runnable {
 
             // Handle any input messages the client has sent us.
             if (!handleMessages()) break;
+
             gameState.updateLogic();
             gameState.updatePhysics();                   
             

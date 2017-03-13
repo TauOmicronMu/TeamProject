@@ -9,6 +9,8 @@ import static org.lwjgl.opengl.GL11.glColor4f;
 class Item implements Serializable {
 
     private int x, y, dy, radius, type, highestPoint;
+    private boolean isNull=false;
+
 
     /*
      * Constructor for item class(PowerUps)
@@ -25,6 +27,12 @@ class Item implements Serializable {
         highestPoint = 200;
     }
 
+    public boolean getNull() {
+        return isNull;
+    }
+    public void setNull(boolean x) {
+        isNull = x;
+    }
     /*
      * Return the type of powerUp
      * 1 for GraveDown
@@ -74,13 +82,13 @@ class Item implements Serializable {
             	}
             	
          		if(ball.getCountFlyPower() == 0)
-         		 checkForCollision(ball, game);
+         		 checkForCollision(game);
          		else y += 20;         
             	
            } else {
         	   y += dy;
         		if(ball.getCountFlyPower() == 0)
-        		 checkForCollision(ball, game);
+        		 checkForCollision(game);
         		else y += 20;
                 }
             
@@ -96,7 +104,9 @@ class Item implements Serializable {
      * Checks for collision between the ball and the powerUp
      * @param ball
      */
-    private void checkForCollision(Ball ball, GameState game) {
+    private void checkForCollision(GameState game) {
+        Ball ball = game.getBall();
+
         double ballX = ball.getX();
         double ballY = ball.getY();
         int ballR = ball.getRadius();
@@ -107,8 +117,8 @@ class Item implements Serializable {
         //distance between object centers
         double c = Math.sqrt((double) (a * a) + (double) (b * b));
         if (c < collide) {
-            performAction(ball);
-            y = game.getWindowHeight() + 100;
+            performAction(game);
+            isNull=true;
         }
 
     }
@@ -117,17 +127,20 @@ class Item implements Serializable {
      * Changes the behaviour of the ball depending on the powerUp
      * @param ball
      */
-    public void performAction(Ball ball) {
+    public void performAction(GameState game) {
     }
 
     /*
      * Paints the powerUps
      */
     public void paint(Window window) {
-        double[] vertices = createCircle(window.glScaleX(x), window.glScaleY(y), 0.2f, 0.02f);
-        Model circle1 = new Model(vertices);
+        if(isNull == false){
+            double[] vertices = createCircle(window.glScaleX(x), window.glScaleY(y), 0.2f, 0.02f);
+            Model circle1 = new Model(vertices);
 
-        circle1.render(vertices);
+            circle1.render(vertices);
+        }
+
     }
 
     /**

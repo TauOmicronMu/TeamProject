@@ -14,8 +14,8 @@ class MovingHorizontallyPlatform extends Platform{
         dx = -1;        
     }
 
-    public MovingHorizontallyPlatform() {
-        dy = 3;
+    public MovingHorizontallyPlatform(double xPosition, double yPosition, int platformWidth, int platformHeight, double v, double v1) {
+        dy = 2;
         dx = -1;
         x = 300;
         y = 300;
@@ -52,15 +52,15 @@ class MovingHorizontallyPlatform extends Platform{
                       
                 checkForCollision(ball, game);
                 }
-                if (y > game.getWindowHeight()) {
-
-                    Random r = new Random();
-                    y = -300;
-                    x = 100 + r.nextInt(game.getWindowWidth()-200);
-                    x1 = x - 200;
-                    x2 = x + 200;	
-                    
-                }
+//                if (y >= game.getWindowHeight()) {
+//
+//                    Random r = new Random();
+//                    y = -700;
+//                    x = 200 + r.nextInt(game.getWindowWidth()-400);
+//                    x1 = x - 200;
+//                    x2 = x + 200;
+//
+//                }
             } else {
             	if(ball.getCountFlyPower() >0){
         			y+=20;
@@ -70,15 +70,15 @@ class MovingHorizontallyPlatform extends Platform{
                     score+= dy;
                 checkForCollision(ball, game);
                 }
-                if (y > game.getWindowHeight()) {
-                	
-                    Random r = new Random();
-                    y = -300;
-                    x = 100 + r.nextInt(game.getWindowWidth()-200);
-                    x1 = x - 200;
-                    x2 = x + 200;
-                    //x = game.getWindowWidth()/2;              
-                }
+//                if (y >= game.getWindowHeight()) {
+//
+//                    Random r = new Random();
+//                    y = -700;
+//                    x = 100 + r.nextInt(game.getWindowWidth()-400);
+//                    x1 = x - 200;
+//                    x2 = x + 200;
+//                    //x = game.getWindowWidth()/2;
+//                }
             }
         } else {
         	if(y>-100){

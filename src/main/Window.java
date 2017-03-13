@@ -163,14 +163,14 @@ class Window {
         for (Platform platform : platforms) {
             if (platform != null) platform.paint(this);
         }
-        Platform[] movingPlatforms = gameState.getMovingPlatforms();
-        for (Platform movingPlatform : movingPlatforms) {
-            if (movingPlatform != null) movingPlatform.paint(this);
-        }
-        Platform[] jumpOncePlatforms = gameState.getJumpOncePlatform();
-        for (Platform jumpOncePlatform : jumpOncePlatforms) {
-            if (jumpOncePlatform != null) jumpOncePlatform.paint(this);
-        }
+//        Platform[] movingPlatforms = gameState.getMovingPlatforms();
+//        for (Platform movingPlatform : movingPlatforms) {
+//            if (movingPlatform != null) movingPlatform.paint(this);
+//        }
+//        Platform[] jumpOncePlatforms = gameState.getJumpOncePlatform();
+//        for (Platform jumpOncePlatform : jumpOncePlatforms) {
+//            if (jumpOncePlatform != null) jumpOncePlatform.paint(this);
+//        }
     }
 
 

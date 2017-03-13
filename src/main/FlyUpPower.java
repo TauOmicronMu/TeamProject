@@ -11,10 +11,10 @@ public class FlyUpPower extends main.Item{
 	}
 	
 	@Override
-	public void performAction(Ball ball) {
-		
+	public void performAction(GameState game) {
+		Ball ball = game.getBall();
 		ball.setCountFlyPower(300);
-		
+		//System.out.println("FLYUPPOWER");
 	}
 	
 	@Override

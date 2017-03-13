@@ -5,7 +5,7 @@ import java.util.Random;
 
 class JumpOncePlatform extends Platform {
 	
-    JumpOncePlatform(int x, int y, int width, int height) {
+    JumpOncePlatform(double x, double y, int width, int height) {
         super(x, y, width, height);
     }
 
@@ -57,23 +57,21 @@ class JumpOncePlatform extends Platform {
                     
                 checkForCollision(ball, game);
                 }
-                if (y > game.getWindowHeight()) {
-
-                    Random r = new Random();
-                    
-                    /*x = Level[counter];
-                    y = Level[counter+1];
-                    counter = counter + 2;*/
-                    
-                    y = -300;
-                    x = r.nextInt(game.getWindowWidth()-140);
-                    
-                    
-                    width = 140;
-                    height = 20;
-                    
-                    
-                }
+//                if (y >= game.getWindowHeight()) {
+//
+//                    Random r = new Random();
+//
+//                    /*x = Level[counter];
+//                    y = Level[counter+1];
+//                    counter = counter + 2;*/
+//
+//                    y = -700;
+//                    x = r.nextInt(game.getWindowWidth()-100);
+//
+//
+//                    width = 100;
+//                    height = 20;
+//                }
             } else {
             	if(ball.getCountFlyPower() >0){
         			y+=20;
@@ -83,20 +81,20 @@ class JumpOncePlatform extends Platform {
                     score+= dy;
                 checkForCollision(ball, game);
                 }
-                if (y > game.getWindowHeight()) {
-
-                    Random r = new Random();
-                    
-                    /*x = Level[counter];
-                    y = Level[counter+1];
-                    counter = counter + 2;*/
-                    
-                    y = -300;
-                    x = r.nextInt(game.getWindowWidth()-100);
-                    
-                    width = 140;
-                    height = 20;                
-                }
+//                if (y >= game.getWindowHeight()) {
+//
+//                    Random r = new Random();
+//
+//                    /*x = Level[counter];
+//                    y = Level[counter+1];
+//                    counter = counter + 2;*/
+//
+//                    y = -700;
+//                    x = r.nextInt(game.getWindowWidth()-100);
+//
+//                    width = 100;
+//                    height = 20;
+//                }
             }
         }  else {
         	if(y>-100){
@@ -118,18 +116,19 @@ class JumpOncePlatform extends Platform {
             if (ballX > x && ballX < x + width) {
 
                 //System.out.println("Collision");
-            	  Random r = new Random();
+            	 // Random r = new Random();
                   
             		
                 double newDy = ball.getGameDy();
                 if(ball.getDy()>0){
                 	ball.setY(y - radius);
                 	ball.setDy(newDy);
-                	y = -300;
-                    x = r.nextInt(game.getWindowWidth()-140);
-                                        
-                    width = 140;
-                    height = 20;
+//                	y = -300;
+//                    x = r.nextInt(game.getWindowWidth()-140);
+//
+//                    width = 140;
+//                    height = 20;
+                    isNull = true;
                 }            
             }
         }
