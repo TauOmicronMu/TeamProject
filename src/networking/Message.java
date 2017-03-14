@@ -3,18 +3,24 @@ package networking;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import main.GameState;
+import main.OpponentType;
 
 /**
  * A networking.Message is a simple wrapper around the data that will be sent between the
  * client and the server. For this simple demo it can be as simple as a String.
  */
 public class Message implements Serializable {
+    private OpponentType opponentType = null;
     private String key = null;
     private Point2D.Float coords = null;
     private GameState gameState = null;
 
     public Message(String key) {
         this.key = key;
+    }
+
+    public Message(OpponentType opponentType) {
+        this.opponentType = opponentType;
     }
 
     public Message(Point2D.Float coords) {
@@ -34,6 +40,7 @@ public class Message implements Serializable {
         if (coords != null) return coords;
         if (key != null) return key;
         if (gameState != null) return gameState;
+        if (opponentType != null) return opponentType;
         return null;
     }
 }

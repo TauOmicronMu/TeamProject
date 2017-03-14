@@ -29,6 +29,9 @@ public class ServerMain extends NetworkServer implements Runnable {
     public void run() {
         // Block until a new client has connected.
         System.out.println("Waiting for client to connect...");
+
+
+
         waitForClient();
 
         // Create a GameState for the client.

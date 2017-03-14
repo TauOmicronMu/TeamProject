@@ -278,6 +278,7 @@ class Window {
             case MAIN_MENU: {
                 if (onPlayGameButton(x, y)) {
                     client.initialize();
+                    client.sendMessage(new Message(OpponentType.AI));
                     screen = Screen.GAME;
 
                 } else if (onQuitButton(x, y)) {
