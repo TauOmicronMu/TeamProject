@@ -46,6 +46,15 @@ abstract class NetworkEngine implements Runnable {
         return Optional.of(m);
     }
 
+    public Message waitForMessage() {
+        try {
+            return messages.take();
+        } catch (InterruptedException e) {
+            System.err.println("[ERROR] NetworkEngine.waitForMessage : " + e);
+        }
+        return null;
+    }
+
     /**
      * Send a message to our output stream, and therefore our connected device.
      *

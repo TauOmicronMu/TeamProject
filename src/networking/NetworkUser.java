@@ -31,4 +31,6 @@ abstract class NetworkUser implements MessageHandler {
         }
         return true;
     }
+
+    protected Message waitForMessage() { return engine.waitForMessage(); }
 }

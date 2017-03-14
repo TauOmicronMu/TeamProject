@@ -66,7 +66,7 @@ class Window {
             System.exit(1);
         }
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-        window = glfwCreateWindow(windowWidth, windowHeight, "Pinball", 0, 0);
+        window = glfwCreateWindow(windowWidth, windowHeight, Constants.TITLE, 0, 0);
         if (window == 0) {
             System.err.println("Failed to create window.");
             System.exit(1);
@@ -277,10 +277,7 @@ class Window {
             // If we're on the main menu:
             case MAIN_MENU: {
                 if (onPlayGameButton(x, y)) {
-                    client.initialize();
-                    client.sendMessage(new Message(OpponentType.AI));
-                    screen = Screen.GAME;
-
+                    client.startGame(OpponentType.AI);
                 } else if (onQuitButton(x, y)) {
                     quit();
                 }
@@ -359,5 +356,9 @@ class Window {
 
     public Screen getScreen() {
         return screen;
+    }
+
+    public void setScreen(Screen screen) {
+        this.screen = screen;
     }
 }

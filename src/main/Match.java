@@ -15,14 +15,23 @@ public class Match implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("[INFO] Match.run: Creating game state...");
+        System.out.println("[INFO] Match.run : Creating game state...");
 
-        // Create new authoratative game states with the same random seed
+        // Create new authoritative game states with the same random seed
         int seed = new Random().nextInt();
         GameState playerOneGameState = new GameState(seed, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-        GameState playerTwoGameState = new GameState(seed, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);]
+        GameState playerTwoGameState = new GameState(seed, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 
-        System.out.println("[INFO] Match.run: Starting match...");
+        System.out.println("[INFO] Match.run : Sending seed to client(s)...");
+        try {
+            playerOne.updateSeed(seed);
+            playerTwo.updateSeed(seed);
+        } catch (InterruptedException e) {
+            System.err.println("[WARN] Match.run : InterruptedException... Player Disconnect?...");
+            return; // exit the thread :)
+        }
+
+        System.out.println("[INFO] Match.run : Starting match...");
 
         boolean running = true;
         int loopNum = 0;
@@ -30,8 +39,16 @@ public class Match implements Runnable {
         while (running) {
             // Have we received input from either client?
             // If so, relay immediately regardless of counter
-            Optional<String> playerOneMove = playerOne.getMove();
-            Optional<String> playerTwoMove = playerTwo.getMove();
+            Optional<String> playerOneMove = null;
+            Optional<String> playerTwoMove = null;
+            try {
+                playerOneMove = playerOne.getMove();
+                playerTwoMove = playerTwo.getMove();
+            } catch (InterruptedException e) {
+                System.err.println("[WARN] Match.run : Player disconnect while retrieving move!");
+                running = false;
+                break;
+            }
 
             if(playerOneMove.isPresent()) {
                 // Handle player one input
@@ -42,8 +59,15 @@ public class Match implements Runnable {
                 playerOneGameState.handleInput(move);
 
                 // Relay new game state to clients
-                playerOne.updateGameState(playerOneGameState);
-                playerTwo.updateGameState(playerTwoGameState);
+                try {
+                    playerOne.updateGameState(playerOneGameState, true);
+                    playerTwo.updateGameState(playerTwoGameState, false);
+                } catch (InterruptedException e) {
+                    System.err.println("[WARN] Match.run : Player disconnect while updating game state after player one input!");
+                    running = false;
+                    break;
+                }
+
             }
             if(playerTwoMove.isPresent()) {
                 // Handle player two input
@@ -54,15 +78,26 @@ public class Match implements Runnable {
                 playerTwoGameState.handleInput(move);
 
                 // Relay to both clients
-                playerOne.updateGameState(playerOneGameState);
-                playerTwo.updateGameState(playerTwoGameState);
+                try {
+                    playerOne.updateGameState(playerOneGameState, false);
+                    playerTwo.updateGameState(playerTwoGameState, true);
+                } catch (InterruptedException e) {
+                    System.err.println("[WARN] Match.run : Player disconnect while updating game state after player two input!");
+                    running = false;
+                    break;
+                }
+
             }
 
             if (loopNum % 10 == 0) {
-                // Send gamestate to player 1
-                playerOne.updateGameState(playerOneGameState);
-                // Send gamestate to player 2
-                playerTwo.updateGameState(playerTwoGameState);
+                try {
+                    playerOne.updateGameState(playerOneGameState, true);
+                    playerTwo.updateGameState(playerTwoGameState, true);
+                } catch (InterruptedException e) {
+                    System.err.println("[WARN] Match.run : Player disconnect while scheduled-updating game state.");
+                    running = false;
+                    break;
+                }
             }
 
             // Logic tick
