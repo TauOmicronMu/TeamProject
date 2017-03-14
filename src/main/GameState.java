@@ -15,7 +15,7 @@ public class GameState implements Serializable {
 
     private final int windowWidth;
     private final int windowHeight;
-    private Random random = new Random();
+    private Random random;
     private Ball ball;
     private Platform platforms[] = new Platform[8];
     private MovingPlatform movingPlatform[] = new MovingPlatform[4]; 
@@ -29,7 +29,8 @@ public class GameState implements Serializable {
     int mouseYPosition;
 
 
-    GameState(int width, int height) {
+    GameState(int seed, int width, int height) {
+        this.random = new Random(seed);
         this.windowWidth = width;
         this.windowHeight = height;
     }
@@ -222,5 +223,18 @@ public class GameState implements Serializable {
 
     public boolean gameOver(){
     	return ball.gameOver();
-    }    
+    }
+
+    public void handleInput(String move) {
+        switch(move) {
+            case "a":
+                getBall().moveLeft();
+                break;
+            case "d":
+                getBall().moveRight();
+                break;
+            default:
+                System.err.println("[WARN] GameState.handleInput : Bad move => " + move);
+        }
+    }
 }

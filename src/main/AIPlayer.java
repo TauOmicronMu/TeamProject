@@ -1,7 +1,15 @@
 package main;
 
-/**
- * Created by bede on 14/03/2017.
- */
+import java.util.Optional;
+
 public class AIPlayer implements Player {
+    @Override
+    public Optional<String> getMove() {
+        return null;
+    }
+
+    @Override
+    public void updateGameState(GameState gameState) throws InterruptedException {
+
+    }
 }

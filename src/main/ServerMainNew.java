@@ -39,7 +39,7 @@ public class ServerMainNew {
     }
 
     public static void main(String... args) {
-        ServerMainNew main = new ServerMainNew(8080);
+        ServerMainNew main = new ServerMainNew(Constants.PORT);
         main.initialize();
         main.run();
     }

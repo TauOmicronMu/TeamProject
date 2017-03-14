@@ -9,8 +9,8 @@ import java.net.Socket;
 
 
 public class ServerSideClientHandler implements Runnable {
-    private ObjectInputStream inputStream = null;
-    private ObjectOutputStream outputStream = null;
+    protected ObjectInputStream inputStream = null;
+    protected ObjectOutputStream outputStream = null;
     private Socket clientSocket = null;
 
     public ServerSideClientHandler(Socket clientSocket) {
@@ -50,8 +50,13 @@ public class ServerSideClientHandler implements Runnable {
         }
     }
 
+    /**
+     * If there's someone in the wait queue currently, create a match between them and us.
+     * If not, just place ourselves into the wait queue.
+     */
     private void createHumanMatch() {
         System.out.println("[INFO] ServerSideClientHandler.createHumanMatch: Setting up a human match.");
+
     }
 
     void createAIMatch() {

@@ -1,12 +1,13 @@
 package main;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import networking.Message;
 import networking.NetworkClient;
 
 public class Main extends NetworkClient {
 
-    private static final int windowHeight = 800;
-    private static final int windowWidth = 800;
+    private static final int windowHeight = Constants.WINDOW_HEIGHT;
+    private static final int windowWidth = Constants.WINDOW_WIDTH;
 
     public Window getWindow() {
         return window;
@@ -46,7 +47,7 @@ public class Main extends NetworkClient {
             window.repaint(game);
 
             try {
-                Thread.sleep(1000/120);
+                Thread.sleep(Constants.FPS_SLEEP);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -55,7 +56,7 @@ public class Main extends NetworkClient {
     }
 
     public static void main(String[] args) {
-        Main main = new Main("localhost", 8080);
+        Main main = new Main("localhost", Constants.PORT);
         main.play();
     }
 
