@@ -11,16 +11,21 @@ import java.net.Socket;
  * to a remote server using a hostname and port, we use a ServerSocket
  * to listen for incoming connections.
  */
-class NetworkServerEngine extends NetworkEngine implements Runnable {
+public class NetworkServerEngine extends NetworkEngine implements Runnable {
 
+    private final int port;
     private ServerSocket serverSocket = null;
 
+
+    public NetworkServerEngine(int port) {
+        this.port = port;
+    }
+
     /**
-     * Create a server-socket, accept a single connection and setup the
+     * Create a server-socket, acceptNewConnection a single connection and setup the
      * NetworkEngine using it.
-     * @param port The port we should listen on for a connection.
      */
-    void initialize(int port) {
+    public void initialize() {
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
@@ -29,12 +34,11 @@ class NetworkServerEngine extends NetworkEngine implements Runnable {
         }
     }
 
-    void accept() {
+    public Socket acceptNewConnection() {
         try {
-            Socket socket = serverSocket.accept();
-            super.initialize(socket);
+            return serverSocket.accept();
         } catch (IOException e) {
-            System.err.println("Couldn't listen for connections.");
+            System.err.println("Couldn't listen for conenctions. Shutting down...");
             System.exit(1);
         }
     }

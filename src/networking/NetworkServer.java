@@ -1,6 +1,8 @@
 package networking;
 
 
+import java.net.Socket;
+
 /**
  * A NetworkServer exists to abstract away some setup code for creating a
  * NetworkServerEngine and initializing it, then defaulting to NetworkUser
@@ -23,14 +25,15 @@ public abstract class NetworkServer extends NetworkUser {
         NetworkServerEngine netEngine = new NetworkServerEngine();
         netEngine.initialize(port);
         engine = netEngine;
+        serverEngine = netEngine;
     }
 
     /**
      * Wrapper method around the NetworkServerEngine to block until a new
      * client has connected.
      */
-    protected void waitForClient() {
-        engine.accept();
+    protected Socket waitForClientConnection() {
+        return serverEngine.acceptNewConnection();
     }
 
     /**

@@ -15,7 +15,8 @@ public class GameState implements Serializable {
 
     private final int windowWidth;
     private final int windowHeight;
-    private Random random = new Random();
+    private final int randomSeed;
+    private Random random;
     private Ball ball;
     private Platform platforms[] = new Platform[8];
     private MovingPlatform movingPlatform[] = new MovingPlatform[4]; 
@@ -29,9 +30,28 @@ public class GameState implements Serializable {
     int mouseYPosition;
 
 
+    private GameState
+            (
+            int width, int height, int randomSeed, Ball ball, Platform[] platforms, MovingPlatform[] movingPlatforms,
+            Item[] items, int score
+            )
+    {
+        this.windowWidth = width;
+        this.windowHeight = height;
+        this.randomSeed = randomSeed;
+        this.random = new Random(randomSeed);
+        this.ball = ball;
+        this.platforms = platforms;
+        this.movingPlatform = movingPlatforms;
+        this.items = items;
+        this.score = score;
+    }
+
     GameState(int width, int height) {
         this.windowWidth = width;
         this.windowHeight = height;
+        this.randomSeed = new Random().nextInt();
+        this.random = new Random(randomSeed);
     }
 
 
@@ -222,5 +242,21 @@ public class GameState implements Serializable {
 
     public boolean gameOver(){
     	return ball.gameOver();
-    }    
+    }
+
+    public GameState copy() {
+        Platform[] platformsCopy = platforms.clone();
+        MovingPlatform[] movingPlatformsCopy = movingPlatform.clone();
+        Item[] itemsCopy = items.clone();
+
+        return new GameState(
+                windowWidth, windowHeight,
+                randomSeed,
+                ball.copy(),
+                platformsCopy,
+                movingPlatformsCopy,
+                itemsCopy,
+                score
+        );
+    }
 }

@@ -5,8 +5,9 @@ import networking.NetworkClient;
 
 public class Main extends NetworkClient {
 
-    private static final int windowHeight = 800;
-    private static final int windowWidth = 800;
+    private static final int windowHeight = Constants.windowHeight;
+    private static final int windowWidth = Constants.windowWidth;
+    private final NetworkClient networkClient;
 
     public Window getWindow() {
         return window;
@@ -16,7 +17,7 @@ public class Main extends NetworkClient {
     private GameState game;
 
     private Main(String host, int port) {
-        super(host, port);
+        this.networkClient = NetworkClient.fromHostPort(host, port);
     }
 
     /**
@@ -39,7 +40,7 @@ public class Main extends NetworkClient {
 
         while (!window.shouldClose()) {
             if (window.getScreen() == Screen.GAME) {
-                handleMessages();
+                networkClient.handleMessages();
                 game.updateLogic();
                 game.updatePhysics();
             }

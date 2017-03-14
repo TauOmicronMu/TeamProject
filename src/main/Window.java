@@ -30,8 +30,8 @@ class Window {
 	private static PowerUpShader pshader;
 	private static PowerUpShader2 pshader2;
     private long window;
-    private int windowHeight = 800;
-    private int windowWidth = 800;
+    private int windowHeight;
+    private int windowWidth;
     private static boolean shouldChangeToGame = false;
     private static boolean shouldQuit = false;
     private static boolean shouldChangeToMenu = false;

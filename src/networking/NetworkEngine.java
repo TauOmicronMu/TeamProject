@@ -123,10 +123,6 @@ abstract class NetworkEngine implements Runnable {
         new Thread(this).start();
     }
 
-    void accept() {
-
-    }
-
     boolean isRunning() {
         return running;
     }

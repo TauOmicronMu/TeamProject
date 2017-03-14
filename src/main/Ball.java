@@ -22,6 +22,31 @@ public class Ball implements Serializable {
     private boolean gameOver = false;
 
 
+    Ball(double x, double y, double dx, double dy, int radius, double gravity,
+         double gameDy, int agility, int maxSpeed, int countFlyPower, int score,
+         boolean permission, boolean gameOver) {
+        this.x = x;
+        this.y = y;
+        this.dx = dx;
+        this.dy = dy;
+        this.radius = radius;
+        this.gravity = gravity;
+        this.gameDy = gameDy;
+        this.agility = agility;
+        this.maxSpeed = maxSpeed;
+        this.countFlyPower = countFlyPower;
+        this.score = score;
+        this.permission = permission;
+        this.gameOver = gameOver;
+    }
+
+    Ball copy() {
+        return new Ball(
+                x, y, dx, dy, radius, gravity, gameDy, agility, maxSpeed, countFlyPower, score, permission, gameOver
+        );
+    }
+
+
     Ball(double i, double j) {
         x = i;
         y = j;
