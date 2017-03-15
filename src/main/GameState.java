@@ -72,6 +72,7 @@ public class GameState implements Serializable {
                 800,
                 PLATFORM_HEIGHT
         );
+        System.out.print(platforms[0].getY() +" ");
 
         for (int i = 1; i < platforms.length; i++) {
             // Todo: understand and refactor these "magic numbers".
@@ -91,7 +92,7 @@ public class GameState implements Serializable {
                 switch (random.nextInt(3)) {
                     case 0:
                         int xPosition = random.nextInt(windowWidth - 100);
-                        int yPosition = 400 - 100 * i - 20;
+                        int yPosition = 400 - 100 * i;
                         platforms[i] = new JumpOncePlatform(
                                 xPosition,
                                 yPosition,
@@ -114,7 +115,7 @@ public class GameState implements Serializable {
                         break;
                     case 2:
                         int x3Position = random.nextInt(windowWidth - 100);
-                        int y3Position = 400 - 100 * i - 20;
+                        int y3Position = 400 - 100 * i;
                         platforms[i] = new TrapPlatform(
                                 x3Position,
                                 y3Position,
@@ -124,7 +125,10 @@ public class GameState implements Serializable {
                         break;
                     }
                 }
+            System.out.print(platforms[i].getY());
+
             }
+        System.out.println();
         }
 
     /**
@@ -133,7 +137,7 @@ public class GameState implements Serializable {
     private void updateItems() {
         //Item[] items = this.getItems();
         for (int i = 0; i < items.length; i++) {
-            if (items[i] == null || items[i].getY() > windowHeight || items[i].getNull()) {
+            if (items[i].getY() > windowHeight || items[i].getNull()) {
                 //items[i] = null;
                 switch (random.nextInt(4)) {
                     case 0:
@@ -160,17 +164,20 @@ public class GameState implements Serializable {
     private void updatePlatforms() {
         double yPosition;
         double xPosition;
-
+        for(int i = 0; i<platforms.length; i++){
+            System.out.print(platforms[i].getY() + " ");
+        }
+        System.out.println();
     //Platform[] platforms = this.getPlatforms();
         for (int i = 0; i < platforms.length; i++) {
-            if(platforms[i].getY() >= windowHeight || platforms[i].getNull()) {
-
+            if(platforms[i].getY() >= windowHeight) {
+    //platforms[i].getNull()==true
                 if(i-1<0) {
                     yPosition = (platforms[platforms.length-1]).getY() - 100;
-                    System.out.println(yPosition);
+
                 }
                 else yPosition = platforms[i-1].getY() - 100;
-
+                System.out.println(yPosition);
                 if (i % 2 != 0) {
 
                     xPosition = random.nextInt(windowWidth - 100);
@@ -181,18 +188,18 @@ public class GameState implements Serializable {
                             PLATFORM_HEIGHT
                     );
                 } else {
-                    switch (random.nextInt(3)) {
-                        case 0:
-                            xPosition = random.nextInt(windowWidth - 100);
-                            platforms[i] = new JumpOncePlatform(
-                                    xPosition,
-                                    yPosition,
-                                    PLATFORM_WIDTH,
-                                    PLATFORM_HEIGHT
-                            );
-                            break;
+                    switch (random.nextInt(1)) {
+//                        case 0:
+//                            xPosition = random.nextInt(windowWidth - 100);
+//                            platforms[i] = new JumpOncePlatform(
+//                                    xPosition,
+//                                    yPosition,
+//                                    PLATFORM_WIDTH,
+//                                    PLATFORM_HEIGHT
+//                            );
+//                            break;
 
-                        case 1:
+                        case 0:
                             xPosition = 200 + random.nextInt(windowWidth - 400);
                             platforms[i] = new MovingHorizontallyPlatform(
                                     xPosition,
@@ -203,15 +210,15 @@ public class GameState implements Serializable {
                                     xPosition + 200
                             );
                             break;
-                        case 2:
-                            xPosition = random.nextInt(windowWidth - 100);
-                            platforms[i] = new TrapPlatform(
-                                    xPosition,
-                                    yPosition,
-                                    PLATFORM_WIDTH,
-                                    PLATFORM_HEIGHT
-                            );
-                            break;
+//                        case 2:
+//                            xPosition = random.nextInt(windowWidth - 100);
+//                            platforms[i] = new TrapPlatform(
+//                                    xPosition,
+//                                    yPosition,
+//                                    PLATFORM_WIDTH,
+//                                    PLATFORM_HEIGHT
+//                            );
+//                            break;
                     }
                 }
             }

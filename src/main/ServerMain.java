@@ -29,13 +29,14 @@ public class ServerMain extends NetworkServer implements Runnable {
     public void run() {
         // Block until a new client has connected.
         System.out.println("Waiting for client to connect...");
-        waitForClient();
 
+        waitForClient();
         // Create a GameState for the client.
         gameState = new GameState(800, 800);
         gameState.setUp();
         gameState.generatePlatforms();
         gameState.generateItems();
+
 
 
         // Main loop:
@@ -53,7 +54,7 @@ public class ServerMain extends NetworkServer implements Runnable {
             gameState.updateLogic();
             gameState.updatePhysics();                   
             
-            gameState.printScore();
+            //gameState.printScore();
 
             // Sleep for a fixed duration. Todo: think about variable timestep!
             try {
