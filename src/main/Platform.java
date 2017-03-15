@@ -33,14 +33,14 @@ class Platform implements Serializable {
         this.isNull= false;
     }
 
-    public Platform() {
-        dy = 2;
-        x = 300;
-        y = 300;
-        width = 140;
-        height = 20;
-        highestPoint = 200;
-    }
+//    public Platform() {
+//        dy = 2;
+//        x = 300;
+//        y = 600;
+//        width = 140;
+//        height = 20;
+//        highestPoint = 200;
+//    }
 
     /*
      *Updates the position of the platform
@@ -102,7 +102,6 @@ class Platform implements Serializable {
     public void setDx(int dx){
     	this.dy = dx;
     }
-
     public double getY() {
         return y;
     }

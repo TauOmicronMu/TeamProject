@@ -5,18 +5,18 @@ import java.util.Random;
 
 class TrapPlatform extends Platform {
 	
-	TrapPlatform(int x, int y, int width, int height) {
+	TrapPlatform(double x, double y, int width, int height) {
         super(x, y, width, height);
     }
 
-    public TrapPlatform(double xPosition, double yPosition, int platformWidth, int platformHeight) {
-        dy = 2;
-        x = 300;
-        y = 300;
-        width = 140;
-        height = 20;
-        highestPoint = 200;
-    }
+//    public TrapPlatform(double xPosition, double yPosition, int platformWidth, int platformHeight) {
+//        dy = 2;
+//        x = 300;
+//        y = 300;
+//        width = 140;
+//        height = 20;
+//        highestPoint = 200;
+//    }
 
     @Override
     void update(GameState game) {

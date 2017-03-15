@@ -7,22 +7,23 @@ class MovingHorizontallyPlatform extends Platform{
     private int dx;
     private double x1, x2;
 
-    MovingHorizontallyPlatform(int x, int y, int width, int height, int x1, int x2 ) {
+    MovingHorizontallyPlatform(double x, double y, int width, int height, double x1, double x2 ) {
         super(x, y, width, height);
         this.x1 = x1;
         this.x2 = x2;
         dx = -1;        
     }
 
-    public MovingHorizontallyPlatform(double xPosition, double yPosition, int platformWidth, int platformHeight, double v, double v1) {
-        dy = 2;
-        dx = -1;
-        x = 300;
-        y = 300;
-        width = 120;
-        height = 40;
-        highestPoint = 200;
-    }
+//    public MovingHorizontallyPlatform(double xPosition, double yPosition, int platformWidth, int platformHeight, double v, double v1) {
+//
+//        dy = 2;
+//        dx = -1;
+//        x = 300;
+//        y = 300;
+//        width = 120;
+//        height = 40;
+//        highestPoint = 200;
+//    }
 
     @Override
     void update(GameState game) {

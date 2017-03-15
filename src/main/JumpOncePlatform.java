@@ -9,14 +9,14 @@ class JumpOncePlatform extends Platform {
         super(x, y, width, height);
     }
 
-    public JumpOncePlatform() {
-        dy = 3;
-        x = 300;
-        y = 300;
-        width = 140;
-        height = 20;
-        highestPoint = 200;
-    }
+//    public JumpOncePlatform() {
+//        dy = 3;
+//        x = 300;
+//        y = 300;
+//        width = 140;
+//        height = 20;
+//        highestPoint = 200;
+//    }
 
     @Override
     void update(GameState game) {
