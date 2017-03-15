@@ -1,10 +1,7 @@
 package main;
 
 import java.io.Serializable;
-import java.util.Random;
-
 import static org.lwjgl.opengl.GL11.glColor4f;
-
 
 class Platform implements Serializable {
 
@@ -33,22 +30,13 @@ class Platform implements Serializable {
         this.isNull= false;
     }
 
-//    public Platform() {
-//        dy = 2;
-//        x = 300;
-//        y = 600;
-//        width = 140;
-//        height = 20;
-//        highestPoint = 200;
-//    }
-
     /*
      *Updates the position of the platform
      *@param game the game class object
      *@param ball the ball class object
      */
     void update(GameState game) {
-    	
+        //Every type of platforms has its own implementation of this method
     }
 
     /*
@@ -61,24 +49,21 @@ class Platform implements Serializable {
      * Checks if any ball has collided with the platform
      * @param ball the ball object
      */
-    
     public void checkForCollision(Ball ball, GameState game) {
-        int ballX = (int) ball.getX();
-        int ballY = (int) ball.getY();
-        int radius = ball.getRadius();
+        if(isNull == false) {
+            int ballX = (int) ball.getX();
+            int ballY = (int) ball.getY();
+            int radius = ball.getRadius();
 
-        if (ballY + radius > y && ballY + radius < y + height) {
-            //System.out.println("Y true");
-            if (ballX > x && ballX < x + width) {
-
-                //System.out.println("Collision");
-
-                double newDy = ball.getGameDy();
-                if(ball.getDy()>0){
-                    AudioEngine.getInstance().playTrack(AudioEngine.BOING);
-                	ball.setDy(newDy);
+            if (ballY + radius > y && ballY + radius < y + height) {
+                if (ballX > x && ballX < x + width) {
+                    double newDy = ball.getGameDy();
+                    if(ball.getDy()>0){
+                        AudioEngine.getInstance().playTrack(AudioEngine.BOING);
+                        ball.setDy(newDy);
+                    }
+                    ball.setY(y - radius);
                 }
-                ball.setY(y - radius);
             }
         }
     }
@@ -98,7 +83,7 @@ class Platform implements Serializable {
             Rectangle.drawrectangle(verticesb);
         }
     }
-    
+
     public void setDx(int dx){
     	this.dy = dx;
     }

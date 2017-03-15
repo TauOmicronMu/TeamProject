@@ -33,14 +33,12 @@ public class Ball implements Serializable {
 
     void slowMotion(){
         dx = dx/5;
-
         COUNTER ++;
         maxSpeed = maxSpeed/5;
         agility = agility/5;
         slowMotion = 300;
         slowMotionPowerUp = true;
         System.out.println("THIS WORKS" + " dx= " + dx + " maxSpeed= "+ maxSpeed + " agility= " + agility + " COUNTER " + COUNTER);
-
     }
 
     void moveRight() {
@@ -74,13 +72,12 @@ public class Ball implements Serializable {
         }
     }
 
+    //Method that allows the player to double jump every 500 updates
     void doubleJump(){
-
-        if(doubleJump < 1){
+        if(doubleJump == 0){
             this.dy = this.gameDy;
             this.doubleJump = 500;
         }
-
     }
 
 

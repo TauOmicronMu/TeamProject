@@ -31,7 +31,6 @@ public class Main extends NetworkClient {
         game.generateItems();
         window.init(game, this);
     }
-
     /**
      * The play() method implements the main game loop.
      */

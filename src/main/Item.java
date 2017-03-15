@@ -2,15 +2,13 @@ package main;
 
 import java.io.Serializable;
 import java.util.Random;
-
 import static org.lwjgl.opengl.GL11.glColor4f;
 
 
 class Item implements Serializable {
 
     private int x, y, dy, radius, type, highestPoint;
-    private boolean isNull=false;
-
+    private boolean isNull;
 
     /*
      * Constructor for item class(PowerUps)
@@ -21,10 +19,11 @@ class Item implements Serializable {
         this.y = y;
         this.type=type;
         Random r = new Random();
-        x = r.nextInt(700) + radius + 100;
-        radius = 10;
-        dy = 3;
-        highestPoint = 200;
+        x = r.nextInt(600) + radius + 100;
+        this.radius = 15;
+        this.dy = 3;
+        this.highestPoint = 200;
+        this.isNull = false;
     }
 
     public boolean getNull() {
@@ -38,10 +37,12 @@ class Item implements Serializable {
      * 1 for GraveDown
      * 2 for GraveUp
      * 3 for FlyUp
+     * 4 for Points
      */
     public int getType() {
 		return type;
 	}
+
     /*
      * Get method for Y
      */
@@ -80,7 +81,7 @@ class Item implements Serializable {
             	} else {
             		y += dy;
             	}
-            	
+
          		if(ball.getCountFlyPower() == 0)
          		 checkForCollision(game);
          		else y += 20;         
@@ -105,22 +106,23 @@ class Item implements Serializable {
      * @param ball
      */
     private void checkForCollision(GameState game) {
-        Ball ball = game.getBall();
+        if(isNull == false){
+            Ball ball = game.getBall();
 
-        double ballX = ball.getX();
-        double ballY = ball.getY();
-        int ballR = ball.getRadius();
+            double ballX = ball.getX();
+            double ballY = ball.getY();
+            int ballR = ball.getRadius();
 
-        double a = x - ballX;
-        double b = y - ballY;
-        int collide = radius + ballR;
-        //distance between object centers
-        double c = Math.sqrt((double) (a * a) + (double) (b * b));
-        if (c < collide) {
-            performAction(game);
-            isNull=true;
+            double a = x - ballX;
+            double b = y - ballY;
+            int collide = radius + ballR;
+            //distance between object centers
+            double c = Math.sqrt((double) (a * a) + (double) (b * b));
+            if (c < collide) {
+                performAction(game);
+                isNull=true;
+            }
         }
-
     }
 
     /*
@@ -170,7 +172,6 @@ class Item implements Serializable {
             vertices[j + 2] = posz;
             i++;
         }
-
         return vertices;
     }
 }

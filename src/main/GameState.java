@@ -27,7 +27,7 @@ public class GameState implements Serializable {
     private int counter = 0;
 
 
-    private static final int PLATFORM_WIDTH = 100;
+    private static final int PLATFORM_WIDTH = 140;
     private static final int PLATFORM_HEIGHT = 20;
 
     int score;
@@ -72,7 +72,6 @@ public class GameState implements Serializable {
                 800,
                 PLATFORM_HEIGHT
         );
-        System.out.print(platforms[0].getY() +" ");
 
         for (int i = 1; i < platforms.length; i++) {
             // Todo: understand and refactor these "magic numbers".
@@ -125,59 +124,55 @@ public class GameState implements Serializable {
                         break;
                     }
                 }
-            System.out.print(platforms[i].getY());
-
             }
-        System.out.println();
         }
 
     /**
      * Update the powerup items in the current game state.
      */
     private void updateItems() {
-        //Item[] items = this.getItems();
+        for(int i = 0; i<items.length; i++){
+            System.out.print(items[i].getY() + " ");
+        }
+        System.out.println();
         for (int i = 0; i < items.length; i++) {
-            if (items[i].getY() > windowHeight || items[i].getNull()) {
+            if (items[i].getY() >= windowHeight) {
                 //items[i] = null;
+                int y = (int)this.getHighestItem();
                 switch (random.nextInt(4)) {
                     case 0:
-						items[i]=new main.GravDown(- 10 * random.nextInt(500), 1);
-						items[i].setNull(false);
+						items[i]=new main.GravDown( -1000 + y - random.nextInt(500), 1);
 						break;
 					case 1:
-						items[i]=new main.GravUp(-10 * random.nextInt(500), 2);
-                        items[i].setNull(false);
+						items[i]=new main.GravUp(  - 1000 + y - random.nextInt(500), 2);
 						break;
 					case 2:
-                        items[i]=new main.FlyUpPower(-10 * random.nextInt(500), 3);
-                        items[i].setNull(false);
+                        items[i]=new main.FlyUpPower(  - 1000 + y - random.nextInt(500), 3);
                         break;
                     case 3:
-                        items[i]=new main.PointsItem(-10 * random.nextInt(500), 4);
-                        items[i].setNull(false);
+                        items[i]=new main.PointsItem(-1000 + y - random.nextInt(500), 4);
                         break;
                 }
             }
         }
     }
 
+
     private void updatePlatforms() {
         double yPosition;
         double xPosition;
-        for(int i = 0; i<platforms.length; i++){
-            System.out.print(platforms[i].getY() + " ");
-        }
+//        for(int i = 0; i<platforms.length; i++){
+//            System.out.print(platforms[i].getY() + " ");
+//        }
         System.out.println();
-    //Platform[] platforms = this.getPlatforms();
         for (int i = 0; i < platforms.length; i++) {
             if(platforms[i].getY() >= windowHeight) {
-    //platforms[i].getNull()==true
                 if(i-1<0) {
                     yPosition = (platforms[platforms.length-1]).getY() - 100;
 
                 }
                 else yPosition = platforms[i-1].getY() - 100;
-                System.out.println(yPosition);
+                //System.out.println(yPosition);
                 if (i % 2 != 0) {
 
                     xPosition = random.nextInt(windowWidth - 100);
@@ -188,18 +183,18 @@ public class GameState implements Serializable {
                             PLATFORM_HEIGHT
                     );
                 } else {
-                    switch (random.nextInt(1)) {
-//                        case 0:
-//                            xPosition = random.nextInt(windowWidth - 100);
-//                            platforms[i] = new JumpOncePlatform(
-//                                    xPosition,
-//                                    yPosition,
-//                                    PLATFORM_WIDTH,
-//                                    PLATFORM_HEIGHT
-//                            );
-//                            break;
-
+                    switch (random.nextInt(3)) {
                         case 0:
+                            xPosition = random.nextInt(windowWidth - 100);
+                            platforms[i] = new JumpOncePlatform(
+                                    xPosition,
+                                    yPosition,
+                                    PLATFORM_WIDTH,
+                                    PLATFORM_HEIGHT
+                            );
+                            break;
+
+                        case 1:
                             xPosition = 200 + random.nextInt(windowWidth - 400);
                             platforms[i] = new MovingHorizontallyPlatform(
                                     xPosition,
@@ -210,15 +205,15 @@ public class GameState implements Serializable {
                                     xPosition + 200
                             );
                             break;
-//                        case 2:
-//                            xPosition = random.nextInt(windowWidth - 100);
-//                            platforms[i] = new TrapPlatform(
-//                                    xPosition,
-//                                    yPosition,
-//                                    PLATFORM_WIDTH,
-//                                    PLATFORM_HEIGHT
-//                            );
-//                            break;
+                        case 2:
+                            xPosition = random.nextInt(windowWidth - 100);
+                            platforms[i] = new TrapPlatform(
+                                    xPosition,
+                                    yPosition,
+                                    PLATFORM_WIDTH,
+                                    PLATFORM_HEIGHT
+                            );
+                            break;
                     }
                 }
             }
@@ -240,7 +235,6 @@ public class GameState implements Serializable {
         }
     }
 
-
     /**
      * Populates the list of items in this main.GameState with a set of
      * power-ups.
@@ -250,21 +244,20 @@ public class GameState implements Serializable {
             // Todo: understand and refactor this "magic number".
         	switch (random.nextInt(4)) {
                 case 0:
-                    items[i]=new main.GravDown(- 10 * random.nextInt(500), 1);
+                    items[i]=new main.GravDown(- i * 500 + random.nextInt(500), 1);
                     break;
                 case 1:
-                    items[i]=new main.GravUp(-10 * random.nextInt(500), 2);
+                    items[i]=new main.GravUp(- i * 500 + random.nextInt(500), 2);
                     break;
                 case 2:
-                    items[i]=new main.FlyUpPower(-10 * random.nextInt(500), 3);
+                    items[i]=new main.FlyUpPower(-i * 500 + random.nextInt(500), 3);
                     break;
                 case 3:
-                    items[i]=new main.PointsItem(-10 * random.nextInt(500), 4);
+                    items[i]=new main.PointsItem(-i * 500 + random.nextInt(500), 4);
                     break;
         	}
         }
     }
-
 
     /**
      * Retrieve each powerup item currently on-screen.
@@ -320,6 +313,15 @@ public class GameState implements Serializable {
 
     public double getYPlatform(int i){
         return platforms[i].getY();
+    }
+
+    public double getHighestItem(){
+        double max = 0;
+        for(int i = 0; i<items.length; i++){
+            if(items[i].getY()<max)
+                max = items[i].getY();
+        }
+        return max;
     }
 }
 

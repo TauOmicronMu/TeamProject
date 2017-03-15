@@ -5,8 +5,8 @@ import main.Item;
 
 public class FlyUpPower extends main.Item{
 
-	public FlyUpPower(int x, int type) {
-		super(x, type);
+	public FlyUpPower(int y, int type) {
+		super(y, type);
 		// TODO Auto-generated constructor stub
 	}
 	
