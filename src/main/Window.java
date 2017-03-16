@@ -184,10 +184,14 @@ class Window {
         for (Platform platform : platforms) {
             if (platform != null) platform.paint(this);
         }
-        MovingPlatform[] movingPlatforms = gameState.getMovingPlatforms();
-        for (MovingPlatform movingPlatform : movingPlatforms) {
-            if (movingPlatform != null) movingPlatform.paint(this);
-        }
+//        Platform[] movingPlatforms = gameState.getMovingPlatforms();
+//        for (Platform movingPlatform : movingPlatforms) {
+//            if (movingPlatform != null) movingPlatform.paint(this);
+//        }
+//        Platform[] jumpOncePlatforms = gameState.getJumpOncePlatform();
+//        for (Platform jumpOncePlatform : jumpOncePlatforms) {
+//            if (jumpOncePlatform != null) jumpOncePlatform.paint(this);
+//        }
     }
 
 
@@ -196,11 +200,19 @@ class Window {
      */
     private void handleKeyboardInput(GameState gameState, NetworkClient client) {
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_TRUE) {
-            gameState.getBall().moveLeft();
             client.sendMessage(new Message("a"));
         } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_TRUE) {
             gameState.getBall().moveRight();
             client.sendMessage(new Message("d"));
+        }
+        else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_TRUE ) {
+            //if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+
+            client.sendMessage(new Message("space"));
+        }
+        else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_TRUE) {
+
+            client.sendMessage(new Message("leftshift"));
         }
     }
 

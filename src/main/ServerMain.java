@@ -29,14 +29,15 @@ public class ServerMain extends NetworkServer implements Runnable {
     public void run() {
         // Block until a new client has connected.
         System.out.println("Waiting for client to connect...");
-        waitForClient();
 
+        waitForClient();
         // Create a GameState for the client.
         gameState = new GameState(800, 800);
         gameState.setUp();
         gameState.generatePlatforms();
         gameState.generateItems();
- 
+
+
 
         // Main loop:
         while (true) {
@@ -49,10 +50,11 @@ public class ServerMain extends NetworkServer implements Runnable {
 
             // Handle any input messages the client has sent us.
             if (!handleMessages()) break;
+
             gameState.updateLogic();
             gameState.updatePhysics();                   
             
-            gameState.printScore();
+            //gameState.printScore();
 
             // Sleep for a fixed duration. Todo: think about variable timestep!
             try {
@@ -103,6 +105,25 @@ public class ServerMain extends NetworkServer implements Runnable {
             }
             case "d": {
                 gameState.getBall().moveRight();
+                break;
+            }
+            case "leftshift": {
+
+//            	gameState.getBall().increment();
+////            	if(gameState.getBall().getCOUNTER()==0)gameState.getBall().setCOUNTER(100000);
+////            	if(gameState.getBall().getCOUNTER()>0){
+////            		try {
+////    					Thread.sleep(10	00);
+////    				} catch (InterruptedException e) {
+////    					// TODO Auto-generated catch block
+////    					e.printStackTrace();
+////    				}
+////            	}
+                break;
+            }
+            case "space": {
+                //gameState.getBall().slowMotion();
+                gameState.getBall().doubleJump();
                 break;
             }
         }

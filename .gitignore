@@ -1,3 +1,7 @@
+TeamProject.iml
+
+.iml/
+
 *.class
 
 # IntelliJ Files
@@ -96,3 +100,4 @@ Temporary Items
 
 .idea*
 build
+

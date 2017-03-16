@@ -2,13 +2,13 @@ package main;
 
 import java.io.Serializable;
 import java.util.Random;
-
 import static org.lwjgl.opengl.GL11.glColor4f;
 
 
 class Item implements Serializable {
 
     private int x, y, dy, radius, type, highestPoint;
+    private boolean isNull;
 
     /*
      * Constructor for item class(PowerUps)
@@ -19,21 +19,30 @@ class Item implements Serializable {
         this.y = y;
         this.type=type;
         Random r = new Random();
-        x = r.nextInt(700) + radius + 100;
-        radius = 10;
-        dy = 3;
-        highestPoint = 200;
+        x = r.nextInt(600) + radius + 100;
+        this.radius = 15;
+        this.dy = 3;
+        this.highestPoint = 200;
+        this.isNull = false;
     }
 
+    public boolean getNull() {
+        return isNull;
+    }
+    public void setNull(boolean x) {
+        isNull = x;
+    }
     /*
      * Return the type of powerUp
      * 1 for GraveDown
      * 2 for GraveUp
      * 3 for FlyUp
+     * 4 for Points
      */
     public int getType() {
 		return type;
 	}
+
     /*
      * Get method for Y
      */
@@ -72,15 +81,15 @@ class Item implements Serializable {
             	} else {
             		y += dy;
             	}
-            	
+
          		if(ball.getCountFlyPower() == 0)
-         		 checkForCollision(ball, game);
+         		 checkForCollision(game);
          		else y += 20;         
             	
            } else {
         	   y += dy;
         		if(ball.getCountFlyPower() == 0)
-        		 checkForCollision(ball, game);
+        		 checkForCollision(game);
         		else y += 20;
                 }
             
@@ -96,38 +105,44 @@ class Item implements Serializable {
      * Checks for collision between the ball and the powerUp
      * @param ball
      */
-    private void checkForCollision(Ball ball, GameState game) {
-        double ballX = ball.getX();
-        double ballY = ball.getY();
-        int ballR = ball.getRadius();
+    private void checkForCollision(GameState game) {
+        if(isNull == false){
+            Ball ball = game.getBall();
 
-        double a = x - ballX;
-        double b = y - ballY;
-        int collide = radius + ballR;
-        //distance between object centers
-        double c = Math.sqrt((double) (a * a) + (double) (b * b));
-        if (c < collide) {
-            performAction(ball);
-            y = game.getWindowHeight() + 100;
+            double ballX = ball.getX();
+            double ballY = ball.getY();
+            int ballR = ball.getRadius();
+
+            double a = x - ballX;
+            double b = y - ballY;
+            int collide = radius + ballR;
+            //distance between object centers
+            double c = Math.sqrt((double) (a * a) + (double) (b * b));
+            if (c < collide) {
+                performAction(game);
+                isNull=true;
+            }
         }
-
     }
 
     /*
      * Changes the behaviour of the ball depending on the powerUp
      * @param ball
      */
-    public void performAction(Ball ball) {
+    public void performAction(GameState game) {
     }
 
     /*
      * Paints the powerUps
      */
     public void paint(Window window) {
-        double[] vertices = createCircle(window.glScaleX(x), window.glScaleY(y), 0.2f, 0.02f);
-        Model circle1 = new Model(vertices);
+        if(isNull == false){
+            double[] vertices = createCircle(window.glScaleX(x), window.glScaleY(y), 0.2f, 0.02f);
+            Model circle1 = new Model(vertices);
 
-        circle1.render(vertices);
+            circle1.render(vertices);
+        }
+
     }
 
     /**
@@ -157,7 +172,6 @@ class Item implements Serializable {
             vertices[j + 2] = posz;
             i++;
         }
-
         return vertices;
     }
 }

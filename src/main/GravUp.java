@@ -9,8 +9,10 @@ public class GravUp extends main.Item{
 	}
 	
 	@Override
-	public void performAction(Ball ball) {
+	public void performAction(GameState game) {
+		Ball ball = game.getBall();
 		ball.setGravity(ball.getGravity() + 2);
+		//System.out.println("GRAVEUP");
 	}
 	
 	
