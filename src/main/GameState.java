@@ -29,10 +29,14 @@ public class GameState implements Serializable {
     int mouseYPosition;
 
 
-    GameState(int seed, int width, int height) {
-        this.random = new Random(seed);
+    GameState(int width, int height) {
         this.windowWidth = width;
         this.windowHeight = height;
+        ball = new Ball(windowWidth / 2, 200);
+    }
+
+    void setSeed(int seed) {
+        this.random = new Random(seed);
     }
 
 
@@ -42,14 +46,6 @@ public class GameState implements Serializable {
 
     int getWindowHeight() {
         return windowHeight;
-    }
-
-
-    /**
-     * Sets up a main.GameState by creating a ball, platforms, and items.
-     */
-    public void setUp() {
-        ball = new Ball(windowWidth / 2, 200);
     }
 
 

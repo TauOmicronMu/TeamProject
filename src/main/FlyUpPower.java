@@ -18,8 +18,8 @@ public class FlyUpPower extends main.Item{
 	}
 	
 	@Override
-	public void paint(Window window) {
+	public void paint(Window window, boolean opponent) {
 		//colour
-		super.paint(window);
+		super.paint(window, opponent);
 	}
 }

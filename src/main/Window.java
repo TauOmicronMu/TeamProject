@@ -91,6 +91,7 @@ class Window {
     }
 
 
+
     /**
      * Utility method to terminate any graphics-related services.
      */
@@ -111,7 +112,7 @@ class Window {
     /**
      * Draw each powerup item in the current game state.
      */
-    private void drawAllItems(GameState gameState) {
+    private void drawAllItems(GameState gameState, boolean opponent) {
         Item[] items = gameState.getItems();
         for (Item item : items) {
             if (item != null)
@@ -120,19 +121,19 @@ class Window {
             	if(type == 1)
             	{
             		pshader1.bind();
-            		item.paint(this);
+            		item.paint(this, opponent);
             		pshader1.stop();
             	}
             	if(type == 2)
             	{
             		pshader2.bind();
-            		item.paint(this);
+            		item.paint(this, opponent);
             		pshader2.stop();
             	}
             	else
             	{
             		pshader3.bind();
-            		item.paint(this);
+            		item.paint(this, opponent);
             		pshader3.stop();
             	}
             }
@@ -142,23 +143,27 @@ class Window {
 
     /**
      * Redraw the screen with data from the given main.GameState.
-     * @param gameState Information about the position about each item.
+     * @param ourGameState Information about the position about each item.
      */
-    void repaint(GameState gameState) {
+    void repaint(GameState ourGameState, GameState theirGameState) {
         glClear(GL_COLOR_BUFFER_BIT);
         rshader.bind();
 
         if (screen == Screen.MAIN_MENU) {
             Menu.drawAll();
         } else {
-        	drawAllPlatforms(gameState);
+        	drawAllPlatforms(ourGameState, false);
+        	drawAllPlatforms(theirGameState, true);
         	rshader.stop();
-            drawAllItems(gameState);
+            drawAllItems(ourGameState, false);
+            drawAllItems(theirGameState, true);
             cshader.bind();
-            drawBall(gameState);
+            drawBall(ourGameState, false);
+            drawBall(theirGameState, true);
             cshader.stop();
             Menu.drawBackToMenuButton();
-            Menu.printScore(gameState.score, gameState.getBall());
+            Menu.printScore(ourGameState.score, ourGameState.getBall(), false);
+            Menu.printScore(ourGameState.score, ourGameState.getBall(), false);
         }
 
         glfwSwapBuffers(window);
@@ -169,9 +174,9 @@ class Window {
      * Utility method to delegate to main.Circle in order to render the ball.
      * @param gameState The game-state containing the ball.
      */
-    private void drawBall(GameState gameState) {
+    private void drawBall(GameState gameState, boolean opponent) {
         Ball ball = gameState.getBall();
-        Circle.paintPinball(this, ball.getX(), ball.getY(), ball.getRadius());
+        Circle.paintPinball(this, ball.getX(), ball.getY(), ball.getRadius(), opponent);
     }
 
 
@@ -179,14 +184,15 @@ class Window {
      * Utility method to iterate through each platform and render it.
      * @param gameState The game-state containing each platform.
      */
-    private void drawAllPlatforms(GameState gameState) {
+    private void drawAllPlatforms(GameState gameState, boolean opponent) {
+        // System.out.println("DRAW ALL PLATFORMS :O :O :O :O :O");
         Platform[] platforms = gameState.getPlatforms();
         for (Platform platform : platforms) {
-            if (platform != null) platform.paint(this);
+            if (platform != null) platform.paint(this, opponent);
         }
         MovingPlatform[] movingPlatforms = gameState.getMovingPlatforms();
         for (MovingPlatform movingPlatform : movingPlatforms) {
-            if (movingPlatform != null) movingPlatform.paint(this);
+            if (movingPlatform != null) movingPlatform.paint(this, opponent);
         }
     }
 
@@ -267,9 +273,9 @@ class Window {
      * @param client
      */
     private void handleMouseClick(GameState gameState, Main client, double x, double y) {
-        x = glScaleX(x);
+        x = glScaleX(x, false, client.getWindow().getScreen());
         y = glScaleY(y);
-        System.out.printf("Mouse press at (%.2f, %.2f).\n", x, y);
+        System.out.printf("[INFO] Mouse press at (%.2f, %.2f).\n", x, y);
 
         // Handle mouse input depending on which screen we're on.
         switch(screen) {
@@ -330,8 +336,10 @@ class Window {
      * @param x The X coordinate to scale to the OpenGL viewport.
      * @return The converted coordinate.
      */
-    double glScaleX(double x) {
-        return -1.0f + x / (float) (windowWidth / 2);
+    double glScaleX(double x, boolean opponent, Screen screen) {
+        if(screen == Screen.MAIN_MENU) return -1.0f + x / (float) (windowWidth/2);
+        if (opponent) return x / (float) (windowWidth/4);
+        return -1.0f + x / (float) (windowWidth/4);
     }
 
     /**

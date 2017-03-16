@@ -123,8 +123,8 @@ class Item implements Serializable {
     /*
      * Paints the powerUps
      */
-    public void paint(Window window) {
-        double[] vertices = createCircle(window.glScaleX(x), window.glScaleY(y), 0.2f, 0.02f);
+    public void paint(Window window, boolean opponent) {
+        double[] vertices = createCircle(window.glScaleX(x, opponent, Screen.GAME), window.glScaleY(y), 0.2f, 0.02f);
         Model circle1 = new Model(vertices);
 
         circle1.render(vertices);

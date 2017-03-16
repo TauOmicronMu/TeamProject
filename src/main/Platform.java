@@ -135,8 +135,8 @@ class Platform implements Serializable {
     /*
      * Draws the platform
      */
-    void paint(Window game) {
-        double scaledX = game.glScaleX(x);
+    void paint(Window game, boolean opponent) {
+        double scaledX = game.glScaleX(x, opponent, Screen.GAME);
         double scaledY = game.glScaleY(y);
         double widthGl = game.glScaleDistance(width);
         double heightGl = game.glScaleDistance(height);

@@ -19,8 +19,18 @@ public class Match implements Runnable {
 
         // Create new authoritative game states with the same random seed
         int seed = new Random().nextInt();
-        GameState playerOneGameState = new GameState(seed, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-        GameState playerTwoGameState = new GameState(seed, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        GameState playerOneGameState = new GameState(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        playerOneGameState.setSeed(seed);
+        GameState playerTwoGameState = new GameState(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        playerTwoGameState.setSeed(seed);
+
+        System.out.println("[INFO] Match.run : Generating Platforms...");
+        playerOneGameState.generatePlatforms();
+        playerTwoGameState.generatePlatforms();
+
+        System.out.println("[INFO] Match.run : Generating Items...");
+        playerOneGameState.generateItems();
+        playerTwoGameState.generateItems();
 
         System.out.println("[INFO] Match.run : Sending seed to client(s)...");
         try {
@@ -90,9 +100,12 @@ public class Match implements Runnable {
             }
 
             if (loopNum % 10 == 0) {
+                System.out.println("Yeah we sendin' shiz!");
                 try {
                     playerOne.updateGameState(playerOneGameState, true);
+                    playerOne.updateGameState(playerTwoGameState, false);
                     playerTwo.updateGameState(playerTwoGameState, true);
+                    playerTwo.updateGameState(playerOneGameState, false);
                 } catch (InterruptedException e) {
                     System.err.println("[WARN] Match.run : Player disconnect while scheduled-updating game state.");
                     running = false;

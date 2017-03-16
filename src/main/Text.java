@@ -22,7 +22,6 @@ class Text{
 	 * @param x the beginning x coordinate
 	 * @param y the beginning y coordinate
 	 * @param scale how big the letters should be
-	 * @param width the thickness of the letters
 	 */
 	public static void draw(String s, float x, float y, float scale) {
 	      float startX = x;
