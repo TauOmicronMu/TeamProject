@@ -29,7 +29,6 @@ class Model {
      */
     Model(double[] vertices) {
         draw_count = vertices.length / 3;
-
         DoubleBuffer buffer = BufferUtils.createDoubleBuffer(vertices.length);
         buffer.put(vertices);
         buffer.flip();
