@@ -25,11 +25,11 @@ class Window {
     private Screen screen = Screen.MAIN_MENU;
     private static int cursorXPosition;
     private static int cursorYPosition;
-    private static CircleShader cshader;
-	private static RectangleShader rshader;
-	private static PowerUpShader pshader1;
-	private static PowerUpShader pshader2;
-	private static PowerUpShader pshader3;
+    private static ShaderProgram cshader;
+	private static ShaderProgram rshader;
+	private static ShaderProgram pshader1;
+	private static ShaderProgram pshader2;
+	private static ShaderProgram pshader3;
     private long window;
     private int windowHeight = 800;
     private int windowWidth = 800;
@@ -81,11 +81,11 @@ class Window {
         glfwMakeContextCurrent(window);
 
         GL.createCapabilities();
-        cshader = new CircleShader();
-		rshader = new RectangleShader();
-		pshader1 = new PowerUpShader("pshader");
-		pshader2 = new PowerUpShader("pshader2");
-		pshader3 = new PowerUpShader("pshader3");
+        cshader = new ShaderProgram("shaders/cshader.vs","shaders/shader.fs");
+		rshader = new ShaderProgram("shaders/rshader.vs","shaders/shader.fs");
+		pshader1 = new ShaderProgram("shaders/pshader.vs","shaders/shader.fs");
+		pshader2 = new ShaderProgram("shaders/pshader2.vs","shaders/shader.fs");
+		pshader3 = new ShaderProgram("shaders/pshader3.vs","shaders/shader.fs");
 
         registerInputCallbacks(gameState, client);
     }

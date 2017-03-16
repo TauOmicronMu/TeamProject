@@ -161,6 +161,9 @@ class Text{
 	          case '0':
 	        	  draw0(scale,startX,y);
 	              break;
+	          case '.':
+	        	  drawDot(scale,startX,y);
+	        	  break;
 	          }
 	          if(!space){
 	        	  startX += scale * 0.65/scale;
@@ -175,6 +178,11 @@ class Text{
 	      }
 	   }
 
+	
+	private static void drawDot(float scale, float startX, float y)
+	{
+        convert(scale * startX, scale * y,scale * startX, scale * y);
+	}
 	/**
 	 * Draws the back button within the main game
 	 * @param scale passed from draw method
@@ -510,6 +518,12 @@ class Text{
 	 * @param y2
 	 */
 	private static void convert(float x1, float y1, float x2, float y2)
+	{
+		double[] vertices = {x1,y1,0.9,x1,(y2+0.01),0.9,(x2+0.01),(y2+0.01),0.9,(x2+0.01),y1,0.9};
+		Rectangle.drawrectangle(vertices);
+	}
+	
+	private static void convert2(float x1, float y1, float x2, float y2)
 	{
 		double[] vertices = {x1,y1,0.9,x1,(y2+0.01),0.9,(x2+0.01),(y2+0.01),0.9,(x2+0.01),y1,0.9};
 		Rectangle.drawrectangle(vertices);
