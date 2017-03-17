@@ -7,7 +7,7 @@ import static org.lwjgl.opengl.GL11.glColor4f;
 
 
 class MovingPlatform implements Serializable {
-
+	
     private int dy;
     private int dx;
     private int width, height;
@@ -30,7 +30,7 @@ class MovingPlatform implements Serializable {
         this.height = height;
         this.x1 = x1;
         this.x2 = x2;
-        dy = 3;
+        dy = Constants.PLATFORM_START_DY; // was 3
         dx = -1;
         highestPoint = 200;
     }

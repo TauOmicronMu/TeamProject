@@ -25,7 +25,7 @@ class Platform implements Serializable {
         this.y = y;
         this.width = width;
         this.height = height;
-        dy = 3;
+        dy = Constants.PLATFORM_START_DY;
         highestPoint = 200;
     }
 

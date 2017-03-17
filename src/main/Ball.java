@@ -14,8 +14,8 @@ public class Ball implements Serializable {
     private static final double dt = 0.1;
     private static final double xFriction = 0.9;
     private double gameDy = -90;
-    private int agility = 1;
-    private int maxSpeed = 5;
+    private int agility = 5; // Was 1
+    private int maxSpeed = 15; // Was 5
     private int countFlyPower = 0;
     private int score;
     private boolean permission = false;
