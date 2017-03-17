@@ -6,14 +6,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Queue;
 
 
 public class ServerSideClientHandler implements Runnable {
     protected ObjectInputStream inputStream = null;
     protected ObjectOutputStream outputStream = null;
     private Socket clientSocket = null;
+    private Queue<Player> playerQueue = null;
 
-    public ServerSideClientHandler(Socket clientSocket) {
+    public ServerSideClientHandler(Socket clientSocket, Queue playerQueue) {
         if (clientSocket == null) {
             System.err.println("[ERROR] ServerSideClientHandler constructor: Client socket is null.");
             System.exit(1);
@@ -25,6 +27,7 @@ public class ServerSideClientHandler implements Runnable {
         } catch (IOException e) {
             System.err.println("[ERROR] ServerSideClientHandler constructor: Couldn't get input or output stream from socket.");
         }
+        this.playerQueue = playerQueue;
     }
 
     @Override
@@ -56,7 +59,10 @@ public class ServerSideClientHandler implements Runnable {
      */
     private void createHumanMatch() {
         System.out.println("[INFO] ServerSideClientHandler.createHumanMatch: Setting up a human match.");
-
+        Player us = new HumanPlayer(this);
+        Player opp;
+        if((opp = playerQueue.poll()) != null) new Thread(new Match(us, opp)).start();
+        playerQueue.add(us);
     }
 
     void createAIMatch() {

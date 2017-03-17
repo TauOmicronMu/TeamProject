@@ -146,42 +146,60 @@ class Window {
         }
     }
 
-
     /**
      * Redraw the screen with data from the given main.GameState.
      * @param ourGameState Information about the position about each item.
      */
     void repaint(GameState ourGameState, GameState theirGameState) {
+        final boolean debug = false;
+        long startTime;
     	rshader.bind();
         if (screen == Screen.MAIN_MENU) {
            Menu.drawAll();
         } else {
-        	System.out.println("draw platforms for our game state");
-            long startTime = currentTimeMillis();
-        	drawAllPlatforms(ourGameState, false);
-        	System.out.println((currentTimeMillis() - startTime) + "ms");
-            System.out.println("draw platforms for opponent game state");
-            startTime = currentTimeMillis();
-        	drawAllPlatforms(theirGameState, true);
-        	System.out.println((currentTimeMillis() - startTime) + "ms");
-        	rshader.stop();
-        	System.out.println("draw items for our game state");
-            startTime = currentTimeMillis();
+        	if(debug) System.out.println("draw platforms for our game state");
+            if(debug) startTime = currentTimeMillis();
+
+            drawAllPlatforms(ourGameState, false);
+
+            if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
+            if(debug) System.out.println("draw platforms for opponent game state");
+            if(debug) startTime = currentTimeMillis();
+
+            drawAllPlatforms(theirGameState, true);
+
+        	if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
+
+            rshader.stop();
+
+        	if(debug) System.out.println("draw items for our game state");
+            if(debug) startTime = currentTimeMillis();
+
             drawAllItems(ourGameState, false);
-        	System.out.println((currentTimeMillis() - startTime) + "ms");
-        	System.out.println("draw items for opponent game state");
-            startTime = currentTimeMillis();
+
+            if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
+            if(debug) System.out.println("draw items for opponent game state");
+            if(debug) startTime = currentTimeMillis();
+
             drawAllItems(theirGameState, true);
-        	System.out.println((currentTimeMillis() - startTime) + "ms");
+
+            if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
+
             cshader.bind();
-        	System.out.println("draw ball for our game state");
-            startTime = currentTimeMillis();
+
+            if(debug) System.out.println("draw ball for our game state");
+            if(debug) startTime = currentTimeMillis();
+
             drawBall(ourGameState, false);
-        	System.out.println((currentTimeMillis() - startTime) + "ms");
-        	System.out.println("draw ball for opponent game state");
-            startTime = currentTimeMillis();
+
+            if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
+            if(debug) System.out.println("draw ball for opponent game state");
+            if(debug) startTime = currentTimeMillis();
+
             drawBall(theirGameState, true);
-        	System.out.println((currentTimeMillis() - startTime) + "ms");
+
+            if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
+
             cshader.stop();
             Menu.drawBackToMenuButton();
             // Menu.printScore(ourGameState.score, ourGameState.getBall(), false);
@@ -308,7 +326,7 @@ class Window {
             // If we're on the main menu:
             case MAIN_MENU: {
                 if (onPlayGameButton(x, y)) {
-                    client.startGame(OpponentType.AI);
+                    client.startGame(OpponentType.HUMAN);
                 } else if (onQuitButton(x, y)) {
                     quit();
                 }
