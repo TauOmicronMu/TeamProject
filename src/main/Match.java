@@ -99,7 +99,7 @@ public class Match implements Runnable {
 
             }
 
-            if (loopNum % 10000000 == 0) {
+            if (loopNum % 10 == 0) {
                 try {
                     playerOne.updateGameState(playerOneGameState, true);
                     playerOne.updateGameState(playerTwoGameState, false);
