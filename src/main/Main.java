@@ -37,7 +37,15 @@ public class Main extends NetworkClient {
 
         Menu.drawAll();
 
+        double gcCounter = 0.0;
+
         while (!myWindow.shouldClose()) {
+
+            // Clear *all of the stuff* that gets
+            // created by openGL that we can't remove
+            // manually
+            if(gcCounter % 10 == 0) System.gc();
+            gcCounter++;
 
             long startTime = currentTimeMillis();
             if (myWindow.getScreen() == Screen.GAME) {
