@@ -30,6 +30,7 @@ class Window {
 	private static ShaderProgram pshader1;
 	private static ShaderProgram pshader2;
 	private static ShaderProgram pshader3;
+	private static ShaderProgram tshader2;
     private long window;
     private int windowHeight = 800;
     private int windowWidth = 800;
@@ -86,6 +87,7 @@ class Window {
 		pshader1 = new ShaderProgram("shaders/pshader.vs","shaders/shader.fs");
 		pshader2 = new ShaderProgram("shaders/pshader2.vs","shaders/shader.fs");
 		pshader3 = new ShaderProgram("shaders/pshader3.vs","shaders/shader.fs");
+		tshader2 = new ShaderProgram("shaders/tshader2.vs","shaders/shader.fs");
 
         registerInputCallbacks(gameState, client);
     }
@@ -129,11 +131,17 @@ class Window {
             		item.paint(this);
             		pshader1.stop();
             	}
-            	else
+            	if(type == 3)
             	{
             		pshader3.bind();
             		item.paint(this);
             		pshader3.stop();
+            	}
+            	if(type == 4)
+            	{
+            		tshader2.bind();
+            		item.paint(this);
+            		tshader2.stop();
             	}
             }
         }

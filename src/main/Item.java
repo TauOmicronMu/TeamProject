@@ -9,6 +9,7 @@ import static org.lwjgl.opengl.GL11.glColor4f;
 class Item implements Serializable {
 
     private int x, y, dy, radius, type, highestPoint;
+    private static Text text = new Text();
 
     /*
      * Constructor for item class(PowerUps)
@@ -30,6 +31,7 @@ class Item implements Serializable {
      * 1 for GraveDown
      * 2 for GraveUp
      * 3 for FlyUp
+     * 4 for add points
      */
     public int getType() {
 		return type;
@@ -133,15 +135,22 @@ class Item implements Serializable {
     	{
     		vertices = new double[]{window.glScaleX(this.x), window.glScaleY(this.y),0.8f,(window.glScaleX(this.x)+0.03f),(window.glScaleY(this.y)-0.03f),0.8f,(window.glScaleX(this.x)-0.03f),(window.glScaleY(this.y)-0.03f),0.8f};
     	}
-    	if(type == 3)
+    	if(type == 4)
     	{
     		vertices = createCircle(window.glScaleX(this.x), window.glScaleY(this.y), 0.2f, 0.02f);
     	}
-    	
+    	if(type == 3)
+    	{
+    		vertices = createCircle(window.glScaleX(this.x), window.glScaleY(this.y), 0.2f, 0.02f);
+    		Text.draw("+300",(float)(window.glScaleX(this.x)), (float)(window.glScaleY(this.y)), 0.3f);
+    	}
 
-        Model triangles = new Model(vertices);
+    	if(type != 5)
+    	{
+    		Model triangles = new Model(vertices);
 
-        triangles.render(vertices);
+    		triangles.render(vertices);
+    	}
     }
 
     /**

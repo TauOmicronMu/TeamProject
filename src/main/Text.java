@@ -164,6 +164,8 @@ class Text{
 	          case '.':
 	        	  drawDot(scale,startX,y);
 	        	  break;
+	          case '+':
+	        	  drawPlus(scale,startX,y);
 	          }
 	          if(!space){
 	        	  startX += scale * 0.65/scale;
@@ -178,6 +180,11 @@ class Text{
 	      }
 	   }
 
+	private static void drawPlus(float scale, float startX, float y)
+	{
+		convert(scale * (startX - 0.3f),scale * (y - 0.4f),scale * (startX-0.1f),scale * (y - 0.4f));
+        convert(scale * (startX - 0.2f), scale * (y - 0.2f),scale * (startX - 0.2f), scale * (y - 0.6f));
+	}
 	
 	private static void drawDot(float scale, float startX, float y)
 	{
@@ -518,12 +525,6 @@ class Text{
 	 * @param y2
 	 */
 	private static void convert(float x1, float y1, float x2, float y2)
-	{
-		double[] vertices = {x1,y1,0.9,x1,(y2+0.01),0.9,(x2+0.01),(y2+0.01),0.9,(x2+0.01),y1,0.9};
-		Rectangle.drawrectangle(vertices);
-	}
-	
-	private static void convert2(float x1, float y1, float x2, float y2)
 	{
 		double[] vertices = {x1,y1,0.9,x1,(y2+0.01),0.9,(x2+0.01),(y2+0.01),0.9,(x2+0.01),y1,0.9};
 		Rectangle.drawrectangle(vertices);
