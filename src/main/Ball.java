@@ -9,13 +9,13 @@ public class Ball implements Serializable {
     private double dx = 0;
     private double dy = 0;
     private int radius = 20;
-    private double gravity = 15;
+    private double gravity = Constants.GRAVITY; // was 15
     private static final double energyloss = 1;
-    private static final double dt = 0.1;
+    private static final double dt = Constants.DT; // was 1
     private static final double xFriction = 0.9;
     private double gameDy = -90;
-    private int agility = 1;
-    private int maxSpeed = 5;
+    private int agility = Constants.AGILITY; // was 1
+    private int maxSpeed = Constants.MAX_SPEED; // was 5
     private int countFlyPower = 0;
     private int score;
     private boolean permission = false;

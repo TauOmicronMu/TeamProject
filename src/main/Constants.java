@@ -15,6 +15,12 @@ public class Constants {
     // TODO: Don't have these as a constant - work them out
     // based on our current FPS.
     // 3 for 120 fps
-    // 10 for 25 fps (don't ask)
-	public static final int PLATFORM_START_DY = 3;
+    // 20 for 25 fps (don't ask)
+	public static final int PLATFORM_START_DY = 18;
+
+	public static final double DT = 0.25;
+	public static final int GRAVITY = 22;
+
+    public static final int AGILITY = 7;
+    public static final int MAX_SPEED = 35;
 }
