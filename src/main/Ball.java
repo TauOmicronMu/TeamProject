@@ -29,7 +29,7 @@ public class Ball implements Serializable {
 
 
     void moveRight() {
-    	if (gameOver == false){
+    	if (!gameOver){
     		if (dx + agility < maxSpeed) {
                 dx += agility;
 
@@ -38,7 +38,7 @@ public class Ball implements Serializable {
     }
 
     void moveLeft() {
-    	if (gameOver == false){
+    	if (!gameOver){
     		if (dx - agility > -maxSpeed) {
                 dx -= agility;
             }
@@ -51,7 +51,7 @@ public class Ball implements Serializable {
         int height = game.getWindowHeight();
         int width = game.getWindowWidth();
 
-        if(gameOver == false){
+        if(!gameOver){
         	
         	if (x + dx > width - radius - 1) {
                 x = width - radius - 1;
@@ -82,7 +82,7 @@ public class Ball implements Serializable {
                 		// Calculate new velocity in Y direction:
                         dy += gravity * dt;
                         // Calculate new Y position:
-                        if(permission == false){
+                        if(!permission){
                         y += dy * dt + .5 * gravity * dt * dt;
                         if(dy > 100){
         					dy = 100;

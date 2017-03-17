@@ -26,13 +26,15 @@ abstract class NetworkEngine implements Runnable {
     /**
      * Stop our message-reception loop from continuing at the next iteration.
      */
-    void stop() {
+    void stop() throws InterruptedException {
         running = false;
         try {
             socket.close();
         } catch (IOException e) {
             System.err.println("Closing socket threw an exception. Still closing it.");
         }
+
+        throw new InterruptedException();
     }
 
     /**
@@ -91,20 +93,24 @@ abstract class NetworkEngine implements Runnable {
      */
     @Override
     public void run() {
-        running = true;
-        while (running) {
-            try {
-                Message m = (Message) inputStream.readObject();
-                messages.add(m);
-            } catch (EOFException e) {
-                System.out.println("EOFException. Stopping...");
-                stop();
-            } catch (ClassNotFoundException e) {
-                System.err.println("Invalid object. Continuing...");
-            } catch (IOException e) {
-                System.err.println("IOException. Stopping...");
-                stop();
+        try {
+            running = true;
+            while (running) {
+                try {
+                    Message m = (Message) inputStream.readObject();
+                    messages.add(m);
+                } catch (EOFException e) {
+                    System.out.println("[WARN] NetworkEngine.run : EOFException. Stopping...");
+                    stop();
+                } catch (ClassNotFoundException e) {
+                    System.err.println("[WARN] NetworkEngine.run : Invalid object. Continuing...");
+                } catch (IOException e) {
+                    System.err.println("[WARN] NetworkEngine.run : IOException. Stopping...");
+                    stop();
+                }
             }
+        } catch (InterruptedException ignored) {
+            System.err.println("[WARN] NetworkEngine.run : Stopped Networking thread.");
         }
     }
 

@@ -153,17 +153,17 @@ class Window {
             Menu.drawAll();
         } else {
         	drawAllPlatforms(ourGameState, false);
-        	drawAllPlatforms(theirGameState, true);
+        	//drawAllPlatforms(theirGameState, true);
         	rshader.stop();
             drawAllItems(ourGameState, false);
-            drawAllItems(theirGameState, true);
+            //drawAllItems(theirGameState, true);
             cshader.bind();
             drawBall(ourGameState, false);
-            drawBall(theirGameState, true);
+            //drawBall(theirGameState, true);
             cshader.stop();
             Menu.drawBackToMenuButton();
             Menu.printScore(ourGameState.score, ourGameState.getBall(), false);
-            Menu.printScore(ourGameState.score, ourGameState.getBall(), false);
+            //Menu.printScore(theirGameState.score, ourGameState.getBall(), true);
         }
 
         glfwSwapBuffers(window);
@@ -201,10 +201,13 @@ class Window {
      * Use GLFW to handle the current state of the keyboard.
      */
     private void handleKeyboardInput(GameState gameState, NetworkClient client) {
+        //System.out.println("[INFO] Window.handleKeyboardInput : Handling input.");
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_TRUE) {
+            System.out.println("[INFO] Window.handleKeyboardInput : Key(A) pressed.");
             gameState.getBall().moveLeft();
             client.sendMessage(new Message("a"));
         } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_TRUE) {
+            System.out.println("[INFO] Window.handleKeyboardInput : Key(D) pressed.");
             gameState.getBall().moveRight();
             client.sendMessage(new Message("d"));
         }
@@ -338,8 +341,8 @@ class Window {
      */
     double glScaleX(double x, boolean opponent, Screen screen) {
         if(screen == Screen.MAIN_MENU) return -1.0f + x / (float) (windowWidth/2);
-        if (opponent) return x / (float) (windowWidth/4);
-        return -1.0f + x / (float) (windowWidth/4);
+        if (opponent) return x / (float) (windowWidth);
+        return -1.0f + x / (float) (windowWidth);
     }
 
     /**

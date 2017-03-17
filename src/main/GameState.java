@@ -25,8 +25,6 @@ public class GameState implements Serializable {
     private static final int PLATFORM_HEIGHT = 20;
 
     int score;
-    int mouseXPosition;
-    int mouseYPosition;
 
 
     GameState(int width, int height) {

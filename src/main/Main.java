@@ -3,6 +3,8 @@ package main;
 import networking.Message;
 import networking.NetworkClient;
 
+import static java.lang.System.currentTimeMillis;
+
 public class Main extends NetworkClient {
 
     private static final int windowHeight = Constants.WINDOW_HEIGHT;
@@ -32,7 +34,10 @@ public class Main extends NetworkClient {
         myWindow.init(myGame, this);
 
         Menu.drawAll();
+
         while (!myWindow.shouldClose()) {
+
+            long startTime = currentTimeMillis();
             if (myWindow.getScreen() == Screen.GAME) {
                 handleMessages();
                 myGame.updateLogic();
@@ -40,16 +45,22 @@ public class Main extends NetworkClient {
                 oppGame.updateLogic();
                 oppGame.updatePhysics();
             }
+
             myWindow.handleInput(myGame, this);
             myWindow.repaint(myGame, oppGame);  // Todo: paint oppGame
 
+            long endTime = currentTimeMillis();
+            //System.out.println("[INFO] Main.play : Loop took " + (endTime-startTime) + "ms");
             try {
-                Thread.sleep(Constants.FPS_SLEEP);
+                Thread.sleep(Math.max(Constants.FPS_SLEEP - (endTime-startTime), 0));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
         myWindow.end();
+        System.out.println("[INFO] Main.play : Window closed.");
+        AudioEngine.getInstance().destroy();
+        System.exit(0);
     }
 
     void startGame(OpponentType opponentType) {

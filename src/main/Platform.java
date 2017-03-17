@@ -48,9 +48,9 @@ class Platform implements Serializable {
 
         Ball ball = game.getBall();
        
-        if(ball.gameOver()==false){
+        if(!ball.gameOver()){
         	
-        	if(ball.getDy() >0)
+        	if(ball.getDy() > 0)
         		ball.setPermission(false);
             
             if(ball.getY() < highestPoint && ball.getDy() < 0){
@@ -124,7 +124,7 @@ class Platform implements Serializable {
 
                 // If the ball has collided with the top of the platform ~Tom
                 if(ball.getDy()>0){
-                    AudioEngine.getInstance().playTrack(AudioEngine.BOING); // Play the boing sound
+                    // AudioEngine.getInstance().playTrack(AudioEngine.BOING); // Play the boing sound
                     ball.setDy(newDy);
                 }
                 ball.setY(y - radius);

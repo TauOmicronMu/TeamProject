@@ -264,6 +264,14 @@ public class AudioEngine {
         AL.createCapabilities(deviceCaps);
     }
 
+    public void destroy() {
+        for (Track t : tracks) {
+            t.killALData();
+        }
+        ALC10.alcCloseDevice(this.device);
+        ALC10.alcMakeContextCurrent(0);
+    }
+
     /**
      * Plays the Track with reference, ref, or does nothing if ref is out of bounds.
      * @param ref The reference to the Track to play.

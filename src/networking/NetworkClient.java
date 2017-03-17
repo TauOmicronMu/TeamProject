@@ -21,15 +21,16 @@ abstract public class NetworkClient extends NetworkUser {
      */
     public void initialize() {
         if (this.engine != null) {
-            this.engine.stop();
+            System.out.println("[INFO] NetworkClient.initialize : stopping previous engine.");
+            try {
+                this.engine.stop();
+            } catch (InterruptedException ignored) {
+                System.out.println("[INFO] NetworkClient.initialize : caught InterruptedException from stopping network client.");
+            }
         }
 
         NetworkClientEngine engine = new NetworkClientEngine();
         engine.initialize(host, port);
         this.engine = engine;
-    }
-
-    public void stop() {
-        this.engine.stop();
     }
 }

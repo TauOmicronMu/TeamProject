@@ -55,7 +55,7 @@ class MovingPlatform implements Serializable {
 
         Ball ball = game.getBall();
         
-        if(ball.gameOver() == false){
+        if(!ball.gameOver()){
         	if(ball.getDy() >0)
             	ball.setPermission(false);
             
