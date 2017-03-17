@@ -48,6 +48,7 @@ class Model {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
 
+
     }
 
     private float[] toFloatArray(double[] doubles) {

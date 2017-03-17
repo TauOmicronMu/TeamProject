@@ -17,6 +17,7 @@ public class Constants {
     // 3 for 120 fps
     // 20 for 25 fps (don't ask)
 	public static final int PLATFORM_START_DY = 18;
+	public static final int ITEM_START_DY = 18;
 
 	public static final double DT = 0.25;
 	public static final int GRAVITY = 22;

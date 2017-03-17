@@ -22,6 +22,8 @@ public class Main extends NetworkClient {
     }
 
 
+    // XXJ312
+
     /**
      * The play() method implements the main myGame loop.
      */

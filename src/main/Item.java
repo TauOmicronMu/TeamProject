@@ -21,7 +21,7 @@ class Item implements Serializable {
         Random r = new Random();
         x = r.nextInt(700) + radius + 100;
         radius = 10;
-        dy = 3;
+        dy = Constants.ITEM_START_DY;
         highestPoint = 200;
     }
 

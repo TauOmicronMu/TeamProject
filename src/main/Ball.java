@@ -71,9 +71,10 @@ public class Ball implements Serializable {
                     }
                 }
 
+                // If the ball touches the ground...
                 if (y > height - radius - 1) {
                     y = height - radius - 1;
-                    dy *= energyloss;
+                    // dy *= energyloss;
                     //if you dont want the game to end when the ball touches the ground,
                     //just comment the next line of code("gameOver = true;")
                     //gameOver = true;
@@ -82,15 +83,15 @@ public class Ball implements Serializable {
                 		// Calculate new velocity in Y direction:
                         dy += gravity * dt;
                         // Calculate new Y position:
-                        if(!permission){
+                        if(!permission){ // If we reach the top of the screen make everything move faster
                         y += dy * dt + .5 * gravity * dt * dt;
-                        if(dy > 100){
+                        if(dy > 100){ // Cap the y speed at 100
         					dy = 100;
         				}
-        				if(dy < -100){
+        				if(dy < -100){ // Floor the y speed at -100
         					dy = -100;
         				}
-        				if(dy<0){
+        				if(dy<=0){
         					score += -dy;
         				} else {
         					score += 3;
@@ -98,7 +99,7 @@ public class Ball implements Serializable {
                 	}
                 }
             }
-            else countFlyPower --;           	      
+            else countFlyPower--;
         }               
     }
     double getGameDy() {

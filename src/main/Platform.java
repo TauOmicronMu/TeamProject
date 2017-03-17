@@ -12,6 +12,7 @@ class Platform implements Serializable {
     private int width, height;
     private double x, y;
     private double highestPoint;
+    public boolean isNull;
 
     /*
      *Constructor for platform object
@@ -27,6 +28,7 @@ class Platform implements Serializable {
         this.height = height;
         dy = Constants.PLATFORM_START_DY;
         highestPoint = 200;
+        this.isNull = false;
     }
 
     public Platform() {
@@ -110,6 +112,7 @@ class Platform implements Serializable {
      * @param ball the ball object
      */
     private void checkForCollision(Ball ball) {
+        if(isNull) return;
         int ballX = (int) ball.getX();
         int ballY = (int) ball.getY();
         int radius = ball.getRadius();
@@ -136,6 +139,7 @@ class Platform implements Serializable {
      * Draws the platform
      */
     void paint(Window game, boolean opponent) {
+        if(isNull) return;
         double scaledX = game.glScaleX(x, opponent, Screen.GAME);
         double scaledY = game.glScaleY(y);
         double widthGl = game.glScaleDistance(width);
