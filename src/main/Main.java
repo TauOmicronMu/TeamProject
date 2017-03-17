@@ -37,7 +37,7 @@ public class Main extends NetworkClient {
 
         Menu.drawAll();
 
-        double gcCounter = 0.0;
+        long gcCounter = 0;
 
         while (!myWindow.shouldClose()) {
 

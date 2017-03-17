@@ -1,5 +1,7 @@
 package main;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+
 import java.util.Optional;
 import java.util.Random;
 
@@ -99,7 +101,7 @@ public class Match implements Runnable {
 
             }
 
-            if (loopNum % 10 == 0) {
+            if (loopNum % Constants.MAX_FPS == 0) {
                 try {
                     playerOne.updateGameState(playerOneGameState, true);
                     playerOne.updateGameState(playerTwoGameState, false);
