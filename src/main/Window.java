@@ -11,6 +11,8 @@ import org.lwjgl.opengl.GL;
 import java.awt.geom.Point2D;
 import java.nio.DoubleBuffer;
 
+import static java.lang.System.currentTimeMillis;
+
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
@@ -54,6 +56,10 @@ class Window {
 
     void quit() {
         shouldQuit = true;
+    }
+    
+    void clear() {
+        glClear(GL_COLOR_BUFFER_BIT);
     }
 
 
@@ -146,24 +152,40 @@ class Window {
      * @param ourGameState Information about the position about each item.
      */
     void repaint(GameState ourGameState, GameState theirGameState) {
-        glClear(GL_COLOR_BUFFER_BIT);
-        rshader.bind();
-
+    	rshader.bind();
         if (screen == Screen.MAIN_MENU) {
-            Menu.drawAll();
+           Menu.drawAll();
         } else {
+        	System.out.println("draw platforms for our game state");
+            long startTime = currentTimeMillis();
         	drawAllPlatforms(ourGameState, false);
-        	//drawAllPlatforms(theirGameState, true);
+        	System.out.println((currentTimeMillis() - startTime) + "ms");
+            System.out.println("draw platforms for opponent game state");
+            startTime = currentTimeMillis();
+        	drawAllPlatforms(theirGameState, true);
+        	System.out.println((currentTimeMillis() - startTime) + "ms");
         	rshader.stop();
+        	System.out.println("draw items for our game state");
+            startTime = currentTimeMillis();
             drawAllItems(ourGameState, false);
-            //drawAllItems(theirGameState, true);
+        	System.out.println((currentTimeMillis() - startTime) + "ms");
+        	System.out.println("draw items for opponent game state");
+            startTime = currentTimeMillis();
+            drawAllItems(theirGameState, true);
+        	System.out.println((currentTimeMillis() - startTime) + "ms");
             cshader.bind();
+        	System.out.println("draw ball for our game state");
+            startTime = currentTimeMillis();
             drawBall(ourGameState, false);
-            //drawBall(theirGameState, true);
+        	System.out.println((currentTimeMillis() - startTime) + "ms");
+        	System.out.println("draw ball for opponent game state");
+            startTime = currentTimeMillis();
+            drawBall(theirGameState, true);
+        	System.out.println((currentTimeMillis() - startTime) + "ms");
             cshader.stop();
             Menu.drawBackToMenuButton();
-            Menu.printScore(ourGameState.score, ourGameState.getBall(), false);
-            //Menu.printScore(theirGameState.score, ourGameState.getBall(), true);
+            // Menu.printScore(ourGameState.score, ourGameState.getBall(), false);
+            // Menu.printScore(theirGameState.score, ourGameState.getBall(), true);
         }
 
         glfwSwapBuffers(window);
@@ -203,11 +225,11 @@ class Window {
     private void handleKeyboardInput(GameState gameState, NetworkClient client) {
         //System.out.println("[INFO] Window.handleKeyboardInput : Handling input.");
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_TRUE) {
-            System.out.println("[INFO] Window.handleKeyboardInput : Key(A) pressed.");
+            // System.out.println("[INFO] Window.handleKeyboardInput : Key(A) pressed.");
             gameState.getBall().moveLeft();
             client.sendMessage(new Message("a"));
         } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_TRUE) {
-            System.out.println("[INFO] Window.handleKeyboardInput : Key(D) pressed.");
+            // System.out.println("[INFO] Window.handleKeyboardInput : Key(D) pressed.");
             gameState.getBall().moveRight();
             client.sendMessage(new Message("d"));
         }

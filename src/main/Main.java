@@ -46,11 +46,12 @@ public class Main extends NetworkClient {
                 oppGame.updatePhysics();
             }
 
+            myWindow.clear();
             myWindow.handleInput(myGame, this);
             myWindow.repaint(myGame, oppGame);  // Todo: paint oppGame
 
             long endTime = currentTimeMillis();
-            //System.out.println("[INFO] Main.play : Loop took " + (endTime-startTime) + "ms");
+            // System.out.println("[INFO] Main.play : Loop took " + (endTime-startTime) + "ms");
             try {
                 Thread.sleep(Math.max(Constants.FPS_SLEEP - (endTime-startTime), 0));
             } catch (InterruptedException e) {
