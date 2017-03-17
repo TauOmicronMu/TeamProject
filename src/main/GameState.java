@@ -131,9 +131,9 @@ public class GameState implements Serializable {
      * Update the powerup items in the current game state.
      */
     private void updateItems() {
-        for(int i = 0; i<items.length; i++){
-            System.out.print(items[i].getY() + " ");
-        }
+//        for(int i = 0; i<items.length; i++){
+//            System.out.print(items[i].getY() + " ");
+//        }
         System.out.println();
         for (int i = 0; i < items.length; i++) {
             if (items[i].getY() >= windowHeight) {
