@@ -53,12 +53,6 @@ public class Ball implements Serializable {
 
         if (gameOver) return;
 
-        // Check if we're inside the Fly powerup.
-        if (countFlyPower > 0) {
-            countFlyPower--;
-            return;
-        }
-
         // Check for collisions with the left/right walls.
         if (x + dx * deltaTime >= width - radius) {
             x = width - radius;
@@ -66,8 +60,16 @@ public class Ball implements Serializable {
         } else if (x + dx * deltaTime < radius) {
             x = radius;
             dx = -dx;
-        } else
+        } else {
+            // Even if we're flying, handle changes in X.
             x += dx * deltaTime;
+        }
+
+        // Check if we're inside the Fly powerup. If so, ignore Y changes.
+        if (countFlyPower > 0) {
+            countFlyPower--;
+            return;
+        }
 
         // If the ball touches the ground...
         if (y >= height - radius) {

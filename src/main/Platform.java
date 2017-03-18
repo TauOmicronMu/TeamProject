@@ -56,6 +56,8 @@ class Platform extends CollidablePlatform implements Serializable {
         // Otherwise, check for collision with the ball.
         checkForCollision(ball, timeStepPixels, x, y, width);
 
+        // If the ball's height is locked, we need to compensate by moving
+        // the platform down at the speed the ball's meant to be rising.
         if (ball.heightIsLocked()) {
             y -= ball.getDy() * timeStepPixels;
         }
