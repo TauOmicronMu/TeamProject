@@ -76,7 +76,7 @@ public class Ball implements Serializable {
             // Calculate new velocity in Y direction:
             dy += gravity * deltaTime;
             // Calculate new y coordinate.
-            y += dy  * deltaTime;
+            y += dy * deltaTime;
         }
 
         dy = Math.min(maxSpeed, dy);

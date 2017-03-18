@@ -22,7 +22,7 @@ public class Constants {
 	public static final float GRAVITY = 6.81f;
 
     public static final int AGILITY = 20;
-    public static final int MAX_SPEED = 50;
+    public static final int MAX_SPEED = 80;
     public static final double TIME_STEP_COEFFICIENT = 0.01;
     public static final int FLY_POWERUP_SPEED = 20;
 }
