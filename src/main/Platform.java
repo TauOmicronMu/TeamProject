@@ -1,7 +1,5 @@
 package main;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
-
 import java.io.Serializable;
 
 import static org.lwjgl.opengl.GL11.glColor4f;
@@ -32,10 +30,10 @@ class Platform extends CollidablePlatform implements Serializable {
         this.isNull = false;
     }
 
-    /*
-     *Updates the position of the platform
-     *@param game the game class object
-     *@param ball the ball class object
+    /**
+     * Updates the position of the platform
+     * @param game the game class object
+     * @param timeStep The elapsed time in the last frame.
      */
     void update(GameState game, double timeStep) {
         double timeStepPixels = timeStep * Constants.TIME_STEP_COEFFICIENT;
@@ -48,17 +46,21 @@ class Platform extends CollidablePlatform implements Serializable {
             return;
         }
 
-        // If we've got the flying powerup, don't bother with collision.
+        // If we've got the flying power-up, don't bother with collision.
         if (ball.getCountFlyPower() > 0) {
             y += Constants.FLY_POWERUP_SPEED;
             game.score += Constants.FLY_POWERUP_SPEED;
             return;
         }
 
-        // Otherwise, first check for permission.
+        // Otherwise, check for collision with the ball.
         checkForCollision(ball, timeStepPixels, x, y, width);
 
-        // Update platform position.
+        if (ball.heightIsLocked()) {
+            y -= ball.getDy() * timeStepPixels;
+        }
+
+        // Update platform Y position.
         y += dy * timeStepPixels;
         game.score += dy * timeStepPixels;
     }

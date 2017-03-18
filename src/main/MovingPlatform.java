@@ -56,75 +56,37 @@ class MovingPlatform extends CollidablePlatform implements Serializable {
 
         double timeStepPixels = timeStep * Constants.TIME_STEP_COEFFICIENT;
 
-        if (y <= game.getWindowHeight() && ball.getCountFlyPower() == 0) {
-            checkForCollision(ball, timeStepPixels, x, y, width);
+        // If the platform is offscreen, move it back on!
+        if (y > game.getWindowHeight()) {
+            Random r = game.random;
+            y = -300;
+            x = 100 + r.nextInt(game.getWindowWidth() - 200);
+            x1 = x - 200;
+            x2 = x + 200;
+            return;
         }
 
-        if(!ball.gameOver()){
-        	if(ball.getDy() >0)
-            	ball.setPermission(false);
-            
-            if(ball.getY() < highestPoint && ball.getDy() < 0){
-            	if(ball.getCountFlyPower() >0){
-        			y+=20;
-        			score+=20;
-                } else {
-                    ball.setPermission(true);
-                    double eqn = dy * timeStepPixels + .5 * ball.getGravity() * timeStepPixels * timeStepPixels;
-
-                	if(eqn < -3){
-                		y +=Math.abs(eqn);
-                		score += eqn;
-                	} else{
-                		y += dy * timeStepPixels;
-                		score += dy * timeStepPixels;
-                	}          	
-
-                //checkForCollision(ball);
-                }
-                if (y > game.getWindowHeight()) {
-
-                    Random r = game.random;
-                    y = -300;
-                    x = 100 + r.nextInt(game.getWindowWidth()-200);
-                    x1 = x - 200;
-                    x2 = x + 200;	
-                    
-                }
-            } else {
-            	if(ball.getCountFlyPower() >0){
-        			y += 20;
-        			score += 20;
-                } else {
-                    y += dy * timeStepPixels;
-                    score += dy * timeStepPixels;
-                //checkForCollision(ball);
-                }
-                if (y > game.getWindowHeight()) {
-                	
-                    Random r = game.random;
-                    y = -300;
-                    x = 100 + r.nextInt(game.getWindowWidth()-200);
-                    x1 = x - 200;
-                    x2 = x + 200;
-                    //x = game.getWindowWidth()/2;              
-                }
-            }
-        } else {
-        	if(y>-100){
-        		y -= 6;
-        	}
+        // If we've got the flying power-up, don't bother with collision.
+        if (ball.getCountFlyPower() > 0) {
+            y += Constants.FLY_POWERUP_SPEED;
+            game.score += Constants.FLY_POWERUP_SPEED;
+            return;
         }
-        
-        if (x <= x1) {
-    		dx =- dx;
-    		x += dx;
-    	} else if(x >= x2) {
-    		dx = -dx;
-    		x += dx;
-    	} else {
-    		x += dx;
-    	}
+
+        // Otherwise, check for collision.
+        checkForCollision(ball, timeStepPixels, x, y, width);
+
+        if (ball.heightIsLocked()) {
+            y -= ball.getDy() * timeStepPixels;
+        }
+
+        // Update platform Y position.
+        y += dy * timeStepPixels;
+        game.score += dy * timeStepPixels;
+
+        // Update platform X position.
+        if (x <= x1 || x >= x2) dx = -dx;
+        x += dx * timeStepPixels;
     }
 
     /*

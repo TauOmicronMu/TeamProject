@@ -42,14 +42,14 @@ class PlatformOld implements Serializable {
 
         Ball ball = game.getBall();
         if (ball.gameOver()) return;
-        if(ball.getDy() > 0) ball.setPermission(false);
+        if(ball.getDy() > 0) ball.setHeightLocked(false);
 
         if(ball.getY() < highestPoint && ball.getDy() < 0){
             if(ball.getCountFlyPower() > 0) {
                 y += 20;
                 game.score += 20;
             } else {
-                ball.setPermission(true);
+                ball.setHeightLocked(true);
                 double val = dy * timeStepPixels + .5 * ball.getGravity() * timeStepPixels * timeStepPixels;
                 if(val < -3){
                     y += Math.abs(val);
