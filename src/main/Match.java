@@ -49,6 +49,8 @@ public class Match implements Runnable {
         int loopNum = 0;
 
         while (running) {
+            long startTime = System.currentTimeMillis();
+
             // Have we received input from either client?
             // If so, relay immediately regardless of counter
             Optional<String> playerOneMove = null;
@@ -101,7 +103,7 @@ public class Match implements Runnable {
 
             }
 
-            if (loopNum % Constants.MAX_FPS == 0) {
+            if (loopNum % 100000000 == 0) {
                 try {
                     playerOne.updateGameState(playerOneGameState, true);
                     playerOne.updateGameState(playerTwoGameState, false);
@@ -113,13 +115,16 @@ public class Match implements Runnable {
                     break;
                 }
             }
+            long endTime = System.currentTimeMillis();
+            long timeStep = endTime - startTime;
 
             // Logic tick
             playerOneGameState.updateLogic();
             playerTwoGameState.updateLogic();
+
             // Physics tick
-            playerOneGameState.updatePhysics();
-            playerTwoGameState.updatePhysics();
+            playerOneGameState.updatePhysics(timeStep);
+            playerTwoGameState.updatePhysics(timeStep);
 
             loopNum++;
 

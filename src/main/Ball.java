@@ -11,7 +11,6 @@ public class Ball implements Serializable {
     private int radius = 20;
     private double gravity = Constants.GRAVITY; // was 15
     private static final double energyloss = 1;
-    private static final double dt = Constants.DT; // was 1
     private static final double xFriction = 0.9;
     private double gameDy = -90;
     private int agility = Constants.AGILITY; // was 1
@@ -29,81 +28,58 @@ public class Ball implements Serializable {
 
 
     void moveRight() {
-    	if (!gameOver){
-    		if (dx + agility < maxSpeed) {
-                dx += agility;
-
-            }
-    	}
+    	if (gameOver) return;
+        if (dx + agility < maxSpeed) {
+            dx += agility;
+        }
     }
+
 
     void moveLeft() {
-    	if (!gameOver){
-    		if (dx - agility > -maxSpeed) {
-                dx -= agility;
-            }
-    	}     
+    	if (gameOver) return;
+        if (dx - agility > -maxSpeed) {
+            dx -= agility;
+        }
     }
 
 
-    void update(GameState game) {
+    void update(GameState game, double timeStep) {
+        double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
 
-        int height = game.getWindowHeight();
-        int width = game.getWindowWidth();
+        int height = Constants.WINDOW_HEIGHT;
+        int width = Constants.WINDOW_WIDTH;
 
-        if(!gameOver){
-        	
-        	if (x + dx > width - radius - 1) {
-                x = width - radius - 1;
-                dx = -dx;
-            } else if (x + dx < radius) {
-                x = radius;
-                dx = -dx;
-            } else {
-                x += dx;
-            }
-            
-            if(countFlyPower == 0){
-            	if (y == height - radius - 1) {
-                    dx *= xFriction;
-                    if (Math.abs(dx) < 0.8) {
-                        dx = 0;
-                    }
-                }
+        if (gameOver) return;
 
-                // If the ball touches the ground...
-                if (y > height - radius - 1) {
-                    y = height - radius - 1;
-                    // dy *= energyloss;
-                    //if you dont want the game to end when the ball touches the ground,
-                    //just comment the next line of code("gameOver = true;")
-                    //gameOver = true;
-                    dy = -dy;
-                } else {
-                		// Calculate new velocity in Y direction:
-                        dy += gravity * dt;
-                        // Calculate new Y position:
-                        if(!permission){ // If we reach the top of the screen make everything move faster
-                        y += dy * dt + .5 * gravity * dt * dt;
-                        if(dy > 100){ // Cap the y speed at 100
-        					dy = 100;
-        				}
-        				if(dy < -100){ // Floor the y speed at -100
-        					dy = -100;
-        				}
-        				if(dy<=0){
-        					score += -dy;
-        				} else {
-        					score += 3;
-        				}
-                	}
-                }
-            }
-            else countFlyPower--;
-        }               
-    }
-    double getGameDy() {
-        return gameDy;
+        // Check for collisions with the left/right walls.
+        if (x + (dx*deltaTime) >= width - radius) {
+            x = width - radius;
+            dx = -dx;
+        } else if (x + dx < radius) {
+            x = radius;
+            dx = -dx;
+        } else x += dx * deltaTime;
+
+        // Check if we're inside the Fly powerup.
+        if (countFlyPower > 0) {
+            countFlyPower--;
+            return;
+        }
+
+        // If the ball touches the ground...
+        if (y >= height - radius) {
+            // If we hit the floor, the game is over!
+            // gameOver = true;
+            dy = -maxSpeed;
+            y += dy * deltaTime;
+        } else {
+            // Calculate new velocity in Y direction:
+            dy += gravity * deltaTime;
+            // Calculate new y coordinate.
+            y += dy  * deltaTime;
+        }
+
+        dy = Math.min(maxSpeed, dy);
     }
 
     double getX() {
@@ -138,10 +114,6 @@ public class Ball implements Serializable {
         return radius;
     }
 
-    int getAgility() {
-        return agility;
-    }
-    
     public int getCountFlyPower() {
 		return countFlyPower;
 	}
@@ -149,11 +121,7 @@ public class Ball implements Serializable {
     public void setCountFlyPower(int countFlyPower) {
 		this.countFlyPower = countFlyPower;
 	}
-    
-    public int getScore() {
-    	return score;
-    }
-    
+
     public double getDx() {
 		return dx;
 	}
@@ -162,16 +130,15 @@ public class Ball implements Serializable {
 		return dy;
 	}
     
-    public static double getDt() {
-		return dt;
-	}
-    
-    public void setPermission(boolean permition) {
-		this.permission = permition;
+    public void setPermission(boolean permission) {
+		this.permission = permission;
 	}
     
     public boolean gameOver(){
     	return gameOver;
     }
-    
+
+    public int getMaxSpeed() {
+        return maxSpeed;
+    }
 }

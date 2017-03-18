@@ -16,12 +16,13 @@ public class Constants {
     // based on our current FPS.
     // 3 for 120 fps
     // 20 for 25 fps (don't ask)
-	public static final int PLATFORM_START_DY = 18;
-	public static final int ITEM_START_DY = 18;
+	public static final int PLATFORM_START_DY = 10;
+	public static final int ITEM_START_DY = 10;
 
-	public static final double DT = 0.25;
-	public static final int GRAVITY = 22;
+	public static final float GRAVITY = 6.81f;
 
-    public static final int AGILITY = 7;
-    public static final int MAX_SPEED = 35;
+    public static final int AGILITY = 20;
+    public static final int MAX_SPEED = 50;
+    public static final double TIME_STEP_COEFFICIENT = 0.01;
+    public static final int FLY_POWERUP_SPEED = 20;
 }

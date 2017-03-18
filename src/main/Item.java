@@ -59,37 +59,31 @@ class Item implements Serializable {
     /*
      * Updates the position of the PowerUp
      */
-    void update(GameState game) {
-        
+    void update(GameState game, double timeStep) {
+
+        double timeStepPixels = timeStep * Constants.TIME_STEP_COEFFICIENT;
         Ball ball = game.getBall();
-        
-        if(ball.gameOver() == false) {
-        	if(ball.getY() < highestPoint && ball.getDy() < 0){
-            	
-            	if(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 < -3){
-            		
-            		y +=Math.abs(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1);
-            	} else {
-            		y += dy;
-            	}
-            	
-         		if(ball.getCountFlyPower() == 0)
-         		 checkForCollision(ball, game);
-         		else y += 20;         
-            	
-           } else {
-        	   y += dy;
-        		if(ball.getCountFlyPower() == 0)
-        		 checkForCollision(ball, game);
-        		else y += 20;
-                }
-            
-        } else {
-        	if(y>-100){
-        		y-=6;
-        	}
+
+        if (ball.gameOver()) {
+            if (y > -100) y -= 6;
+            return;
         }
-       }
+
+        if (ball.getY() < highestPoint && ball.getDy() < 0) {
+            double deltaY = ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1;
+            if(deltaY < -3){
+                y += Math.abs(deltaY);
+            } else {
+                y += dy * timeStepPixels;
+            }
+            if(ball.getCountFlyPower() == 0) checkForCollision(ball, game);
+            else y += 20;
+        } else {
+            y += dy * timeStepPixels;
+            if(ball.getCountFlyPower() == 0) checkForCollision(ball, game);
+            else y += 20;
+        }
+    }
         
 
     /*

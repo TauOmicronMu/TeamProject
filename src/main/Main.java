@@ -38,6 +38,7 @@ public class Main extends NetworkClient {
         Menu.drawAll();
 
         long gcCounter = 0;
+        double timeStep = 0.0;
 
         while (!myWindow.shouldClose()) {
 
@@ -51,17 +52,17 @@ public class Main extends NetworkClient {
             if (myWindow.getScreen() == Screen.GAME) {
                 handleMessages();
                 myGame.updateLogic();
-                myGame.updatePhysics();
+                myGame.updatePhysics(timeStep);
                 oppGame.updateLogic();
-                oppGame.updatePhysics();
+                oppGame.updatePhysics(timeStep);
             }
 
             myWindow.clear();
             myWindow.handleInput(myGame, this);
             myWindow.repaint(myGame, oppGame);  // Todo: paint oppGame
-
             long endTime = currentTimeMillis();
-            // System.out.println("[INFO] Main.play : Loop took " + (endTime-startTime) + "ms");
+            timeStep = endTime - startTime;
+
             try {
                 Thread.sleep(Math.max(Constants.FPS_SLEEP - (endTime-startTime), 0));
             } catch (InterruptedException e) {
@@ -104,7 +105,7 @@ public class Main extends NetworkClient {
     public void handleMessage(Message someonesGame) {
         // Todo: This is probably really inefficient.
         // Nah fam I'm sure it's all gucci
-        if(someonesGame.isMyGame()) myGame = (GameState) someonesGame.getObject();
+        if (someonesGame.isMyGame()) myGame = (GameState) someonesGame.getObject();
         else oppGame = (GameState) someonesGame.getObject();
     }
 }

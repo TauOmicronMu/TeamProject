@@ -50,11 +50,17 @@ class MovingPlatform implements Serializable {
      *@param game the game class object
      *@param ball the ball class object
      */
-    void update(GameState game) {
+    void update(GameState game, double timeStep) {
         // Todo: Investigate magic numbers here.
 
+        double timeStepPixels = timeStep * Constants.TIME_STEP_COEFFICIENT;
+
         Ball ball = game.getBall();
-        
+
+        if (y <= game.getWindowHeight() && ball.getCountFlyPower() == 0) {
+            checkForCollision(ball);
+        }
+
         if(!ball.gameOver()){
         	if(ball.getDy() >0)
             	ball.setPermission(false);
@@ -63,24 +69,23 @@ class MovingPlatform implements Serializable {
             	if(ball.getCountFlyPower() >0){
         			y+=20;
         			score+=20;
-       
                 } else {
-                	ball.setPermission(true);
-                	
-                	if(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 < -3){	
-                		y +=Math.abs(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1);
-                		score+=ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 ;
+                    ball.setPermission(true);
+                    double eqn = dy * timeStepPixels + .5 * ball.getGravity() * timeStepPixels * timeStepPixels;
+
+                	if(eqn < -3){
+                		y +=Math.abs(eqn);
+                		score += eqn;
                 	} else{
-                		y += dy;
-                		score += dy;
+                		y += dy * timeStepPixels;
+                		score += dy * timeStepPixels;
                 	}          	
-                	//System.out.println((ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1));
-                      
-                checkForCollision(ball);
+
+                //checkForCollision(ball);
                 }
                 if (y > game.getWindowHeight()) {
 
-                    Random r = new Random();
+                    Random r = game.random;
                     y = -300;
                     x = 100 + r.nextInt(game.getWindowWidth()-200);
                     x1 = x - 200;
@@ -89,16 +94,16 @@ class MovingPlatform implements Serializable {
                 }
             } else {
             	if(ball.getCountFlyPower() >0){
-        			y+=20;
-        			score+=20;
+        			y += 20;
+        			score += 20;
                 } else {
-                    y += dy;
-                    score+= dy;
-                checkForCollision(ball);
+                    y += dy * timeStepPixels;
+                    score += dy * timeStepPixels;
+                //checkForCollision(ball);
                 }
                 if (y > game.getWindowHeight()) {
                 	
-                    Random r = new Random();
+                    Random r = game.random;
                     y = -300;
                     x = 100 + r.nextInt(game.getWindowWidth()-200);
                     x1 = x - 200;
@@ -108,51 +113,53 @@ class MovingPlatform implements Serializable {
             }
         } else {
         	if(y>-100){
-        		y-=6;
+        		y -= 6;
         	}
         }
         
-        if(x <= x1){
-    		dx=-dx;
+        if (x <= x1) {
+    		dx =- dx;
     		x += dx;
-    	}else if(x >= x2){
-    		dx=-dx;
+    	} else if(x >= x2) {
+    		dx = -dx;
     		x += dx;
-    	}else {
+    	} else {
     		x += dx;
     	}
-        
-        
     }
 
-    /*
-     * Returns the score of the player
-     */
-    public int getScore() {
-		return score;
-	}
     /*
      * Checks if any ball has collided with the platform
      * @param ball the ball object
      */
     private void checkForCollision(Ball ball) {
-        int ballX = (int) ball.getX();
-        int ballY = (int) ball.getY();
+        double ballX = ball.getX();
+        double ballY = ball.getY();
         int radius = ball.getRadius();
 
-        if (ballY + radius > y && ballY + radius < y + height) {
-            //System.out.println("Y true");
-            if (ballX > x && ballX < x + width) {
+        double ballBottom = ballY + radius;
+        double rectTop = y;
+        double rectLeft = x;
+        double rectRight = x + width;
 
-                //System.out.println("Collision");
+        // Check the ball's height is colliding with the top of the platform.
+        double tolerance = Math.abs(ball.getDy());  // pixels
+        if (ballBottom < rectTop - tolerance) return;
+        if (ballBottom > rectTop + tolerance) return;
 
-                double newDy = ball.getGameDy();
-                if(ball.getDy()>0){
-                ball.setDy(newDy);
-                }
-                ball.setY(y - radius);
-            }
-        }
+        // Check the ball is aligned with the top of the platform.
+        if (ballX < rectLeft) return;
+        if (ballX > rectRight) return;
+
+        // Check that the ball is moving downwards.
+        if (ball.getDy() < 0) return;
+
+
+        // If the ball has collided with the top of the platform ~Tom
+        // AudioEngine.getInstance().playTrack(AudioEngine.BOING); // Play the boing sound
+        System.out.println("[INFO] Platform.checkForCollision : Collision! Setting ball's new dY.");
+        ball.setY(rectTop - radius);
+        ball.setDy(-ball.getMaxSpeed());
     }
 
     /*

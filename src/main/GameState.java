@@ -15,7 +15,7 @@ public class GameState implements Serializable {
 
     private final int windowWidth;
     private final int windowHeight;
-    private Random random;
+    Random random;
     private Ball ball;
     private Platform platforms[] = new Platform[8];
     private MovingPlatform movingPlatform[] = new MovingPlatform[4]; 
@@ -137,17 +137,17 @@ public class GameState implements Serializable {
     }
 
 
-    void updatePhysics() {
+    void updatePhysics(double timeStep) {
     	
-    	ball.update(this);
+    	ball.update(this, timeStep);
         for (Platform platform : platforms) {
-            if (platform != null) platform.update(this);
+            if (platform != null) platform.update(this, timeStep);
         }
         for (MovingPlatform movingPlatform : movingPlatform) {
-            if (movingPlatform != null) movingPlatform.update(this);
+            if (movingPlatform != null) movingPlatform.update(this, timeStep);
         }
         for (Item item : items) {
-            if (item != null) item.update(this);
+            if (item != null) item.update(this, timeStep);
         }
   
     }
