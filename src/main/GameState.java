@@ -26,10 +26,10 @@ public class GameState implements Serializable {
     };
     private int counter = 0;
 
-
+    //private static Model rectangleModel;
+    
     private static final int PLATFORM_WIDTH = 140;
-    private static final int PLATFORM_HEIGHT = 20;
-
+    private static final int PLATFORM_HEIGHT = 20;    
     int score;
     int mouseXPosition;
     int mouseYPosition;
@@ -49,7 +49,11 @@ public class GameState implements Serializable {
         return windowHeight;
     }
 
-
+    /*Model getRectangleModel()
+    {
+    	return rectangleModel;
+    }*/
+    
     /**
      * Sets up a main.GameState by creating a ball, platforms, and items.
      */

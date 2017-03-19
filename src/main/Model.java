@@ -21,6 +21,7 @@ class Model {
     private int draw_count;
     private int vbo_id;
     private int vao_id;
+    private DoubleBuffer buffer;
 
     /**
      * Creates the buffers and puts the data inside
@@ -30,7 +31,7 @@ class Model {
     Model(double[] vertices) {
         draw_count = vertices.length / 3;
 
-        DoubleBuffer buffer = BufferUtils.createDoubleBuffer(vertices.length);
+        buffer = BufferUtils.createDoubleBuffer(vertices.length);
         buffer.put(vertices);
         buffer.flip();
 
@@ -39,7 +40,7 @@ class Model {
 
         vbo_id = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
-        glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, buffer, GL_DYNAMIC_DRAW);
 
         glVertexAttribPointer(0, 3, GL_DOUBLE, false, 0, 0);
         glEnableVertexAttribArray(0);
@@ -80,7 +81,11 @@ class Model {
      * @param vertices
      */
     void render(double[] vertices) {
+    	buffer.clear();
+        buffer.put(vertices);
+        buffer.flip();
         bind();
+        glBufferSubData(GL_ARRAY_BUFFER, 0, buffer);
         glVertexPointer(3, GL_DOUBLE, 0, toFloatArray(vertices));
 
         draw();

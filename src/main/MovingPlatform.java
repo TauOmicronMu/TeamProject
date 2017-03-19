@@ -166,7 +166,7 @@ class MovingPlatform implements Serializable {
 
         double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
         glColor4f(1, 0, 0, 0);
-        Rectangle.drawrectangle(verticesb);
+        Rectangle.drawrectangle(verticesb, Menu.getRectangleModel());
     }
     
     public void setDx(int dx){

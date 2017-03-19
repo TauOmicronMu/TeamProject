@@ -136,12 +136,31 @@ class Item implements Serializable {
      * Paints the powerUps
      */
     public void paint(Window window) {
-        if(isNull == false){
-            double[] vertices = createCircle(window.glScaleX(x), window.glScaleY(y), 0.2f, 0.02f);
-            Model circle1 = new Model(vertices);
+    	double[] vertices = null;
+    	if(type == 1)
+    	{
+    		vertices = new double[]{window.glScaleX(this.x), window.glScaleY(this.y),0.8f,(window.glScaleX(this.x)+0.03f),(window.glScaleY(this.y)+0.03f),0.8f,(window.glScaleX(this.x)-0.03f),(window.glScaleY(this.y)+0.03f),0.8f};
+    		Model model = Menu.getTriangleModel();
+    		model.render(vertices);
+    	}
+    	if(type == 2)
+    	{
+    		vertices = new double[]{window.glScaleX(this.x), window.glScaleY(this.y),0.8f,(window.glScaleX(this.x)+0.03f),(window.glScaleY(this.y)-0.03f),0.8f,(window.glScaleX(this.x)-0.03f),(window.glScaleY(this.y)-0.03f),0.8f};
+    		Model model = Menu.getTriangleModel();
+    		model.render(vertices);
+    	}
+    	if(type == 4)
+    	{
+    		vertices = createCircle(window.glScaleX(this.x), window.glScaleY(this.y), 0.2f, 0.02f);
+    		Model model = Menu.getCircleModel();
+    		model.render(vertices);
+    	}
+    	if(type == 3)
+    	{
+    		vertices = createCircle(window.glScaleX(this.x), window.glScaleY(this.y), 0.2f, 0.02f);
+    		Text.draw("+300",(float)(window.glScaleX(this.x)), (float)(window.glScaleY(this.y)), 0.3f);
+    	}
 
-            circle1.render(vertices);
-        }
 
     }
 
