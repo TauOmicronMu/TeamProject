@@ -18,7 +18,7 @@ public abstract class CollidablePlatform {
         // Check if the ball is above the platform *and* will be below
         // it after exactly one tick at the current framerate.
         if (ballBottom >= rectTop) return;
-        double newBallBottom = ballBottom + ball.getDy() * deltaTime;
+        double newBallBottom = ballBottom + ball.getDy() / deltaTime;
         if (newBallBottom <= rectTop) return;
 
         // Check the ball is aligned with the top of the platform.

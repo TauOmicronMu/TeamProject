@@ -46,6 +46,7 @@ public class Ball implements Serializable {
 
 
     void update(GameState game, double timeStep) {
+        if (timeStep == 0) return;
         double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
 
         int height = Constants.WINDOW_HEIGHT;
@@ -54,15 +55,15 @@ public class Ball implements Serializable {
         if (gameOver) return;
 
         // Check for collisions with the left/right walls.
-        if (x + dx * deltaTime >= width - radius) {
+        if (x + dx / deltaTime >= width - radius) {
             x = width - radius;
             dx = -dx;
-        } else if (x + dx * deltaTime < radius) {
+        } else if (x + dx / deltaTime < radius) {
             x = radius;
             dx = -dx;
         } else {
             // Even if we're flying, handle changes in X.
-            x += dx * deltaTime;
+            x += dx / deltaTime;
         }
 
         // Check if we're inside the Fly powerup. If so, ignore Y changes.
@@ -76,7 +77,7 @@ public class Ball implements Serializable {
             // If we hit the floor, the game is over!
             // gameOver = true;
             dy = -maxSpeed;
-            y += dy * deltaTime;
+            y += dy / deltaTime;
             return;
         }
 
@@ -84,13 +85,13 @@ public class Ball implements Serializable {
         heightLocked = y <= maxHeight && dy <= 0;
 
         // If the ball's height is locked, don't move in the y direction.
-        dy += gravity * deltaTime;
+        dy += gravity / deltaTime;
 
         // If the height is locked, we're all done.
         if (heightLocked) return;
 
         // Otherwise, calculate new velocity in Y direction:
-        y += dy * deltaTime;
+        y += dy / deltaTime;
 
         // Cap the speed at maxSpeed.
         dy = Math.min(maxSpeed, dy);

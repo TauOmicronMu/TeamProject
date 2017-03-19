@@ -36,7 +36,8 @@ class Platform extends CollidablePlatform implements Serializable {
      * @param timeStep The elapsed time in the last frame.
      */
     void update(GameState game, double timeStep) {
-        double timeStepPixels = timeStep * Constants.TIME_STEP_COEFFICIENT;
+        if (timeStep == 0) return;
+        double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
         Ball ball = game.getBall();
 
         // If platform is offscreen, move it back on!
@@ -48,23 +49,23 @@ class Platform extends CollidablePlatform implements Serializable {
 
         // If we've got the flying power-up, don't bother with collision.
         if (ball.getCountFlyPower() > 0) {
-            y += Constants.FLY_POWERUP_SPEED;
-            game.score += Constants.FLY_POWERUP_SPEED;
+            y += Constants.FLY_POWERUP_SPEED / deltaTime;
+            game.score += Constants.FLY_POWERUP_SPEED / deltaTime;
             return;
         }
 
         // Otherwise, check for collision with the ball.
-        checkForCollision(ball, timeStepPixels, x, y, width);
+        checkForCollision(ball, deltaTime, x, y, width);
 
         // If the ball's height is locked, we need to compensate by moving
         // the platform down at the speed the ball's meant to be rising.
         if (ball.heightIsLocked()) {
-            y -= ball.getDy() * timeStepPixels;
+            y -= ball.getDy() / deltaTime;
         }
 
         // Update platform Y position.
-        y += dy * timeStepPixels;
-        game.score += dy * timeStepPixels;
+        y += dy / deltaTime;
+        game.score += dy / deltaTime;
     }
 
 

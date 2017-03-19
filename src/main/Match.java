@@ -2,6 +2,7 @@ package main;
 
 import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 import java.util.Random;
 
@@ -47,63 +48,66 @@ public class Match implements Runnable {
 
         boolean running = true;
         int loopNum = 0;
+        long timeStep = 1;
 
-        while (running) {
+        MainLoop: while (running) {
             long startTime = System.currentTimeMillis();
 
             // Have we received input from either client?
             // If so, relay immediately regardless of counter
-            Optional<String> playerOneMove = null;
-            Optional<String> playerTwoMove = null;
-            try {
-                playerOneMove = playerOne.getMove();
-                playerTwoMove = playerTwo.getMove();
-            } catch (InterruptedException e) {
-                System.err.println("[WARN] Match.run : Player disconnect while retrieving move!");
-                running = false;
-                break;
-            }
+            Optional<String> playerOneMove = Optional.empty();
+            Optional<String> playerTwoMove = Optional.empty();
 
-            if(playerOneMove.isPresent()) {
-                // Handle player one input
-                String move = playerOneMove.get();
-
-                // Update game state locally (mutate)
-                // TODO: Handle powerups
-                playerOneGameState.handleInput(move);
-
-                // Relay new game state to clients
+            InputLoop: do {
                 try {
-                    playerOne.updateGameState(playerOneGameState, true);
-                    playerTwo.updateGameState(playerTwoGameState, false);
+                    playerOneMove = playerOne.getMove();
+                    playerTwoMove = playerTwo.getMove();
                 } catch (InterruptedException e) {
-                    System.err.println("[WARN] Match.run : Player disconnect while updating game state after player one input!");
+                    System.err.println("[WARN] Match.run : Player disconnect while retrieving move!");
                     running = false;
-                    break;
+                    break MainLoop;
                 }
 
-            }
-            if(playerTwoMove.isPresent()) {
-                // Handle player two input
-                String move = playerTwoMove.get();
+                if (playerOneMove.isPresent()) {
+                    // Handle player one input
+                    String move = playerOneMove.get();
+                    System.out.println("[INFO] Match.run : got a move from Player One: " + move);
 
-                // Update game state
-                // TODO: Handle powerups
-                playerTwoGameState.handleInput(move);
+                    // Update game state locally (mutate)
+                    // TODO: Handle powerups
+                    playerOneGameState.handleInput(move);
 
-                // Relay to both clients
-                try {
-                    playerOne.updateGameState(playerOneGameState, false);
-                    playerTwo.updateGameState(playerTwoGameState, true);
-                } catch (InterruptedException e) {
-                    System.err.println("[WARN] Match.run : Player disconnect while updating game state after player two input!");
-                    running = false;
-                    break;
+                    // Relay new game state to clients
+                    try {
+                        //playerOne.updateGameState(playerOneGameState, true);
+                        playerTwo.updateGameState(playerTwoGameState, false);
+                    } catch (InterruptedException e) {
+                        System.err.println("[WARN] Match.run : Player disconnect while updating game state after player one input!");
+                        running = false;
+                        break MainLoop;
+                    }
                 }
 
-            }
+                if (playerTwoMove.isPresent()) {
+                    // Handle player two input
+                    String move = playerTwoMove.get();
+                    System.out.println("[INFO] Match.run : got a move from Player Two: " + move);
 
-            if (loopNum % 100000000 == 0) {
+                    playerTwoGameState.handleInput(move);
+
+                    // Relay to both clients
+                    try {
+                        playerOne.updateGameState(playerOneGameState, false);
+                        //playerTwo.updateGameState(playerTwoGameState, true);
+                    } catch (InterruptedException e) {
+                        System.err.println("[WARN] Match.run : Player disconnect while updating game state after player two input!");
+                        running = false;
+                        break MainLoop;
+                    }
+                }
+            } while (playerOneMove.isPresent() || playerTwoMove.isPresent());
+
+            if (loopNum % 100 == 0) {
                 try {
                     playerOne.updateGameState(playerOneGameState, true);
                     playerOne.updateGameState(playerTwoGameState, false);
@@ -115,8 +119,6 @@ public class Match implements Runnable {
                     break;
                 }
             }
-            long endTime = System.currentTimeMillis();
-            long timeStep = endTime - startTime;
 
             // Logic tick
             playerOneGameState.updateLogic();
@@ -128,12 +130,8 @@ public class Match implements Runnable {
 
             loopNum++;
 
-            try {
-                Thread.sleep(Constants.FPS_SLEEP);
-            } catch(InterruptedException e) {
-                System.err.println("[WARN] Match.run:  " + e);
-                running = false; // Something has gone wrong with the match, or it has ended
-            }
+            long endTime = System.currentTimeMillis();
+            timeStep = endTime - startTime;
         }
         System.out.println("[INFO] Match.run: Match concluded.");
     }

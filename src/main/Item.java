@@ -60,8 +60,8 @@ class Item implements Serializable {
      * Updates the position of the PowerUp
      */
     void update(GameState game, double timeStep) {
-
-        double timeStepPixels = timeStep * Constants.TIME_STEP_COEFFICIENT;
+        if (timeStep == 0) return;
+        double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
         Ball ball = game.getBall();
 
         if (ball.gameOver()) {
@@ -74,12 +74,12 @@ class Item implements Serializable {
             if(deltaY < -3){
                 y += Math.abs(deltaY);
             } else {
-                y += dy * timeStepPixels;
+                y += dy / deltaTime;
             }
             if(ball.getCountFlyPower() == 0) checkForCollision(ball, game);
             else y += 20;
         } else {
-            y += dy * timeStepPixels;
+            y += dy / deltaTime;
             if(ball.getCountFlyPower() == 0) checkForCollision(ball, game);
             else y += 20;
         }

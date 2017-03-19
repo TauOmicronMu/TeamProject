@@ -38,7 +38,7 @@ class PlatformOld implements Serializable {
     void update(GameState game, double timeStep) {
         // Todo: Investigate magic numbers here.
 
-        double timeStepPixels = timeStep * Constants.TIME_STEP_COEFFICIENT;
+        double timeStepPixels = 1/timeStep * Constants.TIME_STEP_COEFFICIENT;
 
         Ball ball = game.getBall();
         if (ball.gameOver()) return;

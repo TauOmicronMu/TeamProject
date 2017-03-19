@@ -41,6 +41,7 @@ public class Main extends NetworkClient {
         double timeStep = 0.0;
 
         while (!myWindow.shouldClose()) {
+            long startTime = currentTimeMillis();
 
             // Clear *all of the stuff* that gets
             // created by openGL that we can't remove
@@ -48,7 +49,6 @@ public class Main extends NetworkClient {
             if(gcCounter % 10 == 0) System.gc();
             gcCounter++;
 
-            long startTime = currentTimeMillis();
             if (myWindow.getScreen() == Screen.GAME) {
                 handleMessages();
                 myGame.updateLogic();
@@ -62,12 +62,6 @@ public class Main extends NetworkClient {
             myWindow.repaint(myGame, oppGame);  // Todo: paint oppGame
             long endTime = currentTimeMillis();
             timeStep = endTime - startTime;
-
-            try {
-                Thread.sleep(Math.max(Constants.FPS_SLEEP - (endTime-startTime), 0));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
         myWindow.end();
         System.out.println("[INFO] Main.play : Window closed.");

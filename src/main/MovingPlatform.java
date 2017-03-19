@@ -13,8 +13,6 @@ class MovingPlatform extends CollidablePlatform implements Serializable {
     private int width, height;
     private double x, y, x1, x2;
     private int score = 0;
-    private double highestPoint;
-
 
     /*
      *Constructor for platform object
@@ -32,17 +30,15 @@ class MovingPlatform extends CollidablePlatform implements Serializable {
         this.x2 = x2;
         dy = Constants.PLATFORM_START_DY; // was 3
         dx = -1;
-        highestPoint = 200;
     }
 
     public MovingPlatform() {
         dy = 3;
-        dx = -1;
+        dx = -Constants.MOVING_PLATFORM_DX;
         x = 300;
         y = 300;
         width = 120;
         height = 40;
-        highestPoint = 200;
     }
 
     /*
@@ -51,42 +47,43 @@ class MovingPlatform extends CollidablePlatform implements Serializable {
      *@param ball the ball class object
      */
     void update(GameState game, double timeStep) {
+        if (timeStep == 0) return;
         Ball ball = game.getBall();
         if (ball.gameOver()) return;
 
-        double timeStepPixels = timeStep * Constants.TIME_STEP_COEFFICIENT;
+        double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
 
         // If the platform is offscreen, move it back on!
         if (y > game.getWindowHeight()) {
             Random r = game.random;
             y = -300;
-            x = 100 + r.nextInt(game.getWindowWidth() - 200);
-            x1 = x - 200;
-            x2 = x + 200;
+            x = width + r.nextInt((game.getWindowWidth() - width)/2);
+            x1 = x - width/2;
+            x2 = x + width/2;
             return;
         }
 
         // If we've got the flying power-up, don't bother with collision.
-        if (ball.getCountFlyPower() > 0) {
-            y += Constants.FLY_POWERUP_SPEED;
-            game.score += Constants.FLY_POWERUP_SPEED;
+        if (ball.getCountFlyPower() > 0f) {
+            y += Constants.FLY_POWERUP_SPEED / deltaTime;
+            game.score += Constants.FLY_POWERUP_SPEED / deltaTime;
             return;
         }
 
         // Otherwise, check for collision.
-        checkForCollision(ball, timeStepPixels, x, y, width);
+        checkForCollision(ball, deltaTime, x, y, width);
 
         if (ball.heightIsLocked()) {
-            y -= ball.getDy() * timeStepPixels;
+            y -= ball.getDy() / deltaTime;
         }
 
         // Update platform Y position.
-        y += dy * timeStepPixels;
-        game.score += dy * timeStepPixels;
+        y += dy / deltaTime;
+        game.score += dy / deltaTime;
 
         // Update platform X position.
         if (x <= x1 || x >= x2) dx = -dx;
-        x += dx * timeStepPixels;
+        x += dx / deltaTime;
     }
 
     /*

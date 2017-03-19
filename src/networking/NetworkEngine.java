@@ -64,20 +64,6 @@ abstract class NetworkEngine implements Runnable {
      */
     boolean sendMessage(Message m) {
         try {
-// N.B.: this code tests that the message will serialize correctly. It's probably slow.
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            ObjectOutputStream oos = new ObjectOutputStream((byteArrayOutputStream));
-//            oos.writeObject(m);
-//            oos.close();
-//            byte[] messageBytes = byteArrayOutputStream.toByteArray();
-//
-//            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(messageBytes);
-//            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-//            Message serializedMessage = (Message) objectInputStream.readObject();
-//
-//            double serializedY = ((GameState) serializedMessage.getObject()).getBall().getY();
-//            System.out.println("After serialization, y="+serializedY);
-
             outputStream.writeObject(m);
             outputStream.reset();
         } catch (IOException e) {

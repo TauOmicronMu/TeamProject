@@ -23,7 +23,8 @@ public class Constants {
 
     public static final int AGILITY = 20;
     public static final int MAX_SPEED = 80;
-    public static final double TIME_STEP_COEFFICIENT = 0.01;
+    public static final double TIME_STEP_COEFFICIENT = 0.3;
     public static final int FLY_POWERUP_SPEED = 40;
     public static final int MAX_BALL_HEIGHT = WINDOW_HEIGHT / 4;
+    public static final int MOVING_PLATFORM_DX = 30;
 }
