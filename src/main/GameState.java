@@ -23,7 +23,6 @@ public class GameState implements Serializable {
 
     private static final int PLATFORM_WIDTH = 140;
     private static final int PLATFORM_HEIGHT = 20;
-
     int score;
 
 
@@ -46,7 +45,6 @@ public class GameState implements Serializable {
         return windowHeight;
     }
 
-
     /**
      * Populates the list of platforms in this game state with a set
      * of randomly generated platforms. They should be spaced evenly
@@ -58,6 +56,11 @@ public class GameState implements Serializable {
             // Todo: understand and refactor these "magic numbers".
             int xPosition = random.nextInt(windowWidth - 220);
             int yPosition = windowHeight - 200 * i;
+
+            System.out.println("[INFO] GameState.generatePlatforms : Creating a platform!");
+            System.out.println("Window height is " + windowHeight);
+            System.out.println("Y position is " + yPosition);
+
             platforms[i] = new Platform(
                     xPosition,
                     yPosition,

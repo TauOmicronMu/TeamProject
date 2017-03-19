@@ -71,7 +71,7 @@ public class Match implements Runnable {
                 if (playerOneMove.isPresent()) {
                     // Handle player one input
                     String move = playerOneMove.get();
-                    System.out.println("[INFO] Match.run : got a move from Player One: " + move);
+                    // System.out.println("[INFO] Match.run : got a move from Player One: " + move);
 
                     // Update game state locally (mutate)
                     // TODO: Handle powerups
@@ -91,7 +91,7 @@ public class Match implements Runnable {
                 if (playerTwoMove.isPresent()) {
                     // Handle player two input
                     String move = playerTwoMove.get();
-                    System.out.println("[INFO] Match.run : got a move from Player Two: " + move);
+                    // System.out.println("[INFO] Match.run : got a move from Player Two: " + move);
 
                     playerTwoGameState.handleInput(move);
 

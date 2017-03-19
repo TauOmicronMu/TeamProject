@@ -36,14 +36,15 @@ class Platform extends CollidablePlatform implements Serializable {
      * @param timeStep The elapsed time in the last frame.
      */
     void update(GameState game, double timeStep) {
-        if (timeStep == 0) return;
+        if (timeStep < Constants.MIN_TIME_PER_FRAME) return;
         double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
         Ball ball = game.getBall();
 
         // If platform is offscreen, move it back on!
         if (y > game.getWindowHeight()) {
-            y = -300;
-            x = game.random.nextInt(game.getWindowWidth() - 140);
+            System.out.println("[INFO] Platform.update : y is > window height " + game.getWindowHeight() + " at " + y);
+            y = -height;
+            x = game.random.nextInt(game.getWindowWidth() - width);
             return;
         }
 
@@ -73,7 +74,7 @@ class Platform extends CollidablePlatform implements Serializable {
      * Draws the platform
      */
     void paint(Window game, boolean opponent) {
-        if(isNull) return;
+        // if(isNull) return;
         double scaledX = game.glScaleX(x, opponent, Screen.GAME);
         double scaledY = game.glScaleY(y);
         double widthGl = game.glScaleDistance(width);
@@ -81,10 +82,7 @@ class Platform extends CollidablePlatform implements Serializable {
 
         double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
         glColor4f(1, 0, 0, 0);
-        Rectangle.drawrectangle(verticesb);
+        Rectangle.drawrectangle(verticesb, Menu.getRectangleModel());
     }
-    
-    public void setDx(int dx){
-    	this.dy = dx;
-    }
+
 }

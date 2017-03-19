@@ -13,7 +13,7 @@ class Circle {
         double x2 = window.glScaleX(x, opponent, Screen.GAME);
         double y2 = window.glScaleY(y);
         double[] vertices = createCircle(x2, y2, 0.5f, radius2);
-        Model circle1 = new Model(vertices);
+        Model circle1 = Menu.getCircleModel();
         circle1.render(vertices);
     }
 
@@ -28,7 +28,7 @@ class Circle {
         double x2 = window.glScaleX(x, opponent, Screen.GAME);
         double y2 = window.glScaleY(y);
         double[] vertices = createCircle(x2, y2, 0.3f, radius2);
-        Model circle1 = new Model(vertices);
+        Model circle1 = Menu.getCircleModel();
         circle1.render(vertices);
     }
 

@@ -114,13 +114,12 @@ class Item implements Serializable {
     public void performAction(Ball ball) {
     }
 
-    /*
+    /**
      * Paints the powerUps
      */
     public void paint(Window window, boolean opponent) {
         double[] vertices = createCircle(window.glScaleX(x, opponent, Screen.GAME), window.glScaleY(y), 0.2f, 0.02f);
         Model circle1 = new Model(vertices);
-
         circle1.render(vertices);
     }
 
@@ -143,9 +142,6 @@ class Item implements Serializable {
         vertices[1] = posy;
         vertices[2] = posz;
         for (int j = 3; j < (noVertices * 3); j = j + 3) {
-
-            glColor4f(0, 0, 1, 0);
-
             vertices[j] = posx + (radius * Math.cos(i * doublePI / noSides));
             vertices[j + 1] = posy + (radius * Math.sin(i * doublePI / noSides));
             vertices[j + 2] = posz;

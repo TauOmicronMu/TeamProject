@@ -69,7 +69,8 @@ public class Main extends NetworkClient {
 
             try {
                 Thread.sleep(Constants.MAX_TIME_PER_FRAME-timeStep);
-                timeStep = currentTimeMillis() - startTime;
+                endTime = currentTimeMillis();
+                timeStep = endTime - startTime;
             } catch (InterruptedException e) {
                 System.err.println("[WARN] Main.play : main loop interrupted.");
                 break;
@@ -93,7 +94,11 @@ public class Main extends NetworkClient {
         System.out.println("[INFO] Main.initializeGame : Received seed => " + seed);
 
         myGame.setSeed(seed);
+        myGame.generatePlatforms();
+        myGame.generateItems();
         oppGame.setSeed(seed);
+        oppGame.generatePlatforms();
+        oppGame.generateItems();
 
         myWindow.setScreen(Screen.GAME);
     }
