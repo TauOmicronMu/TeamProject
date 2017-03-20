@@ -76,26 +76,4 @@ class Menu {
     	return cmodel;
     }
 
-    /**
-     * Prints the score, given a ball and platform.
-     * @param ball
-     */
-    public static void printScore(int score, Ball ball, boolean opponent) {
-        if(!ball.gameOver())
-        {
-            String scoreText = String.valueOf(score / 1000);
-
-            TextShader2 tshader2 = new TextShader2();
-            int length = scoreText.length();
-            tshader2.bind();
-            int xOffset = opponent ? Constants.WINDOW_WIDTH/2 : 0;
-            Text.draw(scoreText, xOffset + 5.8f - (length * 0.3f), 6.8f, 0.6f);
-            tshader2.stop();
-        }
-        else
-        {
-            System.out.println("Final score: "+score);
-        }
-    }
-
 }

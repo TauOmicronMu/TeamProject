@@ -4,11 +4,10 @@ package main;
 
 public class GravDown extends main.Item{
 
-	public GravDown(int y, int type) {
-		super(y, type);
-		// TODO Auto-generated constructor stub
+	GravDown(int x, int y, int type) {
+		super(x, y, type);
 	}
-	
+
 	@Override
 	public void performAction(Ball ball) {
 		if(ball.getGravity()>7) {

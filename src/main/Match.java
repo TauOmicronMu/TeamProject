@@ -1,8 +1,5 @@
 package main;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
-
-import javax.swing.text.html.Option;
 import java.util.Optional;
 import java.util.Random;
 
@@ -80,7 +77,7 @@ public class Match implements Runnable {
                     // Relay new game state to clients
                     try {
                         playerOne.updateGameState(playerOneGameState, true);
-                        // playerTwo.updateGameState(playerTwoGameState, false);
+                        playerTwo.updateGameState(playerTwoGameState, false);
                     } catch (InterruptedException e) {
                         System.err.println("[WARN] Match.run : Player disconnect while updating game state after player one input!");
                         running = false;
@@ -98,7 +95,7 @@ public class Match implements Runnable {
                     // Relay to both clients
                     try {
                         playerOne.updateGameState(playerOneGameState, false);
-                        // playerTwo.updateGameState(playerTwoGameState, true);
+                        playerTwo.updateGameState(playerTwoGameState, true);
                     } catch (InterruptedException e) {
                         System.err.println("[WARN] Match.run : Player disconnect while updating game state after player two input!");
                         running = false;
@@ -111,8 +108,8 @@ public class Match implements Runnable {
                 try {
                     playerOne.updateGameState(playerOneGameState, true);
                     playerOne.updateGameState(playerTwoGameState, false);
-                    // playerTwo.updateGameState(playerTwoGameState, true);
-                    // playerTwo.updateGameState(playerOneGameState, false);
+                    playerTwo.updateGameState(playerTwoGameState, true);
+                    playerTwo.updateGameState(playerOneGameState, false);
                 } catch (InterruptedException e) {
                     System.err.println("[WARN] Match.run : Player disconnect while scheduled-updating game state.");
                     running = false;
@@ -140,6 +137,8 @@ public class Match implements Runnable {
                 System.err.println("[WARN] Match.run : Interrupted while sleeping.");
                 break;
             }
+
+            timeStep = System.currentTimeMillis() - startTime;
         }
         System.out.println("[INFO] Match.run: Match concluded.");
 

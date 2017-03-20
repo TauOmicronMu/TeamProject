@@ -5,11 +5,10 @@ import main.Item;
 
 public class FlyUpPower extends main.Item{
 
-	public FlyUpPower(int x, int type) {
-		super(x, type);
-		// TODO Auto-generated constructor stub
+	FlyUpPower(int x, int y, int type) {
+		super(x, y, type);
 	}
-	
+
 	@Override
 	public void performAction(Ball ball) {
 		
