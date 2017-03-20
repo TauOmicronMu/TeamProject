@@ -510,7 +510,7 @@ class Text{
 	 */
 	private static void convert(float x1, float y1, float x2, float y2)
 	{
-		double[] vertices = {x1,y1,0.9,x1,(y2+0.01),0.9,(x2+0.01),(y2+0.01),0.9,(x2+0.01),y1,0.9};
+		float[] vertices = {x1,y1,0.9f,x1,(y2+0.01f), 0.9f,(x2+0.01f),(y2+0.01f),0.9f,(x2+0.01f),y1,0.9f};
 		Rectangle.drawrectangle(vertices);
 	}
 	

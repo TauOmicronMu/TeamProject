@@ -13,7 +13,7 @@ class Rectangle {
      *
      * @param vertices the float points of the corners of the rectangle
      */
-    static void drawrectangle(double[] vertices) {
+    static void drawrectangle(float[] vertices) {
         Model rectangle1 = new Model(vertices);
         rectangle1.render(vertices);
     }

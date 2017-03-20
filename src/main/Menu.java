@@ -9,7 +9,7 @@ class Menu {
 
 
     private static void drawPlayButton() {
-        double[] vertices = {-0.4f, -0.04f, 0, 0.4f, -0.04f, 0, 0.4f, -0.24f, 0, -0.4f, -0.24f, 0};
+        float[] vertices = {-0.4f, -0.04f, 0, 0.4f, -0.04f, 0, 0.4f, -0.24f, 0, -0.4f, -0.24f, 0};
         rshader.bind();
         Rectangle.drawrectangle(vertices);
         rshader.stop();
@@ -22,7 +22,7 @@ class Menu {
     }
 
     private static void drawSettingsButton() {
-        double[] vertices = {-0.4f, -0.27f, 0, 0.4f, -0.27f, 0, 0.4f, -0.47f, 0, -0.4f, -0.47f, 0};
+        float[] vertices = {-0.4f, -0.27f, 0, 0.4f, -0.27f, 0, 0.4f, -0.47f, 0, -0.4f, -0.47f, 0};
         rshader.bind();
         Rectangle.drawrectangle(vertices);
         rshader.stop();
@@ -32,7 +32,7 @@ class Menu {
     }
 
     private static void drawQuitButton() {
-        double[] vertices = {-0.4f, -0.5f, 0, 0.4f, -0.5f, 0, 0.4f, -0.7f, 0, -0.4f, -0.7f, 0};
+        float[] vertices = {-0.4f, -0.5f, 0, 0.4f, -0.5f, 0, 0.4f, -0.7f, 0, -0.4f, -0.7f, 0};
         rshader.bind();
         Rectangle.drawrectangle(vertices);
         rshader.stop();
@@ -42,7 +42,7 @@ class Menu {
     }
 
     static void drawBackToMenuButton() {
-        double[] vertices = {-0.95f, 0.95f, 0, -0.85f, 0.95f, 0, -0.85f, 0.845f, 0, -0.95f, 0.845f, 0};
+        float[] vertices = {-0.95f, 0.95f, 0, -0.85f, 0.95f, 0, -0.85f, 0.845f, 0, -0.95f, 0.845f, 0};
         rshader.bind();
         Rectangle.drawrectangle(vertices);
         rshader.stop();

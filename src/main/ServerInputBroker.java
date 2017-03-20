@@ -21,8 +21,13 @@ public class ServerInputBroker implements Runnable {
         while (true) {
             try {
                 this.inputQueue.add(((Message) this.inputStream.readObject()).getText());
-            } catch (IOException | ClassNotFoundException e) {
-                System.err.println("[WARN] ServerInputBroker.run : " + e);
+            } catch (IOException e) {
+                System.out.println("[INFO] ServerInputBroker.run : Client disconnected.");
+                this.inputQueue.add(Constants.END_GAME);
+                break;
+            } catch (ClassNotFoundException e) {
+                System.err.println("[WARN] ServerInputBroker.run : Class not found when reading object.");
+                this.inputQueue.add(Constants.END_GAME);
                 break;
             }
         }

@@ -59,9 +59,9 @@ class Item implements Serializable {
     /*
      * Updates the position of the PowerUp
      */
-    void update(GameState game, double timeStep) {
+    void update(GameState game, float timeStep) {
         if (timeStep == 0) return;
-        double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
+        float deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
         Ball ball = game.getBall();
 
         if (ball.gameOver()) {
@@ -70,7 +70,7 @@ class Item implements Serializable {
         }
 
         if (ball.getY() < highestPoint && ball.getDy() < 0) {
-            double deltaY = ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1;
+            float deltaY = (float) (ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1);
             if(deltaY < -3){
                 y += Math.abs(deltaY);
             } else {
@@ -91,15 +91,15 @@ class Item implements Serializable {
      * @param ball
      */
     private void checkForCollision(Ball ball, GameState game) {
-        double ballX = ball.getX();
-        double ballY = ball.getY();
+        float ballX = ball.getX();
+        float ballY = ball.getY();
         int ballR = ball.getRadius();
 
-        double a = x - ballX;
-        double b = y - ballY;
+        float a = x - ballX;
+        float b = y - ballY;
         int collide = radius + ballR;
         //distance between object centers
-        double c = Math.sqrt((double) (a * a) + (double) (b * b));
+        float c = (float) Math.hypot(a, b);
         if (c < collide) {
             performAction(ball);
             y = game.getWindowHeight() + 100;
@@ -118,7 +118,7 @@ class Item implements Serializable {
      * Paints the powerUps
      */
     public void paint(Window window, boolean opponent) {
-        double[] vertices = createCircle(window.glScaleX(x, opponent, Screen.GAME), window.glScaleY(y), 0.2f, 0.02f);
+        float[] vertices = createCircle(window.glScaleX(x, opponent, Screen.GAME), window.glScaleY(y), 0.2f, 0.02f);
         Model circle1 = new Model(vertices);
 
         circle1.render(vertices);
@@ -132,13 +132,13 @@ class Item implements Serializable {
      * @param posz the current z position of the centre of the powerUp
      * @return all the points of the circle
      */
-    private static double[] createCircle(double posx, double posy, double posz, double radius) {
+    private static float[] createCircle(float posx, float posy, float posz, float radius) {
         int noSides = 360;
         int noVertices = noSides + 2;
-        double doublePI = Math.PI * 2;
+        float doublePI = (float) (Math.PI * 2);
 
         int i = 1;
-        double[] vertices = new double[noVertices * 3];
+        float[] vertices = new float[noVertices * 3];
         vertices[0] = posx;
         vertices[1] = posy;
         vertices[2] = posz;
@@ -146,8 +146,8 @@ class Item implements Serializable {
 
             glColor4f(0, 0, 1, 0);
 
-            vertices[j] = posx + (radius * Math.cos(i * doublePI / noSides));
-            vertices[j + 1] = posy + (radius * Math.sin(i * doublePI / noSides));
+            vertices[j] = (float) (posx + (radius * Math.cos(i * doublePI / noSides)));
+            vertices[j + 1] = (float) (posy + (radius * Math.sin(i * doublePI / noSides)));
             vertices[j + 2] = posz;
             i++;
         }

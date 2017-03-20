@@ -27,4 +27,6 @@ public class Constants {
     public static final int FLY_POWERUP_SPEED = 40;
     public static final int MAX_BALL_HEIGHT = WINDOW_HEIGHT / 4;
     public static final int MOVING_PLATFORM_DX = 30;
+
+    public static final String END_GAME = "END GAME";
 }

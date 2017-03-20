@@ -1,6 +1,7 @@
 package networking;
 
 
+import main.Constants;
 import main.GameState;
 
 import java.io.*;
@@ -33,7 +34,6 @@ abstract class NetworkEngine implements Runnable {
         } catch (IOException e) {
             System.err.println("Closing socket threw an exception. Still closing it.");
         }
-
         throw new InterruptedException();
     }
 
@@ -52,7 +52,7 @@ abstract class NetworkEngine implements Runnable {
         try {
             return messages.take();
         } catch (InterruptedException e) {
-            System.err.println("[ERROR] NetworkEngine.waitForMessage : " + e);
+            System.err.println("[WARN] NetworkEngine.waitForMessage : Interrupted while reading message from queue.");
         }
         return null;
     }
@@ -67,7 +67,7 @@ abstract class NetworkEngine implements Runnable {
             outputStream.writeObject(m);
             outputStream.reset();
         } catch (IOException e) {
-            System.out.println("Failed to write message.");
+            System.err.println("[WARN] NetworkEngine.sendMessage : Couldn't write message.");
             return false;
         }
         return true;
@@ -98,6 +98,7 @@ abstract class NetworkEngine implements Runnable {
         } catch (InterruptedException ignored) {
             System.err.println("[WARN] NetworkEngine.run : Stopped Networking thread.");
         }
+        messages.add(new Message(Constants.END_GAME));
     }
 
     /**

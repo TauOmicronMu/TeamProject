@@ -8,4 +8,6 @@ public interface Player {
     void updateGameState(GameState gameState, boolean isCurrentPlayer) throws InterruptedException;
 
     void updateSeed(int seed) throws InterruptedException;
+
+    void endGame();
 }

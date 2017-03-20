@@ -39,7 +39,6 @@ public class Message implements Serializable {
     public Message(Boolean isMyGame) { this.isMyGame = isMyGame; }
 
     public String getText() {
-        // Todo: this is a quick hack to stop the "demo" package complaining.
         return this.key;
     }
 

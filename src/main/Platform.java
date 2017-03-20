@@ -9,8 +9,8 @@ class Platform extends CollidablePlatform implements Serializable {
 
     private int dy;
     private int width, height;
-    private double x, y;
-    private double highestPoint;
+    private float x, y;
+    private float highestPoint;
     public boolean isNull;
 
     /*
@@ -35,9 +35,9 @@ class Platform extends CollidablePlatform implements Serializable {
      * @param game the game class object
      * @param timeStep The elapsed time in the last frame.
      */
-    void update(GameState game, double timeStep) {
+    void update(GameState game, float timeStep) {
         if (timeStep == 0) return;
-        double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
+        float deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
         Ball ball = game.getBall();
 
         // If platform is offscreen, move it back on!
@@ -74,12 +74,12 @@ class Platform extends CollidablePlatform implements Serializable {
      */
     void paint(Window game, boolean opponent) {
         if(isNull) return;
-        double scaledX = game.glScaleX(x, opponent, Screen.GAME);
-        double scaledY = game.glScaleY(y);
-        double widthGl = game.glScaleDistance(width);
-        double heightGl = game.glScaleDistance(height);
+        float scaledX = game.glScaleX(x, opponent, Screen.GAME);
+        float scaledY = game.glScaleY(y);
+        float widthGl = game.glScaleDistance(width);
+        float heightGl = game.glScaleDistance(height);
 
-        double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
+        float[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
         glColor4f(1, 0, 0, 0);
         Rectangle.drawrectangle(verticesb);
     }

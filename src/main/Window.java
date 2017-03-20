@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL;
 
 import java.awt.geom.Point2D;
 import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -93,6 +94,8 @@ class Window {
 		pshader2 = new PowerUpShader("pshader2");
 		pshader3 = new PowerUpShader("pshader3");
 
+		clear();
+
         registerInputCallbacks(gameState, client);
     }
 
@@ -153,58 +156,61 @@ class Window {
     void repaint(GameState ourGameState, GameState theirGameState) {
         final boolean debug = false;
         long startTime;
-    	rshader.bind();
+
         if (screen == Screen.MAIN_MENU) {
            Menu.drawAll();
-        } else {
-        	if(debug) System.out.println("draw platforms for our game state");
-            if(debug) startTime = currentTimeMillis();
-
-            drawAllPlatforms(ourGameState, false);
-
-            if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
-            if(debug) System.out.println("draw platforms for opponent game state");
-            if(debug) startTime = currentTimeMillis();
-
-            drawAllPlatforms(theirGameState, true);
-
-        	if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
-
-            rshader.stop();
-
-        	if(debug) System.out.println("draw items for our game state");
-            if(debug) startTime = currentTimeMillis();
-
-            drawAllItems(ourGameState, false);
-
-            if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
-            if(debug) System.out.println("draw items for opponent game state");
-            if(debug) startTime = currentTimeMillis();
-
-            drawAllItems(theirGameState, true);
-
-            if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
-
-            cshader.bind();
-
-            if(debug) System.out.println("draw ball for our game state");
-            if(debug) startTime = currentTimeMillis();
-
-            drawBall(ourGameState, false);
-
-            if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
-            if(debug) System.out.println("draw ball for opponent game state");
-            if(debug) startTime = currentTimeMillis();
-
-            drawBall(theirGameState, true);
-
-            if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
-
-            cshader.stop();
-            Menu.drawBackToMenuButton();
-            // Menu.printScore(ourGameState.score, ourGameState.getBall(), false);
-            // Menu.printScore(theirGameState.score, ourGameState.getBall(), true);
+           glfwSwapBuffers(window);
+           return;
         }
+
+        rshader.bind();
+        if(debug) System.out.println("draw platforms for our game state");
+        if(debug) startTime = currentTimeMillis();
+
+        drawAllPlatforms(ourGameState, false);
+
+        if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
+        if(debug) System.out.println("draw platforms for opponent game state");
+        if(debug) startTime = currentTimeMillis();
+
+        drawAllPlatforms(theirGameState, true);
+
+        if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
+
+        rshader.stop();
+
+        if(debug) System.out.println("draw items for our game state");
+        if(debug) startTime = currentTimeMillis();
+
+        drawAllItems(ourGameState, false);
+
+        if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
+        if(debug) System.out.println("draw items for opponent game state");
+        if(debug) startTime = currentTimeMillis();
+
+        drawAllItems(theirGameState, true);
+
+        if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
+
+        cshader.bind();
+
+        if(debug) System.out.println("draw ball for our game state");
+        if(debug) startTime = currentTimeMillis();
+
+        drawBall(ourGameState, false);
+
+        if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
+        if(debug) System.out.println("draw ball for opponent game state");
+        if(debug) startTime = currentTimeMillis();
+
+        drawBall(theirGameState, true);
+
+        if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
+
+        cshader.stop();
+        Menu.drawBackToMenuButton();
+        Menu.printScore(ourGameState.score, ourGameState.getBall(), false);
+        Menu.printScore(theirGameState.score, theirGameState.getBall(), true);
 
         glfwSwapBuffers(window);
     }
@@ -240,12 +246,12 @@ class Window {
     /**
      * Use GLFW to handle the current state of the keyboard.
      */
-    private void handleKeyboardInput(GameState gameState, NetworkClient client) {
+    private void handleKeyboardInput(GameState gameState, Main client) {
         //System.out.println("[INFO] Window.handleKeyboardInput : Handling input.");
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_TRUE) {
             // System.out.println("[INFO] Window.handleKeyboardInput : Key(A) pressed.");
             gameState.getBall().moveLeft();
-            client.sendMessage(new Message("a"));
+            if (!client.sendMessage(new Message("a"))) client.backToMenu();
         } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_TRUE) {
             // System.out.println("[INFO] Window.handleKeyboardInput : Key(D) pressed.");
             gameState.getBall().moveRight();
@@ -257,7 +263,7 @@ class Window {
     /**
      * Utility/wrapper method to handle both types of input.
      */
-    void handleInput(GameState gameState, NetworkClient client) {
+    void handleInput(GameState gameState, Main client) {
         glfwPollEvents();
         // We don't handle mouse input here as that's event-driven.
         handleKeyboardInput(gameState, client);
@@ -275,7 +281,7 @@ class Window {
      * @param yUpper The Y component of the top-right-hand corner.
      * @return Whether (x, y) lies in the rectangle described.
      */
-    private boolean withinBounds(double x, double y, double xLower, double xUpper, double yLower, double yUpper) {
+    private boolean withinBounds(float x, float y, float xLower, float xUpper, float yLower, float yUpper) {
         return xLower <= x && x <= xUpper && yLower <= y && y <= yUpper;
     }
 
@@ -285,8 +291,8 @@ class Window {
      * @param y The coordinate's Y component.
      * @return Whether the coordinate is within the button.
      */
-    private boolean onPlayGameButton(double x, double y) {
-        return withinBounds(x, y, -0.4, 0.4, -0.2, 0);
+    private boolean onPlayGameButton(float x, float y) {
+        return withinBounds(x, y, -0.4f, 0.4f, -0.2f, 0f);
     }
 
     /**
@@ -295,8 +301,8 @@ class Window {
      * @param y The coordinate's Y component.
      * @return Whether the coordinate is within the button.
      */
-    private boolean onQuitButton(double x, double y) {
-        return withinBounds(x, y, -0.4, 0.4, -0.7, -0.5);
+    private boolean onQuitButton(float x, float y) {
+        return withinBounds(x, y, -0.4f, 0.4f, -0.7f, -0.5f);
     }
 
     /**
@@ -305,8 +311,8 @@ class Window {
      * @param y The coordinate's Y component.
      * @return Whether the coordinate is within the button.
      */
-    private boolean onBackToMenuButton(double x, double y) {
-        return withinBounds(x, y, -0.95, -0.85, 0.85, 0.95);
+    private boolean onBackToMenuButton(float x, float y) {
+        return withinBounds(x, y, -0.95f, -0.85f, 0.85f, 0.95f);
     }
 
     /**
@@ -315,7 +321,7 @@ class Window {
      *                  information about the objects which it comprises.
      * @param client
      */
-    private void handleMouseClick(GameState gameState, Main client, double x, double y) {
+    private void handleMouseClick(GameState gameState, Main client, float x, float y) {
         x = glScaleX(x, false, client.getWindow().getScreen());
         y = glScaleY(y);
         System.out.printf("[INFO] Mouse press at (%.2f, %.2f).\n", x, y);
@@ -338,16 +344,11 @@ class Window {
                 if (onBackToMenuButton(x, y)) {
                     System.out.println("Back to main menu.");
                     screen = Screen.MAIN_MENU;
-                } else {
-                    // Todo: N.B. This is for demonstrating the server-client synch.
-                    gameState.getBall().setX(cursorXPosition);
-                    gameState.getBall().setY(cursorYPosition);
                 }
                 break;
             }
             default:
                 System.err.println("Game screen not initialized!");
-
         }
     }
 
@@ -365,8 +366,8 @@ class Window {
             DoubleBuffer xposbuf = BufferUtils.createDoubleBuffer(1);
             DoubleBuffer yposbuf = BufferUtils.createDoubleBuffer(1);
             glfwGetCursorPos(window, xposbuf, yposbuf);
-            double x = xposbuf.get();
-            double y = yposbuf.get();
+            float x = (float) xposbuf.get();
+            float y = (float) yposbuf.get();
             handleMouseClick(gameState, client, x, y);
         };
         glfwSetMouseButtonCallback(window, mousecallback);
@@ -379,7 +380,7 @@ class Window {
      * @param x The X coordinate to scale to the OpenGL viewport.
      * @return The converted coordinate.
      */
-    double glScaleX(double x, boolean opponent, Screen screen) {
+    float glScaleX(float x, boolean opponent, Screen screen) {
         if(screen == Screen.MAIN_MENU) return -1.0f + x / (float) (windowWidth/2);
         if (opponent) return x / (float) (windowWidth);
         return -1.0f + x / (float) (windowWidth);
@@ -391,7 +392,7 @@ class Window {
      * @param y The Y coordinate to scale to the OpenGL viewport.
      * @return The converted coordinate.
      */
-    double glScaleY(double y) {
+    float glScaleY(float y) {
         return 1.0f - y / (float) (windowHeight / 2);
     }
 
@@ -401,8 +402,8 @@ class Window {
      * @param distance The onscreen distance.
      * @return The scaled distance.
      */
-    double glScaleDistance(double distance) {
-        return 1.0f * (double) distance / (windowWidth / 2);
+    float glScaleDistance(float distance) {
+        return 1.0f * distance / (windowWidth / 2);
     }
 
     public Screen getScreen() {

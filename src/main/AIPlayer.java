@@ -15,4 +15,7 @@ public class AIPlayer implements Player {
     @Override
     public void updateSeed(int seed) throws InterruptedException {
     }
+
+    @Override
+    public void endGame() {}
 }

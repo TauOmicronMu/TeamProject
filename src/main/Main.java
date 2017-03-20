@@ -22,8 +22,6 @@ public class Main extends NetworkClient {
     }
 
 
-    // XXJ312
-
     /**
      * The play() method implements the main myGame loop.
      */
@@ -38,31 +36,45 @@ public class Main extends NetworkClient {
         Menu.drawAll();
 
         long gcCounter = 0;
-        double timeStep = 0.0;
+        long timeStep = 0;
 
         while (!myWindow.shouldClose()) {
             long startTime = currentTimeMillis();
 
-            // Clear *all of the stuff* that gets
-            // created by openGL that we can't remove
-            // manually
+            // Force garbage collection of LWJGL stuff. Todo: use the LWJGL stack thing to allocate our buffers.
             if(gcCounter % 10 == 0) System.gc();
             gcCounter++;
 
             if (myWindow.getScreen() == Screen.GAME) {
                 handleMessages();
-                myGame.updateLogic();
                 myGame.updatePhysics(timeStep);
-                oppGame.updateLogic();
                 oppGame.updatePhysics(timeStep);
             }
 
-            myWindow.clear();
             myWindow.handleInput(myGame, this);
             myWindow.repaint(myGame, oppGame);  // Todo: paint oppGame
             long endTime = currentTimeMillis();
             timeStep = endTime - startTime;
+
+            // If we've overstepped our time, just continue and hope we catch up.
+            if (timeStep >= Constants.TARGET_MS_PER_FRAME) {
+                if (myWindow.getScreen() == Screen.GAME)
+                    System.out.println("[INFO] Main.play : Overshot max timestep: " + timeStep);
+                continue;
+            }
+
+            // Otherwise cap the frame-rate at TARGET_FPS.
+            try {
+                Thread.sleep(Constants.TARGET_MS_PER_FRAME-timeStep);
+            } catch (InterruptedException e) {
+                System.out.println("[WARN] Main.play : Main game loop was interrupted.");
+                break;
+            }
+
+            // If we capped the frame-rate, our time step should include the thread sleep.
+            timeStep = currentTimeMillis() - startTime;
         }
+
         myWindow.end();
         System.out.println("[INFO] Main.play : Window closed.");
         AudioEngine.getInstance().destroy();
@@ -81,7 +93,11 @@ public class Main extends NetworkClient {
         System.out.println("[INFO] Main.initializeGame : Received seed => " + seed);
 
         myGame.setSeed(seed);
+        myGame.generateItems();
+        myGame.generatePlatforms();
         oppGame.setSeed(seed);
+        oppGame.generateItems();
+        oppGame.generatePlatforms();
 
         myWindow.setScreen(Screen.GAME);
     }
@@ -93,13 +109,22 @@ public class Main extends NetworkClient {
 
     /**
      * This method is called whenever we receive a message from the Server.
-     * @param someonesGame The message we've just received.
+     * @param messageFromServer The message we've just received.
      */
     @Override
-    public void handleMessage(Message someonesGame) {
-        // Todo: This is probably really inefficient.
-        // Nah fam I'm sure it's all gucci
-        if (someonesGame.isMyGame()) myGame = (GameState) someonesGame.getObject();
-        else oppGame = (GameState) someonesGame.getObject();
+    public void handleMessage(Message messageFromServer) {
+        if (messageFromServer.getText() != null && messageFromServer.getText().equals(Constants.END_GAME)) {
+            backToMenu();
+            return;
+        }
+        if (messageFromServer.isMyGame()) myGame = (GameState) messageFromServer.getObject();
+        else oppGame = (GameState) messageFromServer.getObject();
+    }
+
+    public void backToMenu() {
+        myWindow.clear();
+        System.out.println("[INFO] Main.backToMenu : Returning to main menu.");
+        myWindow.setScreen(Screen.MAIN_MENU);
+        Menu.drawAll();
     }
 }

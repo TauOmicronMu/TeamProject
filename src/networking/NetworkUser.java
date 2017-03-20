@@ -23,7 +23,6 @@ abstract class NetworkUser implements MessageHandler {
      * Call handleMessage for each message returned by the NetworkEngine.
      */
     protected boolean handleMessages() {
-        if (!engine.isRunning()) return false;
         Optional<Message> maybeMessage;
         while ((maybeMessage = engine.nextMessage()).isPresent()) {
             Message m = maybeMessage.get();

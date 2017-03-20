@@ -30,6 +30,7 @@ public class HumanPlayer implements Player {
     public Optional<String> getMove() throws InterruptedException {
         String input = this.inputQueue.poll();
         if (input == null) return Optional.empty();
+        if (input.equals(Constants.END_GAME)) throw new InterruptedException("Client disconnect!");
         return Optional.of(input);
     }
 
@@ -40,8 +41,7 @@ public class HumanPlayer implements Player {
             outputStream.writeObject(msg);
             outputStream.reset();
         } catch (IOException e) {
-            System.err.println("[ERROR] HumanPlayer.updateGameState : IOException " + e);
-            System.err.println("[ERROR] HumanPlayer.updateGameState : InterruptedException thrown...");
+            System.out.println("[INFO] HumanPlayer.updateGameState : Player disconnected while updating their gameState.");
             throw new InterruptedException();
         }
     }
@@ -53,9 +53,17 @@ public class HumanPlayer implements Player {
             outputStream.flush();
             outputStream.reset();
         } catch (IOException e) {
-            System.err.println("[ERROR] HumanPlayer.updateSeed : IOException " + e);
-            System.err.println("[ERROR] HumanPlayer.updateSeed : InterruptedException thrown...");
+            System.out.println("[INFO] HumanPlayer.updateSeed : Player disconnected while receiving their seed.");
             throw new InterruptedException();
         }
+    }
+
+    @Override
+    public void endGame() {
+        try {
+            outputStream.writeObject(new Message(Constants.END_GAME));
+            outputStream.close();
+            inputStream.close();
+        } catch (IOException ignored) {}
     }
 }
