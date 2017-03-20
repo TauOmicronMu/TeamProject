@@ -21,6 +21,7 @@ public class Constants {
     public static final int MAX_SPEED = 80;
 
     public static final double GAME_SPEED = 90;
+
     public static final double TIME_STEP_COEFFICIENT = 1/GAME_SPEED;
     public static final int FLY_POWERUP_SPEED = 120;
 

@@ -162,4 +162,5 @@ public class Ball implements Serializable {
     public boolean heightIsLocked() {
         return heightLocked;
     }
+
 }
