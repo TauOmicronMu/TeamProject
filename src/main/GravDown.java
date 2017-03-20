@@ -10,7 +10,8 @@ public class GravDown extends main.Item{
 	}
 	
 	@Override
-	public void performAction(Ball ball) {
+	public void performAction(GameState game) {
+		Ball ball = game.getBall();
 		if(ball.getGravity()>7) {
 		ball.setGravity(ball.getGravity() - 2);
 			if(ball.getGravity() < 7){

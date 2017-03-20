@@ -114,30 +114,39 @@ public class GameState implements Serializable {
     }
 
     /**
-     * Update the powerup items in the current game state.
+     * Update the powerup items in the current game state
+     * If item is offscreen, create a random new one!
      */
     private void updateItems() {
-        Item[] items = this.getItems();
-        for (int i = 0; i < items.length; i++) {
-            if (items[i] == null || items[i].getY() > windowHeight ) {
-                items[i] = null;
-                switch (random.nextInt(3)) {
-                    case 0:
-						items[i]=new main.GravDown(- 10 * random.nextInt(500), 1);
-						break;
-					case 1:
-						items[i]=new main.GravUp(-10 * random.nextInt(500), 2);
-						break;
-					case 2:
-						items[i]=new main.FlyUpPower(-10 * random.nextInt(500), 3);
-						break;
+//        for(int i = 0; i<items.length; i++){
+//            System.out.print(items[i].getY() + " ");
+//        }
+            System.out.println();
+            for (int i = 0; i < items.length; i++) {
+                if (items[i].getY() >= windowHeight) {
+                    //items[i] = null;
+                    int y = (int)this.getHighestItem();
+                    switch (random.nextInt(4)) {
+                        case 0:
+                            items[i]=new main.GravDown( -1000 + y - random.nextInt(500), 1);
+                            break;
+                        case 1:
+                            items[i]=new main.GravUp(  - 1000 + y - random.nextInt(500), 2);
+                            break;
+                        case 2:
+                            items[i]=new main.FlyUpPower(  - 1000 + y - random.nextInt(500), 3);
+                            break;
+                        case 3:
+                            items[i]=new main.PointsItem(-1000 + y - random.nextInt(500), 4);
+                            break;
+                    }
                 }
             }
-        }
     }
 
     /**
      * Update the platforms in the current game state.
+     * If platform is offscreen, create a random new one!
      */
     private void updatePlatforms() {
         double yPosition;
@@ -222,17 +231,20 @@ public class GameState implements Serializable {
     void generateItems() {
         for (int i = 0; i < items.length; i++) {
             // Todo: understand and refactor this "magic number".
-        	switch (random.nextInt(3)) {
-            case 0:
-				items[i]=new main.GravUp(-i * 1000, 1);
-				break;
-			case 1:
-				items[i]=new main.GravDown(-i * 1000, 2);
-				break;
-			case 2:
-				items[i]=new main.FlyUpPower(-i * 1000, 3);
-				break;
-        	}
+            switch (random.nextInt(4)) {
+                case 0:
+                    items[i]=new main.GravDown(- i * 500 + random.nextInt(500), 1);
+                    break;
+                case 1:
+                    items[i]=new main.GravUp(- i * 500 + random.nextInt(500), 2);
+                    break;
+                case 2:
+                    items[i]=new main.FlyUpPower(-i * 500 + random.nextInt(500), 3);
+                    break;
+                case 3:
+                    items[i]=new main.PointsItem(-i * 500 + random.nextInt(500), 4);
+                    break;
+            }
         }
     }
 
@@ -290,5 +302,16 @@ public class GameState implements Serializable {
             default:
                 System.err.println("[WARN] GameState.handleInput : Bad move => " + move);
         }
+    }
+    /**
+     * Returns the y position of the highest item
+     */
+    public double getHighestItem(){
+        double max = 0;
+        for(int i = 0; i<items.length; i++){
+            if(items[i].getY()<max)
+                max = items[i].getY();
+        }
+        return max;
     }
 }

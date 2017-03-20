@@ -1,7 +1,6 @@
 package main;
 
 import java.io.Serializable;
-import java.util.Random;
 
 
 class TrapPlatform extends Platform implements Serializable {
@@ -61,7 +60,7 @@ class TrapPlatform extends Platform implements Serializable {
 
     @Override
     public void checkForCollision(Ball ball, GameState game, double deltaTime) {
-        if(shouldDraw )return;
+        if(noDraw)return;
             double ballX = ball.getX();
             double ballY = ball.getY();
             int radius = ball.getRadius();
@@ -87,7 +86,7 @@ class TrapPlatform extends Platform implements Serializable {
             // AudioEngine.getInstance().playTrack(AudioEngine.BOING); // Play the boing sound
             //ball.setY(rectTop - radius);
             //ball.setDy(-ball.getMaxSpeed());
-            shouldDraw = true;
+            noDraw = true;
 
     }
 

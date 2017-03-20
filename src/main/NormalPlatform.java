@@ -14,14 +14,6 @@ public class NormalPlatform extends Platform {
         double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
         Ball ball = game.getBall();
 
-//        // If platform is offscreen, move it back on!
-//        if (y > game.getWindowHeight()) {
-//            //System.out.println("[INFO] Platform.update : y is > window height " + game.getWindowHeight() + " at " + y);
-//            y -= game.getWindowHeight()*1.3;
-//            x = game.random.nextInt(game.getWindowWidth() - width);
-//            return;
-//        }
-
         // If we've got the flying power-up, don't bother with collision.
         if (ball.getCountFlyPower() > 0) {
             y += Constants.FLY_POWERUP_SPEED / deltaTime;

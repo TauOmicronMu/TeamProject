@@ -3,12 +3,11 @@ package main;
 import java.io.Serializable;
 import java.util.Random;
 
-import static org.lwjgl.opengl.GL11.glColor4f;
-
 
 class Item implements Serializable {
 
     private int x, y, dy, radius, type, highestPoint;
+    private boolean noDraw;
 
     /*
      * Constructor for item class(PowerUps)
@@ -17,43 +16,13 @@ class Item implements Serializable {
      */
     Item(int y, int type) {
         this.y = y;
-        this.type=type;
+        this.type = type;
         Random r = new Random();
-        x = r.nextInt(700) + radius + 100;
+        x = r.nextInt(600) + radius + 100;
         radius = 10;
         dy = Constants.ITEM_START_DY;
         highestPoint = 200;
-    }
-
-    /*
-     * Return the type of powerUp
-     * 1 for GraveDown
-     * 2 for GraveUp
-     * 3 for FlyUp
-     */
-    public int getType() {
-		return type;
-	}
-    /*
-     * Get method for Y
-     */
-    int getY() {
-        return y;
-    }
-
-    /*
-     * Get method for X
-     */
-    public int getX() {
-        return x;
-    }
-
-    /*
-     * Set method for x
-     * @param x
-     */
-    public void setX(int x) {
-        this.x = x;
+        this.noDraw = false;
     }
 
     /*
@@ -64,25 +33,25 @@ class Item implements Serializable {
         double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
         Ball ball = game.getBall();
 
-        if (ball.gameOver()) {
-            if (y > -100) y -= 6;
+        // If we've got the flying power-up, don't bother with collision.
+        if (ball.getCountFlyPower() > 0) {
+            y += Constants.FLY_POWERUP_SPEED / deltaTime;
+            game.score += Constants.FLY_POWERUP_SPEED / deltaTime;
             return;
         }
 
-        if (ball.getY() < highestPoint && ball.getDy() < 0) {
-            double deltaY = ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1;
-            if(deltaY < -3){
-                y += Math.abs(deltaY);
-            } else {
-                y += dy / deltaTime;
-            }
-            if(ball.getCountFlyPower() == 0) checkForCollision(ball, game);
-            else y += 20;
-        } else {
-            y += dy / deltaTime;
-            if(ball.getCountFlyPower() == 0) checkForCollision(ball, game);
-            else y += 20;
+        // Otherwise, check for collision with the ball.
+        checkForCollision(game);
+
+        // If the ball's height is locked, we need to compensate by moving
+        // the platform down at the speed the ball's meant to be rising.
+        if (ball.heightIsLocked()) {
+            y -= ball.getDy() / deltaTime;
         }
+
+        // Update platform Y position.
+        y += dy / deltaTime;
+        game.score += dy / deltaTime;
     }
         
 
@@ -90,7 +59,10 @@ class Item implements Serializable {
      * Checks for collision between the ball and the powerUp
      * @param ball
      */
-    private void checkForCollision(Ball ball, GameState game) {
+    private void checkForCollision(GameState game) {
+        if(noDraw)return;
+
+        Ball ball = game.getBall();
         double ballX = ball.getX();
         double ballY = ball.getY();
         int ballR = ball.getRadius();
@@ -101,8 +73,8 @@ class Item implements Serializable {
         //distance between object centers
         double c = Math.sqrt((double) (a * a) + (double) (b * b));
         if (c < collide) {
-            performAction(ball);
-            y = game.getWindowHeight() + 100;
+            performAction(game);
+            noDraw = true;
         }
 
     }
@@ -111,13 +83,14 @@ class Item implements Serializable {
      * Changes the behaviour of the ball depending on the powerUp
      * @param ball
      */
-    public void performAction(Ball ball) {
+    public void performAction(GameState game) {
     }
 
     /**
      * Paints the powerUps
      */
     public void paint(Window window, boolean opponent) {
+        if(noDraw) return;
         double[] vertices = createCircle(window.glScaleX(x, opponent, Screen.GAME), window.glScaleY(y), 0.2f, 0.02f);
         Model circle1 = new Model(vertices);
         circle1.render(vertices);
@@ -149,5 +122,40 @@ class Item implements Serializable {
         }
 
         return vertices;
+    }
+    /*
+     * Return the type of powerUp
+     * 1 for GraveDown
+     * 2 for GraveUp
+     * 3 for FlyUp
+     * 4 for Points
+     */
+    public int getType() {
+        return type;
+    }
+    public void setDraw(boolean noDraw) {
+        this.noDraw = noDraw;
+    }
+    public boolean getDraw() {
+        return this.noDraw;
+    }
+    /*
+     * Get method for Y
+     */
+    int getY() {
+        return y;
+    }
+    /*
+     * Get method for X
+     */
+    public int getX() {
+        return x;
+    }
+    /*
+     * Set method for x
+     * @param x
+     */
+    public void setX(int x) {
+        this.x = x;
     }
 }
