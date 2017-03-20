@@ -266,6 +266,10 @@ class Window {
             // System.out.println("[INFO] Window.handleKeyboardInput : Key(D) pressed.");
             gameState.getBall().moveRight();
             client.sendMessage(new Message("d"));
+        } else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_TRUE) {
+            // System.out.println("[INFO] Window.handleKeyboardInput : Key(D) pressed.");
+            gameState.getBall().doubleJump();
+            client.sendMessage(new Message("Space"));
         }
     }
 

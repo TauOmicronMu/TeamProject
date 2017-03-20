@@ -15,12 +15,12 @@ public class Constants {
 	public static final int PLATFORM_START_DY = 10;
 	public static final int ITEM_START_DY = 10;
 
-	public static final float GRAVITY = 9.81f;
+	public static final float GRAVITY = 6.9f/1.337f;
 
     public static final int AGILITY = 20;
-    public static final int MAX_SPEED = 80;
 
-    public static final double GAME_SPEED = 90;
+    public static final int MAX_SPEED = 60;
+    public static final double GAME_SPEED = 50;
 
     public static final double TIME_STEP_COEFFICIENT = 1/GAME_SPEED;
 

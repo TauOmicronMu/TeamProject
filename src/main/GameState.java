@@ -289,6 +289,9 @@ public class GameState implements Serializable {
             case "d":
                 getBall().moveRight();
                 break;
+            case "Space":
+                getBall().doubleJump();
+                break;
             default:
                 System.err.println("[WARN] GameState.handleInput : Bad move => " + move);
         }
