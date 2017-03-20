@@ -80,7 +80,7 @@ public class Match implements Runnable {
                     // Relay new game state to clients
                     try {
                         playerOne.updateGameState(playerOneGameState, true);
-                        playerTwo.updateGameState(playerTwoGameState, false);
+                        // playerTwo.updateGameState(playerTwoGameState, false);
                     } catch (InterruptedException e) {
                         System.err.println("[WARN] Match.run : Player disconnect while updating game state after player one input!");
                         running = false;
@@ -98,7 +98,7 @@ public class Match implements Runnable {
                     // Relay to both clients
                     try {
                         playerOne.updateGameState(playerOneGameState, false);
-                        playerTwo.updateGameState(playerTwoGameState, true);
+                        // playerTwo.updateGameState(playerTwoGameState, true);
                     } catch (InterruptedException e) {
                         System.err.println("[WARN] Match.run : Player disconnect while updating game state after player two input!");
                         running = false;
@@ -107,12 +107,12 @@ public class Match implements Runnable {
                 }
             } while (playerOneMove.isPresent() || playerTwoMove.isPresent());
 
-            if (loopNum % 100 == 1) {
+            if (loopNum % 100 == 0) {
                 try {
                     playerOne.updateGameState(playerOneGameState, true);
                     playerOne.updateGameState(playerTwoGameState, false);
-                    playerTwo.updateGameState(playerTwoGameState, true);
-                    playerTwo.updateGameState(playerOneGameState, false);
+                    // playerTwo.updateGameState(playerTwoGameState, true);
+                    // playerTwo.updateGameState(playerOneGameState, false);
                 } catch (InterruptedException e) {
                     System.err.println("[WARN] Match.run : Player disconnect while scheduled-updating game state.");
                     running = false;
@@ -137,7 +137,7 @@ public class Match implements Runnable {
             try {
                 Thread.sleep(Constants.MAX_TIME_PER_FRAME - timeStep);
             } catch (InterruptedException e) {
-                System.err.println("[WARN] Math.run : Interrupted while sleeping.");
+                System.err.println("[WARN] Match.run : Interrupted while sleeping.");
                 break;
             }
         }
