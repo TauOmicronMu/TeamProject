@@ -57,10 +57,6 @@ public class GameState implements Serializable {
             int xPosition = random.nextInt(windowWidth - 220);
             int yPosition = windowHeight - 200 * i;
 
-            System.out.println("[INFO] GameState.generatePlatforms : Creating a platform!");
-            System.out.println("Window height is " + windowHeight);
-            System.out.println("Y position is " + yPosition);
-
             platforms[i] = new Platform(
                     xPosition,
                     yPosition,
@@ -68,47 +64,18 @@ public class GameState implements Serializable {
                     PLATFORM_HEIGHT
             );
         }
-        int xPosition = 100 + random.nextInt(windowWidth - 300);
-        int yPosition = -800;
-        int y2Position = -1000;
-        int y3Position = -100;
-        int y4Position = -300;
-        
-        movingPlatform[0] = new MovingPlatform(
-                xPosition,
-                yPosition,
-                PLATFORM_WIDTH,
-                PLATFORM_HEIGHT,
-                xPosition -200,
-                xPosition +200
-        );
-        movingPlatform[1] = new MovingPlatform(
-                xPosition,
-                y2Position,
-                PLATFORM_WIDTH,
-                PLATFORM_HEIGHT,
-                xPosition -200,
-                xPosition + 200
-        );
-        
-        movingPlatform[2] = new MovingPlatform(
-                xPosition,
-                y3Position,
-                PLATFORM_WIDTH,
-                PLATFORM_HEIGHT,
-                xPosition -200,
-                xPosition + 200
-        );
-        
-        movingPlatform[3] = new MovingPlatform(
-                xPosition,
-                y4Position,
-                PLATFORM_WIDTH,
-                PLATFORM_HEIGHT,
-                xPosition -200,
-                xPosition + 200
-        );
-        
+
+        int[] platformYValues = new int[]{-800, -1000, -100, -300};
+
+        for (int i=0; i<4; i++) {
+            int x = PLATFORM_WIDTH + random.nextInt((getWindowWidth() - PLATFORM_WIDTH)/2);
+            int x1 = x - PLATFORM_WIDTH;
+            int x2 = x + PLATFORM_WIDTH;
+            int y = platformYValues[i];
+            movingPlatform[0] = new MovingPlatform(
+                    x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT, x1, x2
+            );
+        }
     }
 
     /**

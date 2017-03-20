@@ -43,7 +43,7 @@ class Platform extends CollidablePlatform implements Serializable {
         // If platform is offscreen, move it back on!
         if (y > game.getWindowHeight()) {
             System.out.println("[INFO] Platform.update : y is > window height " + game.getWindowHeight() + " at " + y);
-            y = -height;
+            y -= game.getWindowHeight()*1.3;
             x = game.random.nextInt(game.getWindowWidth() - width);
             return;
         }

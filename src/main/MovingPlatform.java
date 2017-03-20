@@ -29,7 +29,7 @@ class MovingPlatform extends CollidablePlatform implements Serializable {
         this.x1 = x1;
         this.x2 = x2;
         dy = Constants.PLATFORM_START_DY; // was 3
-        dx = -1;
+        dx = 15;
     }
 
     public MovingPlatform() {
@@ -47,7 +47,7 @@ class MovingPlatform extends CollidablePlatform implements Serializable {
      *@param ball the ball class object
      */
     void update(GameState game, double timeStep) {
-        if (timeStep == 0) return;
+        if (timeStep <= Constants.MIN_TIME_PER_FRAME) return;
         Ball ball = game.getBall();
         if (ball.gameOver()) return;
 
