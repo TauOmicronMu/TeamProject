@@ -38,7 +38,7 @@ public class Main extends NetworkClient {
         Menu.drawAll();
 
         long gcCounter = 0;
-        double timeStep = 0.0;
+        long timeStep = 0;
 
         while (!myWindow.shouldClose()) {
             long startTime = currentTimeMillis();
@@ -51,17 +51,29 @@ public class Main extends NetworkClient {
 
             if (myWindow.getScreen() == Screen.GAME) {
                 handleMessages();
-                myGame.updateLogic();
                 myGame.updatePhysics(timeStep);
-                oppGame.updateLogic();
                 oppGame.updatePhysics(timeStep);
             }
 
             myWindow.clear();
             myWindow.handleInput(myGame, this);
-            myWindow.repaint(myGame, oppGame);  // Todo: paint oppGame
+            myWindow.repaint(myGame, oppGame);
             long endTime = currentTimeMillis();
             timeStep = endTime - startTime;
+
+            if (timeStep >= Constants.MAX_TIME_PER_FRAME) {
+                if (myWindow.getScreen() == Screen.GAME)
+                    System.err.println("[WARN] Main.play : Exceeded target time per frame: " + timeStep);
+                continue;
+            }
+
+            try {
+                Thread.sleep(Constants.MAX_TIME_PER_FRAME-timeStep);
+                timeStep = currentTimeMillis() - startTime;
+            } catch (InterruptedException e) {
+                System.err.println("[WARN] Main.play : main loop interrupted.");
+                break;
+            }
         }
         myWindow.end();
         System.out.println("[INFO] Main.play : Window closed.");

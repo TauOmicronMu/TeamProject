@@ -132,13 +132,8 @@ public class GameState implements Serializable {
     }
 
 
-    void updateLogic() {
-        updateItems();
-    }
-
-
     void updatePhysics(double timeStep) {
-    	
+    	updateItems();
     	ball.update(this, timeStep);
         for (Platform platform : platforms) {
             if (platform != null) platform.update(this, timeStep);

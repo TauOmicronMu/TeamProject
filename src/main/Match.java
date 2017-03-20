@@ -107,7 +107,7 @@ public class Match implements Runnable {
                 }
             } while (playerOneMove.isPresent() || playerTwoMove.isPresent());
 
-            if (loopNum % 100 == 0) {
+            if (loopNum == 1) {
                 try {
                     playerOne.updateGameState(playerOneGameState, true);
                     playerOne.updateGameState(playerTwoGameState, false);
@@ -120,10 +120,6 @@ public class Match implements Runnable {
                 }
             }
 
-            // Logic tick
-            playerOneGameState.updateLogic();
-            playerTwoGameState.updateLogic();
-
             // Physics tick
             playerOneGameState.updatePhysics(timeStep);
             playerTwoGameState.updatePhysics(timeStep);
@@ -132,7 +128,21 @@ public class Match implements Runnable {
 
             long endTime = System.currentTimeMillis();
             timeStep = endTime - startTime;
+
+            if (timeStep > Constants.MAX_TIME_PER_FRAME) {
+                System.err.println("[WARN] Match.run : exceeded max time per frame.");
+                continue;
+            }
+
+            try {
+                Thread.sleep(Constants.MAX_TIME_PER_FRAME - timeStep);
+            } catch (InterruptedException e) {
+                System.err.println("[WARN] Math.run : Interrupted while sleeping.");
+                break;
+            }
         }
         System.out.println("[INFO] Match.run: Match concluded.");
+
+        // Todo: send game over to fix client disconnects.
     }
 }
