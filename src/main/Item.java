@@ -15,12 +15,10 @@ class Item implements Serializable {
      * @param y the y position of the powerUp
      * @param type, the type of the powerUp
      */
-    Item(int y, int type) {
+    Item(int x, int y, int type) {
         this.y = y;
         this.type=type;
-        Random r = new Random();
-        x = r.nextInt(700) + radius + 100;
-        radius = 10;
+        radius = Constants.ITEM_RADIUS;
         dy = Constants.ITEM_START_DY;
         highestPoint = 200;
     }
@@ -142,8 +140,8 @@ class Item implements Serializable {
         vertices[1] = posy;
         vertices[2] = posz;
         for (int j = 3; j < (noVertices * 3); j = j + 3) {
-            vertices[j] = posx + (radius * Math.cos(i * doublePI / noSides));
-            vertices[j + 1] = posy + (radius * Math.sin(i * doublePI / noSides));
+            vertices[j] = posx + (radius * Math.cos(i * doublePI / 360));
+            vertices[j + 1] = posy + (radius * Math.sin(i * doublePI / 360));
             vertices[j + 2] = posz;
             i++;
         }

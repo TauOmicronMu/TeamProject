@@ -17,7 +17,7 @@ public abstract class CollidablePlatform {
 
         // Check if the ball is above the platform *and* will be below
         // it after exactly one tick at the current framerate.
-        if (ballBottom >= rectTop) return;
+        if (ballBottom > rectTop) return;
         double newBallBottom = ballBottom + ball.getDy() / deltaTime;
         if (newBallBottom <= rectTop) return;
 
@@ -27,7 +27,7 @@ public abstract class CollidablePlatform {
 
         // If the ball has collided with the top of the platform ~Tom
         // AudioEngine.getInstance().playTrack(AudioEngine.BOING); // Play the boing sound
-        ball.setY(rectTop - radius);
         ball.setDy(-ball.getMaxSpeed());
+        ball.setY(rectTop - radius);
     }
 }

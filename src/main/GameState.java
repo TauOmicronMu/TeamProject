@@ -86,15 +86,16 @@ public class GameState implements Serializable {
         for (int i = 0; i < items.length; i++) {
             if (items[i] == null || items[i].getY() > windowHeight ) {
                 items[i] = null;
+                int x = random.nextInt(700) + Constants.ITEM_RADIUS + 100;
                 switch (random.nextInt(3)) {
                     case 0:
-						items[i]=new main.GravDown(- 10 * random.nextInt(500), 1);
+						items[i]=new main.GravDown(x, - 10 * random.nextInt(500), 1);
 						break;
 					case 1:
-						items[i]=new main.GravUp(-10 * random.nextInt(500), 2);
+						items[i]=new main.GravUp(x, -10 * random.nextInt(500), 2);
 						break;
 					case 2:
-						items[i]=new main.FlyUpPower(-10 * random.nextInt(500), 3);
+						items[i]=new main.FlyUpPower(x, -10 * random.nextInt(500), 3);
 						break;
                 }
             }
@@ -125,15 +126,16 @@ public class GameState implements Serializable {
     void generateItems() {
         for (int i = 0; i < items.length; i++) {
             // Todo: understand and refactor this "magic number".
+            int x = random.nextInt(700) + Constants.ITEM_RADIUS + 100;
         	switch (random.nextInt(3)) {
             case 0:
-				items[i]=new main.GravUp(-i * 1000, 1);
+				items[i]=new main.GravUp(x, -i * 1000, 1);
 				break;
 			case 1:
-				items[i]=new main.GravDown(-i * 1000, 2);
+				items[i]=new main.GravDown(x, -i * 1000, 2);
 				break;
 			case 2:
-				items[i]=new main.FlyUpPower(-i * 1000, 3);
+				items[i]=new main.FlyUpPower(x, -i * 1000, 3);
 				break;
         	}
         }
@@ -167,11 +169,6 @@ public class GameState implements Serializable {
         return movingPlatform;
     }
 
-
-    void printScore() {
-        if (gameOver())
-            System.out.println("Your final score is = " + score);
-    }
 
     /**
      * Returns the score of the player

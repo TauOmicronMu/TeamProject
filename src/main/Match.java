@@ -1,8 +1,5 @@
 package main;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
-
-import javax.swing.text.html.Option;
 import java.util.Optional;
 import java.util.Random;
 
@@ -107,7 +104,7 @@ public class Match implements Runnable {
                 }
             } while (playerOneMove.isPresent() || playerTwoMove.isPresent());
 
-            if (loopNum % 100 == 1) {
+            if (loopNum % 20 == 1) {
                 try {
                     playerOne.updateGameState(playerOneGameState, true);
                     playerOne.updateGameState(playerTwoGameState, false);
@@ -140,6 +137,8 @@ public class Match implements Runnable {
                 System.err.println("[WARN] Math.run : Interrupted while sleeping.");
                 break;
             }
+
+            timeStep = System.currentTimeMillis() - startTime;
         }
         System.out.println("[INFO] Match.run: Match concluded.");
 
