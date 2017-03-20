@@ -95,6 +95,7 @@ public class Ball implements Serializable {
 
         // Cap the speed at maxSpeed.
         dy = Math.min(maxSpeed, dy);
+        System.out.println("The speed of the ball is " + dy/deltaTime);
     }
 
     double getX() {
