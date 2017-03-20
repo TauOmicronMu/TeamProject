@@ -14,9 +14,9 @@ class Rectangle {
      * @param vertices the float points of the corners of the rectangle
      */
  
-    static void drawrectangle(double[] vertices, Model model)
+    static void drawrectangle(double[] vertices, Model model, boolean outline)
     {
-    	model.render(vertices);
+    	model.render(vertices, outline);
     }
 
 

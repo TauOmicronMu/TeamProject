@@ -45,7 +45,6 @@ class Model {
         glVertexAttribPointer(0, 3, GL_DOUBLE, false, 0, 0);
         glEnableVertexAttribArray(0);
 
-
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
     }
@@ -66,6 +65,10 @@ class Model {
         glDrawArrays(GL_TRIANGLE_FAN, 0, draw_count);
     }
 
+    private void coolDraw() {
+        glDrawArrays(GL_LINE_LOOP, 0, draw_count);
+    }
+
     /**
      * Binds the buffers, allows them to be active
      */
@@ -79,20 +82,65 @@ class Model {
      *
      * @param vertices
      */
-    void render(double[] vertices) {
-    	buffer.clear();
+    void render(double[] vertices, boolean outline) {
+        long st;
+        boolean debug = false;
+        long tst = System.currentTimeMillis();
+
+        st = System.currentTimeMillis();
+        if(debug) System.out.print("buffer.clear() : ");
+        buffer.clear();
+        if(debug) System.out.println(System.currentTimeMillis() - st);
+
+        st = System.currentTimeMillis();
+        if(debug) System.out.print("buffer.put(vertices) : ");
         buffer.put(vertices);
+        if(debug) System.out.println(System.currentTimeMillis() - st);
+
+        st = System.currentTimeMillis();
+        if(debug) System.out.print("buffer.flip() : ");
         buffer.flip();
+        if(debug)  System.out.println(System.currentTimeMillis() - st);
+
+        st = System.currentTimeMillis();
+        if(debug) System.out.print("bind() : ");
         bind();
+        if(debug) System.out.println(System.currentTimeMillis() - st);
+
+        st = System.currentTimeMillis();
+        if(debug) System.out.print("glBufferSubData(GL_ARRAY_BUFFER, 0, buffer) : ");
         glBufferSubData(GL_ARRAY_BUFFER, 0, buffer);
+        if(debug) System.out.println(System.currentTimeMillis() - st);
+
+        st = System.currentTimeMillis();
+        if(debug) System.out.print("glVertexPointer(3, GL_DOUBLE, 0, toFloatArray(vertices)) : ");
         glVertexPointer(3, GL_DOUBLE, 0, toFloatArray(vertices));
+        if(debug) System.out.println(System.currentTimeMillis() - st);
 
-        draw();
+        st = System.currentTimeMillis();
+        if(debug) System.out.print("draw() : ");
 
+        if (outline) coolDraw();
+        else draw();
+
+        if(debug) System.out.println(System.currentTimeMillis() - st);
+
+        st = System.currentTimeMillis();
+        if(debug) System.out.print("glBindBuffer(GL_ARRAY_BUFFER, 0) : ");
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
+        if(debug) System.out.println(System.currentTimeMillis() - st);
 
+        st = System.currentTimeMillis();
+        if(debug) System.out.print("glBindVertexArray(0) : ");
+        glBindVertexArray(0);
+        if(debug) System.out.println(System.currentTimeMillis() - st);
+
+        st = System.currentTimeMillis();
+        if(debug) System.out.print("glDisableVertexArribArray(0) : ");
         glDisableVertexAttribArray(0);
+        if(debug) System.out.println(System.currentTimeMillis() - st);
+
+        if(debug) System.out.println("TOTAL TIME : " + (System.currentTimeMillis() - tst));
     }
 
 }

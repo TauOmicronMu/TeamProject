@@ -72,12 +72,12 @@ class Item implements Serializable {
             if(deltaY < -3){
                 y += Math.abs(deltaY);
             } else {
-                y += dy / deltaTime;
+                y += dy * deltaTime;
             }
             if(ball.getCountFlyPower() == 0) checkForCollision(ball, game);
             else y += 20;
         } else {
-            y += dy / deltaTime;
+            y += dy * deltaTime;
             if(ball.getCountFlyPower() == 0) checkForCollision(ball, game);
             else y += 20;
         }
@@ -116,36 +116,8 @@ class Item implements Serializable {
      * Paints the powerUps
      */
     public void paint(Window window, boolean opponent) {
-        double[] vertices = createCircle(window.glScaleX(x, opponent, Screen.GAME), window.glScaleY(y), 0.2f, 0.02f);
+        double[] vertices = Circle.createCircle(window.glScaleX(x, opponent, Screen.GAME), window.glScaleY(y), 0.2f, 0.02f, 4);
         Model circle1 = new Model(vertices);
-        circle1.render(vertices);
-    }
-
-    /**
-     * Calculates all the points of the circumference of the circle
-     *
-     * @param posx the current x position of the centre of the powerUp
-     * @param posy the current y position of the centre of the powerUp
-     * @param posz the current z position of the centre of the powerUp
-     * @return all the points of the circle
-     */
-    private static double[] createCircle(double posx, double posy, double posz, double radius) {
-        int noSides = 360;
-        int noVertices = noSides + 2;
-        double doublePI = Math.PI * 2;
-
-        int i = 1;
-        double[] vertices = new double[noVertices * 3];
-        vertices[0] = posx;
-        vertices[1] = posy;
-        vertices[2] = posz;
-        for (int j = 3; j < (noVertices * 3); j = j + 3) {
-            vertices[j] = posx + (radius * Math.cos(i * doublePI / 360));
-            vertices[j + 1] = posy + (radius * Math.sin(i * doublePI / 360));
-            vertices[j + 2] = posz;
-            i++;
-        }
-
-        return vertices;
+        circle1.render(vertices, false);
     }
 }

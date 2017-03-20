@@ -46,7 +46,7 @@ public class Main extends NetworkClient {
             // Clear *all of the stuff* that gets
             // created by openGL that we can't remove
             // manually
-            if(gcCounter % 10 == 0) System.gc();
+            if(gcCounter % 20 == 0) System.gc();
             gcCounter++;
 
             if (myWindow.getScreen() == Screen.GAME) {
@@ -61,20 +61,21 @@ public class Main extends NetworkClient {
             long endTime = currentTimeMillis();
             timeStep = endTime - startTime;
 
-            if (timeStep >= Constants.MAX_TIME_PER_FRAME) {
+            /*
+            if (timeStep >= Constants.MAX_TIME_PER_FRAME ) {
                 if (myWindow.getScreen() == Screen.GAME)
                     System.err.println("[WARN] Main.play : Exceeded target time per frame: " + timeStep);
                 continue;
-            }
+            }*/
 
-            try {
-                Thread.sleep(Constants.MAX_TIME_PER_FRAME-timeStep);
+/*            try {
+                Thread.sleep(Constants.MAX_TIME_PER_FRAME - timeStep);
                 endTime = currentTimeMillis();
-                timeStep = endTime - startTime;
+                timeStep = endTime - startTime
             } catch (InterruptedException e) {
                 System.err.println("[WARN] Main.play : main loop interrupted.");
                 break;
-            }
+            }*/
         }
         myWindow.end();
         System.out.println("[INFO] Main.play : Window closed.");
@@ -116,7 +117,10 @@ public class Main extends NetworkClient {
     public void handleMessage(Message someonesGame) {
         // Todo: This is probably really inefficient.
         // Nah fam I'm sure it's all gucci
-        if (someonesGame.isMyGame()) myGame = (GameState) someonesGame.getObject();
+        if (someonesGame.isMyGame()) {
+            myGame = (GameState) someonesGame.getObject();
+            //System.out.println("[INFO] Main.handleMessage : Server updated our game state.");
+        }
         else oppGame = (GameState) someonesGame.getObject();
     }
 }

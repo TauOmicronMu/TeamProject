@@ -36,13 +36,13 @@ class Platform extends CollidablePlatform implements Serializable {
      * @param timeStep The elapsed time in the last frame.
      */
     void update(GameState game, double timeStep) {
+
         if (timeStep < Constants.MIN_TIME_PER_FRAME) return;
         double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
         Ball ball = game.getBall();
 
         // If platform is offscreen, move it back on!
         if (y > game.getWindowHeight()) {
-            System.out.println("[INFO] Platform.update : y is > window height " + game.getWindowHeight() + " at " + y);
             y -= game.getWindowHeight()*1.3;
             x = game.random.nextInt(game.getWindowWidth() - width);
             return;
@@ -50,8 +50,8 @@ class Platform extends CollidablePlatform implements Serializable {
 
         // If we've got the flying power-up, don't bother with collision.
         if (ball.getCountFlyPower() > 0) {
-            y += Constants.FLY_POWERUP_SPEED / deltaTime;
-            game.score += Constants.FLY_POWERUP_SPEED / deltaTime;
+            y += Constants.FLY_POWERUP_SPEED * deltaTime;
+            game.score += Constants.FLY_POWERUP_SPEED * deltaTime;
             return;
         }
 
@@ -61,12 +61,12 @@ class Platform extends CollidablePlatform implements Serializable {
         // If the ball's height is locked, we need to compensate by moving
         // the platform down at the speed the ball's meant to be rising.
         if (ball.heightIsLocked()) {
-            y -= ball.getDy() / deltaTime;
+            y -= ball.getDy() * deltaTime;
         }
 
         // Update platform Y position.
-        y += dy / deltaTime;
-        game.score += dy / deltaTime;
+        y += dy * deltaTime;
+        game.score += dy * deltaTime;
     }
 
 
@@ -82,7 +82,7 @@ class Platform extends CollidablePlatform implements Serializable {
 
         double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
         glColor4f(1, 0, 0, 0);
-        Rectangle.drawrectangle(verticesb, Menu.getRectangleModel());
+        Rectangle.drawrectangle(verticesb, Menu.getRectangleModel(), true);
     }
 
 }

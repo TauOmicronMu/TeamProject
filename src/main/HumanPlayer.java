@@ -38,6 +38,7 @@ public class HumanPlayer implements Player {
         Message msg = new Message(gameState, isCurrentPlayer);
         try {
             outputStream.writeObject(msg);
+            outputStream.flush();
             outputStream.reset();
         } catch (IOException e) {
             System.err.println("[ERROR] HumanPlayer.updateGameState : IOException " + e);

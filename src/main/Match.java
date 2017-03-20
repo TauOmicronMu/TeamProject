@@ -75,14 +75,14 @@ public class Match implements Runnable {
                     playerOneGameState.handleInput(move);
 
                     // Relay new game state to clients
-                    try {
+/*                    try {
                         playerOne.updateGameState(playerOneGameState, true);
                         playerTwo.updateGameState(playerTwoGameState, false);
                     } catch (InterruptedException e) {
                         System.err.println("[WARN] Match.run : Player disconnect while updating game state after player one input!");
                         running = false;
                         break MainLoop;
-                    }
+                    }*/
                 }
 
                 if (playerTwoMove.isPresent()) {
@@ -92,7 +92,7 @@ public class Match implements Runnable {
 
                     playerTwoGameState.handleInput(move);
 
-                    // Relay to both clients
+/*                    // Relay to both clients
                     try {
                         playerOne.updateGameState(playerOneGameState, false);
                         playerTwo.updateGameState(playerTwoGameState, true);
@@ -100,11 +100,11 @@ public class Match implements Runnable {
                         System.err.println("[WARN] Match.run : Player disconnect while updating game state after player two input!");
                         running = false;
                         break MainLoop;
-                    }
+                    }*/
                 }
             } while (playerOneMove.isPresent() || playerTwoMove.isPresent());
 
-            if (loopNum % 100 == 0) {
+            if (loopNum % (1000/Constants.SRVR_MS_PER_UPDT) == 1) {
                 try {
                     playerOne.updateGameState(playerOneGameState, true);
                     playerOne.updateGameState(playerTwoGameState, false);
@@ -126,19 +126,26 @@ public class Match implements Runnable {
             long endTime = System.currentTimeMillis();
             timeStep = endTime - startTime;
 
-            if (timeStep > Constants.MAX_TIME_PER_FRAME) {
+/*            if (timeStep > Constants.MAX_TIME_PER_FRAME) {
                 System.err.println("[WARN] Match.run : exceeded max time per frame.");
                 continue;
             }
 
-            try {
+           try {
                 Thread.sleep(Constants.MAX_TIME_PER_FRAME - timeStep);
             } catch (InterruptedException e) {
                 System.err.println("[WARN] Match.run : Interrupted while sleeping.");
                 break;
-            }
 
-            timeStep = System.currentTimeMillis() - startTime;
+                timeStep = System.currentTimeMillis() - startTime;
+            }*/
+
+            /*
+            try {
+                Thread.sleep(Constants.SRVR_MS_PER_UPDT);
+                timeStep = System.currentTimeMillis() - startTime;
+            } catch (InterruptedException ignored) {}
+            */
         }
         System.out.println("[INFO] Match.run: Match concluded.");
 

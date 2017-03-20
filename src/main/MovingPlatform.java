@@ -65,8 +65,8 @@ class MovingPlatform extends CollidablePlatform implements Serializable {
 
         // If we've got the flying power-up, don't bother with collision.
         if (ball.getCountFlyPower() > 0f) {
-            y += Constants.FLY_POWERUP_SPEED / deltaTime;
-            game.score += Constants.FLY_POWERUP_SPEED / deltaTime;
+            y += Constants.FLY_POWERUP_SPEED * deltaTime;
+            game.score += Constants.FLY_POWERUP_SPEED * deltaTime;
             return;
         }
 
@@ -74,16 +74,16 @@ class MovingPlatform extends CollidablePlatform implements Serializable {
         checkForCollision(ball, deltaTime, x, y, width);
 
         if (ball.heightIsLocked()) {
-            y -= ball.getDy() / deltaTime;
+            y -= ball.getDy() * deltaTime;
         }
 
         // Update platform Y position.
-        y += dy / deltaTime;
-        game.score += dy / deltaTime;
+        y += dy * deltaTime;
+        game.score += dy * deltaTime;
 
         // Update platform X position.
         if (x <= x1 || x >= x2) dx = -dx;
-        x += dx / deltaTime;
+        x += dx * deltaTime;
     }
 
     /*
@@ -97,7 +97,7 @@ class MovingPlatform extends CollidablePlatform implements Serializable {
 
         double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
         glColor4f(1, 0, 0, 0);
-        Rectangle.drawrectangle(verticesb, Menu.getRectangleModel());
+        Rectangle.drawrectangle(verticesb, Menu.getRectangleModel(), true);
     }
     
     public void setDx(int dx){
