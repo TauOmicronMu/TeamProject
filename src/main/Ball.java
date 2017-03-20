@@ -20,6 +20,7 @@ public class Ball implements Serializable {
     private boolean heightLocked = false;
     private boolean gameOver = false;
     private int maxHeight = Constants.MAX_BALL_HEIGHT;
+    public int doubleJump = 0;
 
 
     Ball(double i, double j) {
@@ -43,6 +44,13 @@ public class Ball implements Serializable {
         }
     }
 
+    //Method that allows the player to double jump every 500 updates
+    void doubleJump(){
+        if(doubleJump == 0){
+            this.dy = -this.maxSpeed;
+            this.doubleJump = 100;
+        }
+    }
 
     void update(GameState game, double timeStep) {
         if (timeStep == 0) return;
@@ -94,7 +102,12 @@ public class Ball implements Serializable {
 
         // Cap the speed at maxSpeed.
         dy = Math.min(maxSpeed, dy);
-        //System.out.println("The speed of the ball is " + dy/deltaTime);
+
+        if(doubleJump > 0){
+            doubleJump--;
+        }
+
+
     }
 
     double getX() {
