@@ -79,7 +79,7 @@ public class Match implements Runnable {
 
                     // Relay new game state to clients
                     try {
-                        //playerOne.updateGameState(playerOneGameState, true);
+                        playerOne.updateGameState(playerOneGameState, true);
                         playerTwo.updateGameState(playerTwoGameState, false);
                     } catch (InterruptedException e) {
                         System.err.println("[WARN] Match.run : Player disconnect while updating game state after player one input!");
@@ -98,7 +98,7 @@ public class Match implements Runnable {
                     // Relay to both clients
                     try {
                         playerOne.updateGameState(playerOneGameState, false);
-                        //playerTwo.updateGameState(playerTwoGameState, true);
+                        playerTwo.updateGameState(playerTwoGameState, true);
                     } catch (InterruptedException e) {
                         System.err.println("[WARN] Match.run : Player disconnect while updating game state after player two input!");
                         running = false;
@@ -107,7 +107,7 @@ public class Match implements Runnable {
                 }
             } while (playerOneMove.isPresent() || playerTwoMove.isPresent());
 
-            if (loopNum == 1) {
+            if (loopNum % 100 == 1) {
                 try {
                     playerOne.updateGameState(playerOneGameState, true);
                     playerOne.updateGameState(playerTwoGameState, false);
