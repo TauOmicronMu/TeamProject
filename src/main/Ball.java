@@ -17,7 +17,6 @@ public class Ball implements Serializable {
     private int agility = Constants.AGILITY; // was 1
     private int maxSpeed = Constants.MAX_SPEED; // was 5
     private int countFlyPower = 0;
-    private int score;
     private boolean heightLocked = false;
     private boolean gameOver = false;
     private int maxHeight = Constants.MAX_BALL_HEIGHT;

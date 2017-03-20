@@ -3,13 +3,14 @@ package main;
 
 public class GravUp extends main.Item{
 
-	public GravUp(int x, int y, int type) {
-		super(x, y, type);
+	public GravUp(int y, int type) {
+		super(y, type);
 		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
-	public void performAction(Ball ball) {
+	public void performAction(GameState game) {
+		Ball ball = game.getBall();
 		ball.setGravity(ball.getGravity() + 2);
 	}
 	

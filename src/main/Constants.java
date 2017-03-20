@@ -23,8 +23,8 @@ public class Constants {
     public static final double GAME_SPEED = 90;
 
     public static final double TIME_STEP_COEFFICIENT = 1/GAME_SPEED;
-    public static final int FLY_POWERUP_SPEED = 120;
 
+    public static final int FLY_POWERUP_SPEED = 150;
     public static final int MAX_BALL_HEIGHT = WINDOW_HEIGHT / 4;
     public static final int MOVING_PLATFORM_DX = 30;
     public static final double MIN_TIME_PER_FRAME = 1000 / 240;

@@ -5,14 +5,14 @@ import main.Item;
 
 public class FlyUpPower extends main.Item{
 
-	FlyUpPower(int x, int y, int type) {
-		super(x, y, type);
+	FlyUpPower(int y, int type) {
+		super(y, type);
 	}
 
 	@Override
-	public void performAction(Ball ball) {
-		
-		ball.setCountFlyPower(300);
+	public void performAction(GameState game) {
+		Ball ball = game.getBall();
+		ball.setCountFlyPower(100);
 		
 	}
 	

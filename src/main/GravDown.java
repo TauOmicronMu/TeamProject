@@ -4,12 +4,13 @@ package main;
 
 public class GravDown extends main.Item{
 
-	GravDown(int x, int y, int type) {
-		super(x, y, type);
+	GravDown(int y, int type) {
+		super(y, type);
 	}
 
 	@Override
-	public void performAction(Ball ball) {
+	public void performAction(GameState game) {
+		Ball ball = game.getBall();
 		if(ball.getGravity()>7) {
 		ball.setGravity(ball.getGravity() - 2);
 			if(ball.getGravity() < 7){

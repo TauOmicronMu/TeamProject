@@ -1,7 +1,6 @@
 package main;
 
 import java.io.Serializable;
-import java.util.Random;
 
 
 class JumpOncePlatform extends Platform implements Serializable {
@@ -28,14 +27,6 @@ class JumpOncePlatform extends Platform implements Serializable {
         double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
         Ball ball = game.getBall();
 
-//        // If platform is offscreen, move it back on!
-//        if (y > game.getWindowHeight()) {
-//            //System.out.println("[INFO] Platform.update : y is > window height " + game.getWindowHeight() + " at " + y);
-//            y -= game.getWindowHeight()*1.3;
-//            x = game.random.nextInt(game.getWindowWidth() - width);
-//            return;
-//        }
-
         // If we've got the flying power-up, don't bother with collision.
         if (ball.getCountFlyPower() > 0) {
             y += Constants.FLY_POWERUP_SPEED * deltaTime;
@@ -61,7 +52,7 @@ class JumpOncePlatform extends Platform implements Serializable {
 
     @Override
     public void checkForCollision(Ball ball, GameState game, double deltaTime) {
-        if(shouldDraw )return;
+        if(noDraw)return;
         double ballX = ball.getX();
         double ballY = ball.getY();
         int radius = ball.getRadius();
@@ -87,7 +78,7 @@ class JumpOncePlatform extends Platform implements Serializable {
         // AudioEngine.getInstance().playTrack(AudioEngine.BOING); // Play the boing sound
         ball.setY(rectTop - radius);
         ball.setDy(-ball.getMaxSpeed());
-        shouldDraw = true; // the platform wont be drawn anymore and the collision wont happen
+        noDraw = true; // the platform wont be drawn anymore and the collision wont happen
 
     }
 

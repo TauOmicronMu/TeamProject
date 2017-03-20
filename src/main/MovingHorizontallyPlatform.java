@@ -37,16 +37,6 @@ class MovingHorizontallyPlatform extends Platform implements Serializable {
 
         double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
 
-//        // If the platform is offscreen, move it back on!
-//        if (y > game.getWindowHeight()) {
-//            Random r = game.random;
-//            y = -300;
-//            x = width + r.nextInt((game.getWindowWidth() - width)/2);
-//            x1 = x - width/2;
-//            x2 = x + width/2;
-//            return;
-//        }
-
         // If we've got the flying power-up, don't bother with collision.
         if (ball.getCountFlyPower() > 0f) {
             y += Constants.FLY_POWERUP_SPEED * deltaTime;
