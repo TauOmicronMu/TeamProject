@@ -3,16 +3,12 @@ package main;
 import java.io.Serializable;
 import java.util.Random;
 
-import static org.lwjgl.opengl.GL11.glColor4f;
 
+class MovingHorizontallyPlatform extends Platform implements Serializable {
 
-class MovingPlatform extends CollidablePlatform implements Serializable {
-	
-    private int dy;
-    private int dx;
-    private int width, height;
-    private double x, y, x1, x2;
+    private double x1, x2;
     private int score = 0;
+    private double dx;
 
     /*
      *Constructor for platform object
@@ -21,24 +17,11 @@ class MovingPlatform extends CollidablePlatform implements Serializable {
      *@param width the width of the platform
      *@param height the height of the platform
      */
-    MovingPlatform(int x, int y, int width, int height, int x1, int x2 ) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+    MovingHorizontallyPlatform(double x, double y, int width, int height, int x1, int x2 ) {
+        super(x, y, width, height);
         this.x1 = x1;
         this.x2 = x2;
-        dy = Constants.PLATFORM_START_DY; // was 3
         dx = 15;
-    }
-
-    public MovingPlatform() {
-        dy = 3;
-        dx = -Constants.MOVING_PLATFORM_DX;
-        x = 300;
-        y = 300;
-        width = 120;
-        height = 40;
     }
 
     /*
@@ -46,6 +29,7 @@ class MovingPlatform extends CollidablePlatform implements Serializable {
      *@param game the game class object
      *@param ball the ball class object
      */
+    @Override
     void update(GameState game, double timeStep) {
         if (timeStep <= Constants.MIN_TIME_PER_FRAME) return;
         Ball ball = game.getBall();
@@ -53,15 +37,15 @@ class MovingPlatform extends CollidablePlatform implements Serializable {
 
         double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
 
-        // If the platform is offscreen, move it back on!
-        if (y > game.getWindowHeight()) {
-            Random r = game.random;
-            y = -300;
-            x = width + r.nextInt((game.getWindowWidth() - width)/2);
-            x1 = x - width/2;
-            x2 = x + width/2;
-            return;
-        }
+//        // If the platform is offscreen, move it back on!
+//        if (y > game.getWindowHeight()) {
+//            Random r = game.random;
+//            y = -300;
+//            x = width + r.nextInt((game.getWindowWidth() - width)/2);
+//            x1 = x - width/2;
+//            x2 = x + width/2;
+//            return;
+//        }
 
         // If we've got the flying power-up, don't bother with collision.
         if (ball.getCountFlyPower() > 0f) {
@@ -71,7 +55,7 @@ class MovingPlatform extends CollidablePlatform implements Serializable {
         }
 
         // Otherwise, check for collision.
-        checkForCollision(ball, deltaTime, x, y, width);
+        checkForCollision(ball, game, deltaTime);
 
         if (ball.heightIsLocked()) {
             y -= ball.getDy() / deltaTime;
@@ -90,17 +74,10 @@ class MovingPlatform extends CollidablePlatform implements Serializable {
      * Draws the platform
      */
     void paint(Window game, boolean opponent) {
-        double scaledX = game.glScaleX(x, opponent, Screen.GAME);
-        double scaledY = game.glScaleY(y);
-        double widthGl = game.glScaleDistance(width);
-        double heightGl = game.glScaleDistance(height);
-
-        double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
-        glColor4f(1, 0, 0, 0);
-        Rectangle.drawrectangle(verticesb, Menu.getRectangleModel());
+        super.paint(game, opponent);
     }
-    
+
     public void setDx(int dx){
-    	this.dy = dx;
+        this.dy = dx;
     }
 }

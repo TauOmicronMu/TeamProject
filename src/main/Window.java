@@ -3,12 +3,10 @@ package main;
 import networking.Message;
 import networking.NetworkClient;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
-import java.awt.geom.Point2D;
 import java.nio.DoubleBuffer;
 
 import static java.lang.System.currentTimeMillis;
@@ -226,13 +224,9 @@ class Window {
      */
     private void drawAllPlatforms(GameState gameState, boolean opponent) {
         // System.out.println("DRAW ALL PLATFORMS :O :O :O :O :O");
-        Platform[] platforms = gameState.getPlatforms();
+        Platform[] platforms = gameState.getBasicPlatforms();
         for (Platform platform : platforms) {
             if (platform != null) platform.paint(this, opponent);
-        }
-        MovingPlatform[] movingPlatforms = gameState.getMovingPlatforms();
-        for (MovingPlatform movingPlatform : movingPlatforms) {
-            if (movingPlatform != null) movingPlatform.paint(this, opponent);
         }
     }
 

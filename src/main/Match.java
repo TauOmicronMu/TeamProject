@@ -63,7 +63,7 @@ public class Match implements Runnable {
                     playerOneMove = playerOne.getMove();
                     playerTwoMove = playerTwo.getMove();
                 } catch (InterruptedException e) {
-                    System.err.println("[WARN] Match.run : Player disconnect while retrieving move!");
+                    //System.err.println("[WARN] Match.run : Player disconnect while retrieving move!");
                     running = false;
                     break MainLoop;
                 }
@@ -82,7 +82,7 @@ public class Match implements Runnable {
                         playerOne.updateGameState(playerOneGameState, true);
                         // playerTwo.updateGameState(playerTwoGameState, false);
                     } catch (InterruptedException e) {
-                        System.err.println("[WARN] Match.run : Player disconnect while updating game state after player one input!");
+                        //System.err.println("[WARN] Match.run : Player disconnect while updating game state after player one input!");
                         running = false;
                         break MainLoop;
                     }
@@ -100,7 +100,7 @@ public class Match implements Runnable {
                         playerOne.updateGameState(playerOneGameState, false);
                         // playerTwo.updateGameState(playerTwoGameState, true);
                     } catch (InterruptedException e) {
-                        System.err.println("[WARN] Match.run : Player disconnect while updating game state after player two input!");
+                        //System.err.println("[WARN] Match.run : Player disconnect while updating game state after player two input!");
                         running = false;
                         break MainLoop;
                     }
@@ -114,7 +114,7 @@ public class Match implements Runnable {
                     // playerTwo.updateGameState(playerTwoGameState, true);
                     // playerTwo.updateGameState(playerOneGameState, false);
                 } catch (InterruptedException e) {
-                    System.err.println("[WARN] Match.run : Player disconnect while scheduled-updating game state.");
+                    //System.err.println("[WARN] Match.run : Player disconnect while scheduled-updating game state.");
                     running = false;
                     break;
                 }

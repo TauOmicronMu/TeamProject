@@ -1,17 +1,17 @@
 package main;
 
 import java.io.Serializable;
-
 import static org.lwjgl.opengl.GL11.glColor4f;
 
 
-class Platform extends CollidablePlatform implements Serializable {
+public class Platform implements Serializable {
 
-    private int dy;
-    private int width, height;
-    private double x, y;
+    public int dy;
+    public int width, height;
+    public double x, y;
     private double highestPoint;
     public boolean isNull;
+    public boolean shouldDraw;
 
     /*
      *Constructor for platform object
@@ -20,7 +20,7 @@ class Platform extends CollidablePlatform implements Serializable {
      *@param width the width of the platform
      *@param height the height of the platform
      */
-    Platform(int x, int y, int width, int height) {
+    Platform(double x, double y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -28,6 +28,7 @@ class Platform extends CollidablePlatform implements Serializable {
         dy = Constants.PLATFORM_START_DY;
         highestPoint = 200;
         this.isNull = false;
+        this.shouldDraw = false;
     }
 
     /**
@@ -35,48 +36,45 @@ class Platform extends CollidablePlatform implements Serializable {
      * @param game the game class object
      * @param timeStep The elapsed time in the last frame.
      */
+
     void update(GameState game, double timeStep) {
-        if (timeStep < Constants.MIN_TIME_PER_FRAME) return;
-        double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
-        Ball ball = game.getBall();
-
-        // If platform is offscreen, move it back on!
-        if (y > game.getWindowHeight()) {
-            //System.out.println("[INFO] Platform.update : y is > window height " + game.getWindowHeight() + " at " + y);
-            y -= game.getWindowHeight()*1.3;
-            x = game.random.nextInt(game.getWindowWidth() - width);
-            return;
-        }
-
-        // If we've got the flying power-up, don't bother with collision.
-        if (ball.getCountFlyPower() > 0) {
-            y += Constants.FLY_POWERUP_SPEED / deltaTime;
-            game.score += Constants.FLY_POWERUP_SPEED / deltaTime;
-            return;
-        }
-
-        // Otherwise, check for collision with the ball.
-        checkForCollision(ball, deltaTime, x, y, width);
-
-        // If the ball's height is locked, we need to compensate by moving
-        // the platform down at the speed the ball's meant to be rising.
-        if (ball.heightIsLocked()) {
-            y -= ball.getDy() / deltaTime;
-        }
-
-        // Update platform Y position.
-        y += dy / deltaTime;
-        game.score += dy / deltaTime;
-
-        //System.out.println("Dy is" + dy/deltaTime);
+        //Every type of platforms has its own implementation of this method
     }
 
+    public void checkForCollision(Ball ball, GameState game, double deltaTime) {
+        if(shouldDraw) return;
+            double ballX = ball.getX();
+            double ballY = ball.getY();
+            int radius = ball.getRadius();
 
+            double ballBottom = ballY + radius;
+            double rectTop = y;
+            double rectLeft = x;
+
+            // Todo: How is only half the platform colliding?
+            double rectRight = x + width*2;
+
+            // Check if the ball is above the platform *and* will be below
+            // it after exactly one tick at the current framerate.
+            if (ballBottom >= rectTop) return;
+            double newBallBottom = ballBottom + ball.getDy() / deltaTime;
+            if (newBallBottom <= rectTop) return;
+
+            // Check the ball is aligned with the top of the platform.
+            if (ballX+radius < rectLeft) return;
+            if (ballX-radius > rectRight) return;
+
+            // If the ball has collided with the top of the platform ~Tom
+            // AudioEngine.getInstance().playTrack(AudioEngine.BOING); // Play the boing sound
+            ball.setY(rectTop - radius);
+            ball.setDy(-ball.getMaxSpeed());
+
+    }
     /*
      * Draws the platform
      */
     void paint(Window game, boolean opponent) {
-        // if(isNull) return;
+        if(shouldDraw) return;
         double scaledX = game.glScaleX(x, opponent, Screen.GAME);
         double scaledY = game.glScaleY(y);
         double widthGl = game.glScaleDistance(width);
@@ -86,5 +84,16 @@ class Platform extends CollidablePlatform implements Serializable {
         glColor4f(1, 0, 0, 0);
         Rectangle.drawrectangle(verticesb, Menu.getRectangleModel());
     }
-
+    public void setDx(int dx){
+        this.dy = dx;
+    }
+    public double getY() {
+        return y;
+    }
+    public boolean getNull() {
+        return isNull;
+    }
+    public void setNull(boolean x) {
+        isNull = x;
+    }
 }
