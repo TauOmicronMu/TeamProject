@@ -15,23 +15,25 @@ public class GameState implements Serializable {
 
     private final int windowWidth;
     private final int windowHeight;
-    private Random random = new Random();
+    Random random;
     private Ball ball;
-    private Platform platforms[] = new Platform[8];
-    private MovingPlatform movingPlatform[] = new MovingPlatform[4]; 
+    private Platform platforms[] = new Platform[15];
+
     private Item items[] = new Item[3];
 
     private static final int PLATFORM_WIDTH = 140;
     private static final int PLATFORM_HEIGHT = 20;
-
     int score;
-    int mouseXPosition;
-    int mouseYPosition;
 
 
     GameState(int width, int height) {
         this.windowWidth = width;
         this.windowHeight = height;
+        ball = new Ball(windowWidth / 2, 200);
+    }
+
+    void setSeed(int seed) {
+        this.random = new Random(seed);
     }
 
 
@@ -43,15 +45,6 @@ public class GameState implements Serializable {
         return windowHeight;
     }
 
-
-    /**
-     * Sets up a main.GameState by creating a ball, platforms, and items.
-     */
-    public void setUp() {
-        ball = new Ball(windowWidth / 2, 200);
-    }
-
-
     /**
      * Populates the list of platforms in this game state with a set
      * of randomly generated platforms. They should be spaced evenly
@@ -59,100 +52,168 @@ public class GameState implements Serializable {
      * and be of a uniform width and height.
      */
     void generatePlatforms() {
-        for (int i = 0; i < platforms.length; i++) {
+
+        platforms[0] = new NormalPlatform(
+                0,
+                400,
+                800,
+                PLATFORM_HEIGHT
+        );
+
+        for (int i = 1; i < platforms.length; i++) {
             // Todo: understand and refactor these "magic numbers".
-            int xPosition = random.nextInt(windowWidth - 220);
-            int yPosition = windowHeight - 200 * i;
-            platforms[i] = new Platform(
-                    xPosition,
-                    yPosition,
-                    PLATFORM_WIDTH,
-                    PLATFORM_HEIGHT
-            );
+
+
+            if (i % 2 != 0) {
+                int xPosition = random.nextInt(windowWidth - 100);
+                int yPosition = 400 - 100 * i ;
+
+                platforms[i] = new NormalPlatform(
+                        xPosition,
+                        yPosition,
+                        PLATFORM_WIDTH,
+                        PLATFORM_HEIGHT
+                );
+            } else {
+                switch (random.nextInt(3)) {
+                    case 0:
+                        int x2Position = 200 + random.nextInt(windowWidth - 400);
+                        int y2Position = 400 - 100 * i;
+                        platforms[i] = new MovingHorizontallyPlatform(
+                                x2Position,
+                                y2Position,
+                                PLATFORM_WIDTH,
+                                PLATFORM_HEIGHT,
+                                x2Position - 200,
+                                x2Position + 200
+                        );
+                        break;
+                    case 1:
+                        int x3Position = random.nextInt(windowWidth - 100);
+                        int y3Position = 400 - 100 * i;
+                        platforms[i] = new TrapPlatform(
+                                x3Position,
+                                y3Position,
+                                PLATFORM_WIDTH,
+                                PLATFORM_HEIGHT
+                        );
+                        break;
+                    case 2:
+                        int xPosition = random.nextInt(windowWidth - 100);
+                        int yPosition = 400 - 100 * i;
+                        platforms[i] = new JumpOncePlatform(
+                                xPosition,
+                                yPosition,
+                                PLATFORM_WIDTH,
+                                PLATFORM_HEIGHT
+                        );
+                        break;
+                }
+            }
         }
-        int xPosition = 100 + random.nextInt(windowWidth - 300);
-        int yPosition = -800;
-        int y2Position = -1000;
-        int y3Position = -100;
-        int y4Position = -300;
-        
-        movingPlatform[0] = new MovingPlatform(
-                xPosition,
-                yPosition,
-                PLATFORM_WIDTH,
-                PLATFORM_HEIGHT,
-                xPosition -200,
-                xPosition +200
-        );
-        movingPlatform[1] = new MovingPlatform(
-                xPosition,
-                y2Position,
-                PLATFORM_WIDTH,
-                PLATFORM_HEIGHT,
-                xPosition -200,
-                xPosition + 200
-        );
-        
-        movingPlatform[2] = new MovingPlatform(
-                xPosition,
-                y3Position,
-                PLATFORM_WIDTH,
-                PLATFORM_HEIGHT,
-                xPosition -200,
-                xPosition + 200
-        );
-        
-        movingPlatform[3] = new MovingPlatform(
-                xPosition,
-                y4Position,
-                PLATFORM_WIDTH,
-                PLATFORM_HEIGHT,
-                xPosition -200,
-                xPosition + 200
-        );
-        
     }
 
     /**
-     * Update the powerup items in the current game state.
+     * Update the powerup items in the current game state
+     * If item is offscreen, create a random new one!
      */
     private void updateItems() {
-        Item[] items = this.getItems();
-        for (int i = 0; i < items.length; i++) {
-            if (items[i] == null || items[i].getY() > windowHeight ) {
-                items[i] = null;
-                switch (random.nextInt(3)) {
-                    case 0:
-						items[i]=new main.GravDown(- 10 * random.nextInt(500), 1);
-						break;
-					case 1:
-						items[i]=new main.GravUp(-10 * random.nextInt(500), 2);
-						break;
-					case 2:
-						items[i]=new main.FlyUpPower(-10 * random.nextInt(500), 3);
-						break;
+            for (int i = 0; i < items.length; i++) {
+                if (items[i].getY() >= windowHeight) {
+                    //items[i] = null;
+                    int y = (int)this.getHighestItem();
+                    switch (random.nextInt(4)) {
+                        case 0:
+                            items[i]=new main.GravDown( -1000 + y - random.nextInt(500), 1);
+                            break;
+                        case 1:
+                            items[i]=new main.GravUp(  - 1000 + y - random.nextInt(500), 2);
+                            break;
+                        case 2:
+                            items[i]=new main.FlyUpPower(  - 1000 + y - random.nextInt(500), 3);
+                            break;
+                        case 3:
+                            items[i]=new main.PointsItem(-1000 + y - random.nextInt(500), 4);
+                            break;
+                    }
+                }
+            }
+    }
+
+    /**
+     * Update the platforms in the current game state.
+     * If platform is offscreen, create a random new one!
+     */
+    private void updatePlatforms() {
+        double yPosition;
+        double xPosition;
+//        for(int i = 0; i<platforms.length; i++){
+//            System.out.print(platforms[i].getY() + " ");
+//        }
+        for (int i = 0; i < platforms.length; i++) {
+            if(platforms[i].getY() >= windowHeight) {
+                if(i-1<0) {
+                    yPosition = (platforms[platforms.length-1]).getY() - 100;
+
+                }
+                else yPosition = platforms[i-1].getY() - 100;
+                //System.out.println(yPosition);
+                if (i % 2 != 0) {
+
+                    xPosition = random.nextInt(windowWidth - 100);
+                    platforms[i] = new NormalPlatform(
+                            xPosition,
+                            yPosition,
+                            PLATFORM_WIDTH,
+                            PLATFORM_HEIGHT
+                    );
+                } else {
+                    switch (random.nextInt(3)) {
+                        case 0:
+                            xPosition = 200 + random.nextInt(windowWidth - 400);
+                            platforms[i] = new MovingHorizontallyPlatform(
+                                    xPosition,
+                                    yPosition,
+                                    PLATFORM_WIDTH,
+                                    PLATFORM_HEIGHT,
+                                    (int) xPosition - 200,
+                                    (int) xPosition + 200
+                            );
+                            break;
+                        case 1:
+                            xPosition = random.nextInt(windowWidth - 100);
+                            platforms[i] = new TrapPlatform(
+                                    xPosition,
+                                    yPosition,
+                                    PLATFORM_WIDTH,
+                                    PLATFORM_HEIGHT
+                            );
+                            break;
+                        case 2:
+                            xPosition = random.nextInt(windowWidth - 100);
+                            platforms[i] = new JumpOncePlatform(
+                                    xPosition,
+                                    yPosition,
+                                    PLATFORM_WIDTH,
+                                    PLATFORM_HEIGHT
+                            );
+                            break;
+                    }
                 }
             }
         }
     }
 
 
-    void updateLogic() {
-        updateItems();
-    }
-
-
-    void updatePhysics() {
-    	
-    	ball.update(this);
+    void updatePhysics(double timeStep) {
+    	updateItems();
+    	updatePlatforms();
+    	ball.update(this, timeStep);
         for (Platform platform : platforms) {
-            if (platform != null) platform.update(this);
-        }
-        for (MovingPlatform movingPlatform : movingPlatform) {
-            if (movingPlatform != null) movingPlatform.update(this);
+            if (platform != null) platform.update(this, timeStep);
         }
         for (Item item : items) {
-            if (item != null) item.update(this);
+            if (item != null) item.update(this, timeStep);
         }
   
     }
@@ -165,17 +226,20 @@ public class GameState implements Serializable {
     void generateItems() {
         for (int i = 0; i < items.length; i++) {
             // Todo: understand and refactor this "magic number".
-        	switch (random.nextInt(3)) {
-            case 0:
-				items[i]=new main.GravUp(-i * 1000, 1);
-				break;
-			case 1:
-				items[i]=new main.GravDown(-i * 1000, 2);
-				break;
-			case 2:
-				items[i]=new main.FlyUpPower(-i * 1000, 3);
-				break;
-        	}
+            switch (random.nextInt(4)) {
+                case 0:
+                    items[i]=new main.GravDown(- i * 500 + random.nextInt(500), 1);
+                    break;
+                case 1:
+                    items[i]=new main.GravUp(- i * 500 + random.nextInt(500), 2);
+                    break;
+                case 2:
+                    items[i]=new main.FlyUpPower(-i * 500 + random.nextInt(500), 3);
+                    break;
+                case 3:
+                    items[i]=new main.PointsItem(-i * 500 + random.nextInt(500), 4);
+                    break;
+            }
         }
     }
 
@@ -199,19 +263,12 @@ public class GameState implements Serializable {
     /**
      * Retrieve each platform currently on-screen.
      */
-    Platform[] getPlatforms() {
+    Platform[] getBasicPlatforms() {
         return platforms;
     }
     
-    MovingPlatform[] getMovingPlatforms() {
-        return movingPlatform;
-    }
 
 
-    void printScore() {
-        if (gameOver())
-            System.out.println("Your final score is = " + score);
-    }
 
     /**
      * Returns the score of the player
@@ -222,5 +279,32 @@ public class GameState implements Serializable {
 
     public boolean gameOver(){
     	return ball.gameOver();
-    }    
+    }
+
+    public void handleInput(String move) {
+        switch(move) {
+            case "a":
+                getBall().moveLeft();
+                break;
+            case "d":
+                getBall().moveRight();
+                break;
+            case "Space":
+                getBall().doubleJump();
+                break;
+            default:
+                System.err.println("[WARN] GameState.handleInput : Bad move => " + move);
+        }
+    }
+    /**
+     * Returns the y position of the highest item
+     */
+    public double getHighestItem(){
+        double max = 0;
+        for(int i = 0; i<items.length; i++){
+            if(items[i].getY()<max)
+                max = items[i].getY();
+        }
+        return max;
+    }
 }
