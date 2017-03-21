@@ -104,7 +104,7 @@ public class Match implements Runnable {
                 }
             } while (playerOneMove.isPresent() || playerTwoMove.isPresent());
 
-            if (loopNum % (1000/Constants.SRVR_MS_PER_UPDT) == 1) {
+            if (loopNum % 1 == 0) {
                 try {
                     playerOne.updateGameState(playerOneGameState, true);
                     playerOne.updateGameState(playerTwoGameState, false);
@@ -140,12 +140,11 @@ public class Match implements Runnable {
                 timeStep = System.currentTimeMillis() - startTime;
             }*/
 
-            /*
             try {
                 Thread.sleep(Constants.SRVR_MS_PER_UPDT);
                 timeStep = System.currentTimeMillis() - startTime;
             } catch (InterruptedException ignored) {}
-            */
+
         }
         System.out.println("[INFO] Match.run: Match concluded.");
 
