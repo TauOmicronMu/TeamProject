@@ -137,6 +137,11 @@ public class Ball implements Serializable {
     }
 
     void setGravity(double gravity) {
+        if(gravity > this.gravity && AudioEngine.isClient) {
+            AudioEngine.getInstance().playTrack(AudioEngine.GRAVUP);
+        } else if(gravity < this.gravity && AudioEngine.isClient) {
+            AudioEngine.getInstance().playTrack(AudioEngine.GRAVDOWN);
+        }
         this.gravity = gravity;
     }
 
