@@ -27,7 +27,7 @@ class Menu {
     }
     
     
-    private static void drawStars()
+    static void drawStars()
     {
     	tshader2.bind();
     	Random rand = new Random();

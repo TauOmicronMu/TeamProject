@@ -169,10 +169,14 @@ class Window {
     void repaint(GameState ourGameState, GameState theirGameState) {
         final boolean debug = false;
         long startTime;
-    	rshader.bind();
+
         if (screen == Screen.MAIN_MENU) {
            Menu.drawAll();
         } else {
+
+            Menu.drawStars();
+            rshader.bind();
+
         	if(debug) System.out.println("draw platforms for our game state");
             if(debug) startTime = currentTimeMillis();
 
