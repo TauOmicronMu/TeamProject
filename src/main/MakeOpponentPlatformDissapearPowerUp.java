@@ -1,19 +1,18 @@
 package main;
 
+import main.Ball;
+import main.Item;
 
-public class PointsItem extends Item{
+public class MakeOpponentPlatformDissapearPowerUp extends main.Item{
 
-    public PointsItem(int y, int type) {
+    MakeOpponentPlatformDissapearPowerUp(int y, int type) {
         super(y, type);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
     public void performAction(GameState game) {
-        game.score = game.score + 3000;
-        //System.out.println("POINTs");
+        game.makeClosestPlatformUnusable();
     }
-
 
     @Override
     public void paint(Window window, boolean opponent) {

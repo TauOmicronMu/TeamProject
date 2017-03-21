@@ -19,9 +19,9 @@ public class Match implements Runnable {
 
         // Create new authoritative game states with the same random seed
         int seed = new Random().nextInt();
-        GameState playerOneGameState = new GameState(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        GameState playerOneGameState = new GameState(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 3);
         playerOneGameState.setSeed(seed);
-        GameState playerTwoGameState = new GameState(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        GameState playerTwoGameState = new GameState(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 3);
         playerTwoGameState.setSeed(seed);
 
         System.out.println("[INFO] Match.run : Generating Platforms...");

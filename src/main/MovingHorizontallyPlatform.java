@@ -17,8 +17,8 @@ class MovingHorizontallyPlatform extends Platform implements Serializable {
      *@param width the width of the platform
      *@param height the height of the platform
      */
-    MovingHorizontallyPlatform(double x, double y, int width, int height, int x1, int x2 ) {
-        super(x, y, width, height);
+    MovingHorizontallyPlatform(double x, double y, int width, int height, double speed, int x1, int x2 ) {
+        super(x, y, width, height, speed);
         this.x1 = x1;
         this.x2 = x2;
         dx = 15;

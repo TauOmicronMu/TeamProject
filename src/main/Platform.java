@@ -20,12 +20,12 @@ public class Platform implements Serializable {
      *@param width the width of the platform
      *@param height the height of the platform
      */
-    Platform(double x, double y, int width, int height) {
+    Platform(double x, double y, int width, int height, double speed) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        dy = Constants.PLATFORM_START_DY;
+        dy = (int)speed;
         highestPoint = 200;
         this.isNull = false;
         this.noDraw = false;
@@ -93,10 +93,12 @@ public class Platform implements Serializable {
     public double getY() {
         return y;
     }
+    public double getX(){ return x; }
     public boolean getNull() {
         return isNull;
     }
     public void setNull(boolean x) {
         isNull = x;
     }
+    public void setNoDraw(boolean x){noDraw = x;}
 }
