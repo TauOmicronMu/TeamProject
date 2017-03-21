@@ -10,7 +10,7 @@ public class PointsItem extends Item{
 
     @Override
     public void performAction(GameState game) {
-        game.score = game.score + 3000  ;
+        game.score = game.score + 3000;
         //System.out.println("POINTs");
     }
 

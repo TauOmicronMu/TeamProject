@@ -52,7 +52,7 @@ class Item implements Serializable {
         // If we've got the flying power-up, don't bother with collision.
         if (ball.getCountFlyPower() > 0) {
             y += Constants.FLY_POWERUP_SPEED * deltaTime;
-            game.score += Constants.FLY_POWERUP_SPEED * deltaTime;
+            //game.score += Constants.FLY_POWERUP_SPEED * deltaTime;
             return;
         }
 
@@ -70,8 +70,6 @@ class Item implements Serializable {
         y += dy * deltaTime;
         game.score += dy * deltaTime;
     }
-
-
     /*
      * Checks for collision between the ball and the powerUp
      * @param ball
@@ -107,6 +105,7 @@ class Item implements Serializable {
      * Paints the powerUps
      */
     public void paint(Window window) {
+        if (noDraw) return;
         double[] vertices = null;
         if (type == 1) {
             vertices = new double[]{window.glScaleX(this.x), window.glScaleY(this.y), 0.8f, (window.glScaleX(this.x) + 0.03f), (window.glScaleY(this.y) + 0.03f), 0.8f, (window.glScaleX(this.x) - 0.03f), (window.glScaleY(this.y) + 0.03f), 0.8f};

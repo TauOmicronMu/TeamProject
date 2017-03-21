@@ -36,8 +36,6 @@ public class GameState implements Serializable {
         this.windowHeight = height;
         ball = new Ball(windowWidth / 2, 200);
         this.gameMode = gameMode;
-        System.out.println(gameMode);
-        System.out.println(GameModes.getPlatformsWidth(gameMode));
 
 
         this.platformsSpeed = GameModes.getPlatformsSpeed(gameMode);
@@ -73,7 +71,6 @@ public class GameState implements Serializable {
                 PLATFORM_HEIGHT,
                 platformsSpeed
         );
-        System.out.println(gameMode);
         switch(gameMode) {
             case 1: generatePlatformsEasyMode();
             case 2: generatePlatformsNormalMode();
@@ -83,9 +80,9 @@ public class GameState implements Serializable {
     }
 
     void generatePlatformsEasyMode(){
-        for (int i = 1; i < platforms.length; i=i+2) {
+        for (int i = 0; i < platforms.length; i=i+2) {
 
-            if (i % 4 == 0) {
+            if (i % 4 == 0 && i!=0) {
                 int xPosition = random.nextInt(windowWidth - 2*PLATFORM_WIDTH);
                 int yPosition = 400 - 100 * i ;
                 platforms[i] = new NormalPlatform(
@@ -101,17 +98,17 @@ public class GameState implements Serializable {
                 }
                 else xPosition = xPosition -200;
                 if(i+1<platforms.length)
-                platforms[i+1] = new NormalPlatform(
-                        xPosition,
-                        yPosition,
-                        PLATFORM_WIDTH,
-                        PLATFORM_HEIGHT,
-                        platformsSpeed
-                );
-            } else {
+                    platforms[i+1] = new NormalPlatform(
+                            xPosition,
+                            yPosition,
+                            PLATFORM_WIDTH,
+                            PLATFORM_HEIGHT,
+                            platformsSpeed
+                    );
+            } else if (i!= 0){
                 switch (random.nextInt(3)) {
                     case 0:
-                        int x2Position = PLATFORM_WIDTH/2 + 200 + random.nextInt(windowWidth - 2*PLATFORM_WIDTH);
+                        int x2Position = Math.max(Math.min(random.nextInt(windowWidth - 2*PLATFORM_WIDTH), windowWidth - 400 - PLATFORM_WIDTH), 400 + PLATFORM_WIDTH);
                         int y2Position = 400 - 100 * i;
                         platforms[i] = new MovingHorizontallyPlatform(
                                 x2Position,
