@@ -26,7 +26,7 @@ public abstract class CollidablePlatform {
         if (ballX-radius > rectRight) return;
 
         // If the ball has collided with the top of the platform ~Tom
-        // AudioEngine.getInstance().playTrack(AudioEngine.BOING); // Play the boing sound
+        if (AudioEngine.isClient) AudioEngine.getInstance().playTrack(AudioEngine.BLOP); // Play the boing sound
         ball.setDy(-ball.getMaxSpeed());
         ball.setY(rectTop - radius);
     }
