@@ -77,6 +77,8 @@ public class Ball implements Serializable {
 
         // Check if we're inside the Fly powerup. If so, ignore Y changes.
         if (countFlyPower > 0) {
+            if (countFlyPower == 1 && AudioEngine.isClient)
+                AudioEngine.getInstance().stopTrack(AudioEngine.WHOOSH);
             countFlyPower--;
             return;
         }
