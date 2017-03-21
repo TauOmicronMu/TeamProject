@@ -93,10 +93,12 @@ public class Platform implements Serializable {
     public double getY() {
         return y;
     }
+    public double getX(){ return x; }
     public boolean getNull() {
         return isNull;
     }
     public void setNull(boolean x) {
         isNull = x;
     }
+    public void setNoDraw(boolean x){noDraw = x;}
 }

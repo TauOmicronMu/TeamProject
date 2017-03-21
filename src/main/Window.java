@@ -281,6 +281,10 @@ class Window {
             // System.out.println("[INFO] Window.handleKeyboardInput : Key(D) pressed.");
             gameState.getBall().doubleJump();
             client.sendMessage(new Message("Space"));
+        } else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_TRUE) {
+            // System.out.println("[INFO] Window.handleKeyboardInput : Key(D) pressed.");
+            gameState.makeClosestPlatformUnusable();
+            client.sendMessage(new Message("Shift"));
         }
     }
 
