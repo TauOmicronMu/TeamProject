@@ -15,6 +15,7 @@ import static org.lwjgl.opengl.GL20.*;
 class Shader {
 
     private int program;
+    private int fs;
 
     /**
      * Uses the shader files to create a shader which can then be used to bring colour
@@ -33,7 +34,7 @@ class Shader {
         }
 
 
-        int fs = glCreateShader(GL_FRAGMENT_SHADER);
+        fs = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fs, readFile(filename + ".fs"));
         glCompileShader(fs);
         if (glGetShaderi(fs, GL_COMPILE_STATUS) != 1) {
@@ -90,6 +91,10 @@ class Shader {
         }
 
         return string.toString();
+    }
+
+    public void stop() {
+        glUseProgram(0);
     }
 
 }

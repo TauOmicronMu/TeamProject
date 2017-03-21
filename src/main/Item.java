@@ -11,7 +11,7 @@ class Item implements Serializable {
     private int x, y, dy, radius, type, highestPoint;
     private static Text text = new Text();
     private boolean noDraw;
-  
+
     /*
      * Constructor for item class(PowerUps)
      * @param y the y position of the powerUp
@@ -37,8 +37,9 @@ class Item implements Serializable {
      * 4 for add points
      */
     public int getType() {
-		return type;
-	}
+        return type;
+    }
+
     /*
      * Get method for Y
      * Updates the position of the PowerUp
@@ -69,14 +70,14 @@ class Item implements Serializable {
         y += dy * deltaTime;
         game.score += dy * deltaTime;
     }
-        
+
 
     /*
      * Checks for collision between the ball and the powerUp
      * @param ball
      */
     private void checkForCollision(GameState game) {
-        if(noDraw)return;
+        if (noDraw) return;
 
         Ball ball = game.getBall();
         double ballX = ball.getX();
@@ -106,34 +107,37 @@ class Item implements Serializable {
      * Paints the powerUps
      */
     public void paint(Window window) {
-    	double[] vertices = null;
-    	if(type == 1)
-    	{
-    		vertices = new double[]{window.glScaleX(this.x), window.glScaleY(this.y),0.8f,(window.glScaleX(this.x)+0.03f),(window.glScaleY(this.y)+0.03f),0.8f,(window.glScaleX(this.x)-0.03f),(window.glScaleY(this.y)+0.03f),0.8f};
-    	}
-    	if(type == 2)
-    	{
-    		vertices = new double[]{window.glScaleX(this.x), window.glScaleY(this.y),0.8f,(window.glScaleX(this.x)+0.03f),(window.glScaleY(this.y)-0.03f),0.8f,(window.glScaleX(this.x)-0.03f),(window.glScaleY(this.y)-0.03f),0.8f};
-    	}
-    	if(type == 4)
-    	{
-    		vertices = createCircle(window.glScaleX(this.x), window.glScaleY(this.y), 0.2f, 0.02f);
-    	}
-    	if(type == 3)
-    	{
-    		vertices = createCircle(window.glScaleX(this.x), window.glScaleY(this.y), 0.2f, 0.02f);
-    		Text.draw("+300",(float)(window.glScaleX(this.x)), (float)(window.glScaleY(this.y)), 0.3f);
-    	}
+        double[] vertices = null;
+        if (type == 1) {
+            vertices = new double[]{window.glScaleX(this.x), window.glScaleY(this.y), 0.8f, (window.glScaleX(this.x) + 0.03f), (window.glScaleY(this.y) + 0.03f), 0.8f, (window.glScaleX(this.x) - 0.03f), (window.glScaleY(this.y) + 0.03f), 0.8f};
+        }
+        if (type == 2) {
+            vertices = new double[]{window.glScaleX(this.x), window.glScaleY(this.y), 0.8f, (window.glScaleX(this.x) + 0.03f), (window.glScaleY(this.y) - 0.03f), 0.8f, (window.glScaleX(this.x) - 0.03f), (window.glScaleY(this.y) - 0.03f), 0.8f};
+        }
+        if (type == 4) {
+            vertices = createCircle(window.glScaleX(this.x), window.glScaleY(this.y), 0.2f, 0.02f);
+        }
+        if (type == 3) {
+            vertices = createCircle(window.glScaleX(this.x), window.glScaleY(this.y), 0.2f, 0.02f);
+            Text.draw("+300", (float) (window.glScaleX(this.x)), (float) (window.glScaleY(this.y)), 0.3f);
+        }
 
-    	if(type != 5)
-    	{
-    		Model triangles = new Model(vertices);
+        if (type != 5) {
+            Model triangles = new Model(vertices);
 
-    		triangles.render(vertices);
-    	}
+            triangles.render(vertices, false);
+        }
+    }
+
     public void paint(Window window, boolean opponent) {
-        if(noDraw) return;
+        if (noDraw) return;
         double[] vertices = createCircle(window.glScaleX(x, opponent, Screen.GAME), window.glScaleY(y), 0.2f, 0.02f, 5);
         Model circle1 = new Model(vertices);
         circle1.render(vertices, false);
+
+    }
+
+    public int getY() {
+        return y;
+    }
 }

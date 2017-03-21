@@ -161,7 +161,7 @@ class Window {
         {
             String scoreText = String.valueOf(score / 1000);
 
-            TextShader2 tshader2 = new TextShader2();
+            Shader tshader2 = new Shader("tshader2.vs");
             int length = scoreText.length();
             tshader2.bind();
             int xOffset = opponent ? Constants.WINDOW_WIDTH/2 : 0;
@@ -412,6 +412,8 @@ class Window {
         if (opponent) return x / (float) (windowWidth);
         return -1.0f + x / (float) (windowWidth);
     }
+
+    double glScaleX(double x) { return -1.0f + x / (float) windowWidth/2; }
 
     /**
      * Converts an y-coordinate to float equivalent (needed for drawing with openGL)

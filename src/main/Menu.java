@@ -22,7 +22,7 @@ class Menu {
     	int width = 800;
     	double[] vertices = {-width, -height, 0, width, -height, 0, width, height, 0, -width, height, 0};
         rshader2.bind();
-        Rectangle.drawrectangle(vertices);
+        Rectangle.drawrectangle(vertices, Menu.getRectangleModel(), false);
         rshader2.stop();
     }
     
@@ -137,20 +137,18 @@ class Menu {
      * @param ball
      */
     public static void printScore(int score, Ball ball) {
-        if(!ball.gameOver())
-        {
+        if (!ball.gameOver()) {
             String scoreText = String.valueOf(score / 1000);
 
-            ShaderProgram tshader2 = new ShaderProgram("shaders/tshader2.vs","shaders/shader.fs");
+            ShaderProgram tshader2 = new ShaderProgram("shaders/tshader2.vs", "shaders/shader.fs");
             int length = scoreText.length();
             tshader2.bind();
             Text.draw(scoreText, 5.8f - (length * 0.3f), 6.8f, 0.6f);
             tshader2.stop();
+        } else {
+            System.out.println("Final score: " + score);
         }
-        else
-        {
-            System.out.println("Final score: "+score);
-        }
+    }
       
     static Model getRectangleModel()
     {

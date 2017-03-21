@@ -19,5 +19,4 @@ class Rectangle {
     	model.render(vertices, outline);
     }
 
-
 }
