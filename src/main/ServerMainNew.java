@@ -28,6 +28,7 @@ public class ServerMainNew {
     }
 
     void run() {
+        AudioEngine.isClient = false;
         while (true) {
             try {
                 System.out.println("[INFO] ServerMainNew.run: Waiting for client connection.");

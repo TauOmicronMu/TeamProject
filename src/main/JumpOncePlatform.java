@@ -75,7 +75,7 @@ class JumpOncePlatform extends Platform implements Serializable {
         if (ballX-radius > rectRight) return;
 
         // If the ball has collided with the top of the platform ~Tom
-        // AudioEngine.getInstance().playTrack(AudioEngine.BOING); // Play the boing sound
+        if (AudioEngine.isClient) AudioEngine.getInstance().playTrack(AudioEngine.BOING); // Play the boing sound
         ball.setY(rectTop - radius);
         ball.setDy(-ball.getMaxSpeed());
         noDraw = true; // the platform wont be drawn anymore and the collision wont happen

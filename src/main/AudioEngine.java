@@ -20,6 +20,9 @@ public class AudioEngine {
     public static AudioEngine getInstance() { return AUDIO_ENGINE; }
     // Set up the sounds for the AudioEngine
     public static final int BOING = AUDIO_ENGINE.createTrack("boing.wav");
+    // We don't want to play if we're in the client!
+    public static boolean isClient = true;
+
 
     /** Holds the device and context through which to play the audio. */
     private long device;
