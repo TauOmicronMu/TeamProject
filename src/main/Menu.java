@@ -43,19 +43,19 @@ class Menu {
     			boolean y1 = rand.nextBoolean();
     			if(x1 && y1)
     			{
-    				Text.draw(".",x/100, y/100, 5.5f);
+    				Text.draw(".",x/100, y/100, 5.5f,false);
     			}
     			if(x1 && !y1)
     			{
-    				Text.draw(".",x/100, -(y/100), 5.5f);
+    				Text.draw(".",x/100, -(y/100), 5.5f,false);
     			}
     			if(!x1 && y1)
     			{
-    				Text.draw(".",-(x/100), y/100, 5.5f);
+    				Text.draw(".",-(x/100), y/100, 5.5f,false);
     			}
     			if(!x1 && !y1)
     			{
-    				Text.draw(".",-(x/100), -(y/100), 5.5f);
+    				Text.draw(".",-(x/100), -(y/100), 5.5f,false);
     			}
     		}
     	}
@@ -64,24 +64,26 @@ class Menu {
     private static void drawTitle()
     {
     	tshader4.bind();
-     	Text.draw("Space",-1.14f, 2.46f, 1.5f);
-     	Text.draw("Jump",-1.14f, 1.46f, 1.5f);
+     	Text.draw("Space",-1.14f, 2.46f, 1.5f,false);
+     	Text.draw("Jump",-1.14f, 1.46f, 1.5f,false);
         tshader4.stop();
     	tshader3.bind();
-    	Text.draw("Space",-1.12f, 2.48f, 1.5f);
-    	Text.draw("Jump",-1.12f, 1.48f, 1.5f);
+    	Text.draw("Space",-1.12f, 2.48f, 1.5f,false);
+    	Text.draw("Jump",-1.12f, 1.48f, 1.5f,false);
         tshader3.stop();
     	tshader2.bind();
-    	Text.draw("Space",-1.1f, 2.5f, 1.5f);
-    	Text.draw("Jump",-1.1f, 1.5f, 1.5f);
+    	Text.draw("Space",-1.1f, 2.5f, 1.5f,false);
+    	Text.draw("Jump",-1.1f, 1.5f, 1.5f,false);
         tshader2.stop();
     }
   static double[] verticesr = new double[] {0,0,0,0,0,0,0,0,0,0,0,0};
 	static Model rmodel = new Model(verticesr);
 	static double[] verticest = new double[] {0,0,0,0,0,0,0,0,0};
 	static Model tmodel = new Model(verticest);
-	static double[] verticesc = new double[362*3];
-	static Model cmodel = new Model(verticesc);
+	static double[] verticesi = new double[18];
+	static Model imodel = new Model(verticesi);
+	static double[] verticesp = new double[27];
+	static Model pmodel = new Model(verticesp);
 
     private static void drawPlayButton() {
         double[] vertices = {-0.4f, -0.04f, 0.1f, 0.4f, -0.04f, 0.1f, 0.4f, -0.24f, 0.1f, -0.4f, -0.24f, 0.1f};
@@ -89,7 +91,7 @@ class Menu {
         Rectangle.drawrectangle(vertices,rmodel, true);
         rshader.stop();
         tshader2.bind();
-        Text.draw("start",-1.1f, -0.5f, 0.5f);
+        Text.draw("start",-1.1f, -0.5f, 0.5f,false);
         tshader2.stop();
     }
 
@@ -99,7 +101,7 @@ class Menu {
         Rectangle.drawrectangle(vertices,rmodel, true);
         rshader.stop();
         tshader.bind();
-        Text.draw("settings", -1.9f, -2.4f, 0.5f);
+        Text.draw("settings", -1.9f, -2.4f, 0.5f,false);
         tshader.stop();
     }
 
@@ -109,7 +111,7 @@ class Menu {
         Rectangle.drawrectangle(vertices,rmodel, true);
         rshader.stop();
         tshader.bind();
-        Text.draw("quit", -0.6f, -4.1f, 0.5f);
+        Text.draw("quit", -0.6f, -4.1f, 0.5f,false);
         tshader.stop();     
     }
 
@@ -119,7 +121,7 @@ class Menu {
         Rectangle.drawrectangle(vertices,rmodel, true);
         rshader.stop();
         tshader.bind();
-        Text.draw("<", -5.8f, 6.3f, 0.6f);
+        Text.draw("<", -5.8f, 6.3f, 0.6f,false);
         tshader.stop();
     }
 
@@ -144,7 +146,7 @@ class Menu {
             ShaderProgram tshader2 = new ShaderProgram("shaders/tshader2.vs", "shaders/shader.fs");
             int length = scoreText.length();
             tshader2.bind();
-            Text.draw(scoreText, 5.8f - (length * 0.3f), 6.8f, 0.6f);
+            Text.draw(scoreText, 5.8f - (length * 0.3f), 6.8f, 0.6f,false);
             tshader2.stop();
         } else {
             System.out.println("Final score: " + score);
@@ -161,9 +163,14 @@ class Menu {
     	return tmodel;
     }
     
-    static Model getCircleModel()
+    static Model getPinballModel()
     {
-    	return cmodel;
+    	return pmodel;
+    }
+    
+    static Model getItemModel()
+    {
+    	return imodel;
     }
 
 }

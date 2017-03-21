@@ -11,8 +11,8 @@ public class FlyUpPower extends main.Item{
 
 	@Override
 	public void performAction(GameState game) {
-		if (AudioEngine.isClient)
-			AudioEngine.getInstance().loopTrack(AudioEngine.WHOOSH);
+		//if (AudioEngine.isClient)
+			//AudioEngine.getInstance().loopTrack(AudioEngine.WHOOSH);
 		Ball ball = game.getBall();
 		ball.setCountFlyPower(Constants.FLY_POWERUP_SPEED * 5);
 	}

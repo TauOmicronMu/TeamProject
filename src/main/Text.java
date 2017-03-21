@@ -10,6 +10,8 @@ import org.lwjgl.opengl.GL11;
  */
 
 class Text{
+	
+	static boolean opponent;
 
 	/**
 	 * Draws the string given - breaks it down into individual letters and draws each of them
@@ -18,7 +20,8 @@ class Text{
 	 * @param y the beginning y coordinate
 	 * @param scale how big the letters should be
 	 */
-	public static void draw(String s, float x, float y, float scale) {
+	public static void draw(String s, float x, float y, float scale, boolean opponent) {
+		  opponent = opponent;
 	      float startX = x;
 	      scale = scale * 0.25f;
 	      boolean lessspace = false;
@@ -521,7 +524,7 @@ class Text{
 	private static void convert(float x1, float y1, float x2, float y2)
 	{
 		double[] vertices = {x1,y1,0.9,x1,(y2+0.01),0.9,(x2+0.01),(y2+0.01),0.9,(x2+0.01),y1,0.9};
-		Rectangle.drawrectangle(vertices, Menu.getRectangleModel(), false);
+		Rectangle.drawrectangle(vertices, Menu.getRectangleModel(), opponent);
 	}
 	
 
