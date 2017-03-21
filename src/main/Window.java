@@ -12,8 +12,7 @@ import java.nio.DoubleBuffer;
 import static java.lang.System.currentTimeMillis;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * main.Main class for graphics
@@ -32,26 +31,15 @@ class Window {
 	private static ShaderProgram pshader3;
 	private static ShaderProgram tshader2;
     private long window;
-    private int windowHeight = 800;
-    private int windowWidth = 800;
-    private static boolean shouldChangeToGame = false;
+    private int windowHeight = Constants.WINDOW_HEIGHT;
+    private int windowWidth = Constants.WINDOW_WIDTH;
     private static boolean shouldQuit = false;
-    private static boolean shouldChangeToMenu = false;
 
 
     Window(int windowHeight, int windowWidth) {
         this.windowHeight = windowHeight;
         this.windowWidth = windowWidth;
     }
-
-    int getHeight() {
-        return windowHeight;
-    }
-
-    int getWidth() {
-        return windowWidth;
-    }
-
 
     void quit() {
         shouldQuit = true;
@@ -181,10 +169,14 @@ class Window {
     void repaint(GameState ourGameState, GameState theirGameState) {
         final boolean debug = false;
         long startTime;
-    	rshader.bind();
+
         if (screen == Screen.MAIN_MENU) {
            Menu.drawAll();
         } else {
+
+            Menu.drawStars();
+            rshader.bind();
+
         	if(debug) System.out.println("draw platforms for our game state");
             if(debug) startTime = currentTimeMillis();
 
@@ -228,6 +220,8 @@ class Window {
 
             if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
 
+            drawCenterLine();
+
             cshader.stop();
             Menu.drawBackToMenuButton();
             // Menu.printScore(ourGameState.score, ourGameState.getBall(), false);
@@ -237,6 +231,15 @@ class Window {
         glfwSwapBuffers(window);
     }
 
+    private void drawCenterLine() {
+        glBegin(GL_LINES);
+            glLineWidth(3.0f);
+            glColor3i(255,255,255);
+            glVertex2f(0, -1);
+            glColor3i(255, 255, 255);
+            glVertex2f(0, 1);
+        glEnd();
+    }
 
     /**
      * Utility method to delegate to main.Circle in order to render the ball.
