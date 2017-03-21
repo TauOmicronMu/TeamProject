@@ -1,6 +1,7 @@
 package main;
 
 import java.io.Serializable;
+import java.util.Random;
 
 public class Ball implements Serializable {
 
@@ -9,17 +10,17 @@ public class Ball implements Serializable {
     private double dx = 0;
     private double dy = 0;
     private int radius = 20;
-    private double gravity = 15;
+    private double gravity = Constants.GRAVITY; // was 15
     private static final double energyloss = 1;
-    private static final double dt = 0.1;
     private static final double xFriction = 0.9;
     private double gameDy = -90;
-    private int agility = 1;
-    private int maxSpeed = 5;
+    private int agility = Constants.AGILITY; // was 1
+    private int maxSpeed = Constants.MAX_SPEED; // was 5
     private int countFlyPower = 0;
-    private int score;
-    private boolean permission = false;
+    private boolean heightLocked = false;
     private boolean gameOver = false;
+    private int maxHeight = Constants.MAX_BALL_HEIGHT;
+    public int doubleJump = 0;
 
 
     Ball(double i, double j) {
@@ -29,80 +30,84 @@ public class Ball implements Serializable {
 
 
     void moveRight() {
-    	if (gameOver == false){
-    		if (dx + agility < maxSpeed) {
-                dx += agility;
-
-            }
-    	}
+    	if (gameOver) return;
+        if (dx + agility < maxSpeed) {
+            dx += agility;
+        }
     }
+
 
     void moveLeft() {
-    	if (gameOver == false){
-    		if (dx - agility > -maxSpeed) {
-                dx -= agility;
-            }
-    	}     
+    	if (gameOver) return;
+        if (dx - agility > -maxSpeed) {
+            dx -= agility;
+        }
     }
 
-
-    void update(GameState game) {
-
-        int height = game.getWindowHeight();
-        int width = game.getWindowWidth();
-
-        if(gameOver == false){
-        	
-        	if (x + dx > width - radius - 1) {
-                x = width - radius - 1;
-                dx = -dx;
-            } else if (x + dx < radius) {
-                x = radius;
-                dx = -dx;
-            } else {
-                x += dx;
-            }
-            
-            if(countFlyPower == 0){
-            	if (y == height - radius - 1) {
-                    dx *= xFriction;
-                    if (Math.abs(dx) < 0.8) {
-                        dx = 0;
-                    }
-                }
-
-                if (y > height - radius - 1) {
-                    y = height - radius - 1;
-                    dy *= energyloss;
-                    //if you dont want the game to end when the ball touches the ground,
-                    //just comment the next line of code("gameOver = true;")
-                    //gameOver = true;
-                    dy = -dy;
-                } else {
-                		// Calculate new velocity in Y direction:
-                        dy += gravity * dt;
-                        // Calculate new Y position:
-                        if(permission == false){
-                        y += dy * dt + .5 * gravity * dt * dt;
-                        if(dy > 100){
-        					dy = 100;
-        				}
-        				if(dy < -100){
-        					dy = -100;
-        				}
-        				if(dy<0){
-        					score += -dy;
-        				} else {
-        					score += 3;
-        				}
-                	}
-                }
-            }
-            else countFlyPower --;           	      
-        }               
+    //Method that allows the player to double jump every 500 updates
+    void doubleJump(){
+        if(doubleJump == 0){
+            this.dy = -this.maxSpeed;
+            this.doubleJump = 100;
+        }
     }
-    double getGameDy() {
-        return gameDy;
+
+    void update(GameState game, double timeStep) {
+        if (timeStep == 0) return;
+        double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
+
+        int height = Constants.WINDOW_HEIGHT;
+        int width = Constants.WINDOW_WIDTH;
+
+        if (gameOver) return;
+
+        // Check for collisions with the left/right walls.
+        double changeX = dx * deltaTime;
+        double nextX = x + changeX;
+        if (nextX >= width - radius) {
+            x = width - radius;
+            dx = -dx;
+        } else if (nextX < radius) {
+            x = radius;
+            dx = -dx;
+        } else {
+            // Even if we're flying, handle changes in X.
+            x = nextX;
+        }
+
+        // Check if we're inside the Fly powerup. If so, ignore Y changes.
+        if (countFlyPower > 0) {
+            countFlyPower--;
+            return;
+        }
+
+        // If the ball touches the ground...
+        if (y >= height - radius) {
+            // If we hit the floor, the game is over!
+            // gameOver = true;
+            dy = -maxSpeed;
+            y += dy * deltaTime;
+            return;
+        }
+
+        // Lock the ball's height if it's above a certain height.
+        heightLocked = y <= maxHeight && dy <= 0;
+
+        // If the ball's height is locked, don't move in the y direction.
+        dy += gravity * deltaTime;
+
+        // If the height is locked, we're all done.
+        if (heightLocked) return;
+
+        // Otherwise, calculate new velocity in Y direction:
+        y += dy * deltaTime;
+
+        // Cap the speed at maxSpeed.
+        dy = Math.min(maxSpeed, dy);
+
+        if(doubleJump > 0){
+            doubleJump--;
+        }
     }
 
     double getX() {
@@ -137,10 +142,6 @@ public class Ball implements Serializable {
         return radius;
     }
 
-    int getAgility() {
-        return agility;
-    }
-    
     public int getCountFlyPower() {
 		return countFlyPower;
 	}
@@ -148,11 +149,7 @@ public class Ball implements Serializable {
     public void setCountFlyPower(int countFlyPower) {
 		this.countFlyPower = countFlyPower;
 	}
-    
-    public int getScore() {
-    	return score;
-    }
-    
+
     public double getDx() {
 		return dx;
 	}
@@ -161,16 +158,20 @@ public class Ball implements Serializable {
 		return dy;
 	}
     
-    public static double getDt() {
-		return dt;
-	}
-    
-    public void setPermission(boolean permition) {
-		this.permission = permition;
+    public void setHeightLocked(boolean heightLocked) {
+		this.heightLocked = heightLocked;
 	}
     
     public boolean gameOver(){
     	return gameOver;
     }
-    
+
+    public int getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public boolean heightIsLocked() {
+        return heightLocked;
+    }
+
 }

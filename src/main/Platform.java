@@ -1,17 +1,17 @@
 package main;
 
 import java.io.Serializable;
-import java.util.Random;
-
 import static org.lwjgl.opengl.GL11.glColor4f;
 
 
-class Platform implements Serializable {
+public class Platform implements Serializable {
 
-    private int dy;
-    private int width, height;
-    private double x, y;
+    public int dy;
+    public int width, height;
+    public double x, y;
     private double highestPoint;
+    public boolean isNull;
+    public boolean noDraw;
 
     /*
      *Constructor for platform object
@@ -20,131 +20,83 @@ class Platform implements Serializable {
      *@param width the width of the platform
      *@param height the height of the platform
      */
-    Platform(int x, int y, int width, int height) {
+    Platform(double x, double y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        dy = 3;
+        dy = Constants.PLATFORM_START_DY;
         highestPoint = 200;
+        this.isNull = false;
+        this.noDraw = false;
     }
 
-    public Platform() {
-        dy = 3;
-        x = 300;
-        y = 300;
-        width = 120;
-        height = 40;
-        highestPoint = 200;
-    }
-
-    /*
-     *Updates the position of the platform
-     *@param game the game class object
-     *@param ball the ball class object
+    /**
+     * Updates the position of the platform
+     * @param game the game class object
+     * @param timeStep The elapsed time in the last frame.
      */
-    void update(GameState game) {
-        // Todo: Investigate magic numbers here.
 
-        Ball ball = game.getBall();
-       
-        if(ball.gameOver()==false){
-        	
-        	if(ball.getDy() >0)
-        		ball.setPermission(false);
-            
-            if(ball.getY() < highestPoint && ball.getDy() < 0){
-            	if(ball.getCountFlyPower() >0){
-        			y+=20;
-        			game.score+=20;
-                } else {
-                	
-                	ball.setPermission(true);
-                	double newDx = ball.getDy() + ball.getGravity() + 0.1;
-                	
-                	if(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 < -3){
-                		
-                		y +=Math.abs(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1);
-                		game.score+=ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 ;
-                	}
-                	else y += dy;
-                	game.score += dy;
-                	//System.out.println((ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1));
-                     
-                    
-                checkForCollision(ball);
-                }
-                if (y > game.getWindowHeight()) {
 
-                    Random r = new Random();
-                    y = -300;
-                    x = r.nextInt(game.getWindowWidth()-140);
-                    //x = game.getWindowWidth()/2;
-                    
-                }
-            } else {
-            	if(ball.getCountFlyPower() >0){
-        			y+=20;
-        			game.score+=20;
-                } else {
-                    y += dy;
-                    game.score+= dy;
-                checkForCollision(ball);
-                }
-                if (y > game.getWindowHeight()) {
-
-                    Random r = new Random();
-                    y = -300;
-                    x = r.nextInt(game.getWindowWidth()-100);
-                    //x = game.getWindowWidth()/2;  
-                }
-            }
-        }  else {
-        	if(y>-100){
-        		y-=6;
-        	}
-        }
+    void update(GameState game, double timeStep) {
+        //Every type of platforms has its own implementation of this method
     }
 
-    /*
-     * Checks if any ball has collided with the platform
-     * @param ball the ball object
-     */
-    private void checkForCollision(Ball ball) {
-        int ballX = (int) ball.getX();
-        int ballY = (int) ball.getY();
-        int radius = ball.getRadius();
+    public void checkForCollision(Ball ball, GameState game, double deltaTime) {
+        if(noDraw) return;
+            double ballX = ball.getX();
+            double ballY = ball.getY();
+            int radius = ball.getRadius();
 
-        if (ballY + radius > y && ballY + radius < y + height) {
-            //System.out.println("Y true");
-            if (ballX > x && ballX < x + width) {
 
-                //System.out.println("Collision");
+            double ballBottom = ballY + radius;
+            double rectTop = y;
+            double rectLeft = x;
 
-                double newDy = ball.getGameDy();
-                if(ball.getDy()>0){
-                	ball.setDy(newDy);
-                }
-                ball.setY(y - radius);
-            }
-        }
+
+            // Todo: How is only half the platform colliding?
+            double rectRight = x + width*2;
+
+            // Check if the ball is above the platform *and* will be below
+            // it after exactly one tick at the current framerate.
+            if (ballBottom >= rectTop) return;
+            double newBallBottom = ballBottom + ball.getDy() * deltaTime;
+            if (newBallBottom <= rectTop) return;
+
+            // Check the ball is aligned with the top of the platform.
+            if (ballX+radius < rectLeft) return;
+            if (ballX-radius > rectRight) return;
+
+            // If the ball has collided with the top of the platform ~Tom
+            // AudioEngine.getInstance().playTrack(AudioEngine.BOING); // Play the boing sound
+            ball.setY(rectTop - radius);
+            ball.setDy(-ball.getMaxSpeed());
+
     }
-
     /*
      * Draws the platform
      */
-    void paint(Window game) {
-        double scaledX = game.glScaleX(x);
+    void paint(Window game, boolean opponent) {
+        if(noDraw) return;
+        double scaledX = game.glScaleX(x, opponent, Screen.GAME);
         double scaledY = game.glScaleY(y);
         double widthGl = game.glScaleDistance(width);
         double heightGl = game.glScaleDistance(height);
 
         double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
         glColor4f(1, 0, 0, 0);
-        Rectangle.drawrectangle(verticesb);
+        Rectangle.drawrectangle(verticesb, Menu.getRectangleModel(), true);
     }
-    
     public void setDx(int dx){
-    	this.dy = dx;
+        this.dy = dx;
+    }
+    public double getY() {
+        return y;
+    }
+    public boolean getNull() {
+        return isNull;
+    }
+    public void setNull(boolean x) {
+        isNull = x;
     }
 }

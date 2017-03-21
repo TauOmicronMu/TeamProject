@@ -4,13 +4,13 @@ package main;
 
 public class GravDown extends main.Item{
 
-	public GravDown(int y, int type) {
+	GravDown(int y, int type) {
 		super(y, type);
-		// TODO Auto-generated constructor stub
 	}
-	
+
 	@Override
-	public void performAction(Ball ball) {
+	public void performAction(GameState game) {
+		Ball ball = game.getBall();
 		if(ball.getGravity()>7) {
 		ball.setGravity(ball.getGravity() - 2);
 			if(ball.getGravity() < 7){
@@ -20,9 +20,9 @@ public class GravDown extends main.Item{
 	}
 	
 	@Override
-	public void paint(Window window) {
+	public void paint(Window window, boolean opponent) {
 		
 		//colour
-		super.paint(window);
+		super.paint(window, opponent);
 	}
 }

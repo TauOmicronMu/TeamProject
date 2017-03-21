@@ -10,19 +10,13 @@ import org.lwjgl.opengl.GL11;
  */
 
 class Text{
-	
-	public Text()
-	{
-		
-	}
-	
+
 	/**
 	 * Draws the string given - breaks it down into individual letters and draws each of them
 	 * @param s the string 
 	 * @param x the beginning x coordinate
 	 * @param y the beginning y coordinate
 	 * @param scale how big the letters should be
-	 * @param width the thickness of the letters
 	 */
 	public static void draw(String s, float x, float y, float scale) {
 	      float startX = x;
@@ -527,7 +521,7 @@ class Text{
 	private static void convert(float x1, float y1, float x2, float y2)
 	{
 		double[] vertices = {x1,y1,0.9,x1,(y2+0.01),0.9,(x2+0.01),(y2+0.01),0.9,(x2+0.01),y1,0.9};
-		Rectangle.drawrectangle(vertices);
+		Rectangle.drawrectangle(vertices, Menu.getRectangleModel(), false);
 	}
 	
 

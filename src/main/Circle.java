@@ -8,13 +8,13 @@ class Circle {
      * @param x the current x position of the centre of the pinball
      * @param y the current y position of the centre of the pinball
      */
-    static void paintPinball(Window window, double x, double y, double radius) {
+    static void paintPinball(Window window, double x, double y, double radius, boolean opponent) {
         double radius2 = window.glScaleDistance(radius);
-        double x2 = window.glScaleX(x);
+        double x2 = window.glScaleX(x, opponent, Screen.GAME);
         double y2 = window.glScaleY(y);
         double[] vertices = createCircle(x2, y2, 0.5f, radius2);
-        Model circle1 = new Model(vertices);
-        circle1.render(vertices);
+        Model circle1 = Menu.getCircleModel();
+        circle1.render(vertices, false);
     }
 
     /**
@@ -23,13 +23,13 @@ class Circle {
      * @param x the current x position of the centre of the powerUp
      * @param y the current y position of the centre of the powerUp
      */
-    static public void paintItem(Window window, int x, int y, int radius) {
+    static public void paintItem(Window window, int x, int y, int radius, boolean opponent) {
         double radius2 = window.glScaleDistance(radius);
-        double x2 = window.glScaleX(x);
+        double x2 = window.glScaleX(x, opponent, Screen.GAME);
         double y2 = window.glScaleY(y);
         double[] vertices = createCircle(x2, y2, 0.3f, radius2);
-        Model circle1 = new Model(vertices);
-        circle1.render(vertices);
+        Model circle1 = Menu.getCircleModel();
+        circle1.render(vertices, false);
     }
 
     /**
@@ -40,27 +40,34 @@ class Circle {
      * @param posz the current z position of the centre of the pinball
      * @return all the points of the circle
      */
-    private static double[] createCircle(double posx, double posy, double posz, double radius) {
-        int noSides = 360;
-        int noVertices = noSides + 2;
-        double doublePI = Math.PI * 2;
+    public static double[] createCircle(double x, double y, double z, double radius, int sides) {
+        double degToRad = Math.PI/180.0;
+        int degPerSide = 360/sides;
 
-        int i = 1;
-        double[] vertices = new double[noVertices * 3];
-        double x = posx;
-        double y = posy;
-        double z = posz;
-        vertices[0] = x;
-        vertices[1] = y;
-        vertices[2] = z;
-        for (int j = 3; j < (noVertices * 3); j = j + 3) {
-            vertices[j] = (float) (x + (radius * Math.cos(i * doublePI / noSides)));
-            vertices[j + 1] = (float) (y + (radius * Math.sin(i * doublePI / noSides)));
+        double[] vertices = new double[(sides + 1) * 3];
+
+        int j = 0;
+        for (int i = 0; i <= 360; i += degPerSide) {
+            double rad = i * degToRad;
+            vertices[j] = x + radius * Math.cos(rad);
+            vertices[j + 1] = y + radius * Math.sin(rad);
             vertices[j + 2] = z;
-            i++;
+            j+=3;
         }
 
         return vertices;
+    }
+
+    /**
+     * Calculates all the points of the circumference of the circle
+     *
+     * @param posx the current x position of the centre of the pinball
+     * @param posy the current y position of the centre of the pinball
+     * @param posz the current z position of the centre of the pinball
+     * @return all the points of the circle
+     */
+    public static double[] createCircle(double x, double y, double z, double radius) {
+        return createCircle(x, y, z, radius, Constants.CIRCLE_SIDES);
     }
 
 }
