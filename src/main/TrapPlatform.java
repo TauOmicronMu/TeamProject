@@ -94,7 +94,13 @@ class TrapPlatform extends Platform implements Serializable {
      * Draws the platform
      */
     void paint(Window game, boolean opponent) {
-        super.paint(game, opponent);
+        double scaledX = game.glScaleX(x, opponent, Screen.GAME);
+        double scaledY = game.glScaleY(y);
+        double widthGl = game.glScaleDistance(width);
+        double heightGl = game.glScaleDistance(height);
+
+        double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
+        Rectangle.drawrectangle(verticesb, Menu.getRectangleModel(), false);
     }
 
     public void setDx(int dx){
