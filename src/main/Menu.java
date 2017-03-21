@@ -11,6 +11,7 @@ class Menu {
     static ShaderProgram tshader4 = new ShaderProgram("shaders/tshader4.vs","shaders/shader.fs");
     static ShaderProgram rshader = new ShaderProgram("shaders/rshader.vs","shaders/shader.fs");
     static ShaderProgram rshader2 = new ShaderProgram("shaders/rshader2.vs","shaders/shader.fs");
+    static ShaderProgram starshader = new ShaderProgram("shaders/starshader.vs", "shaders/shader.fs");
     static Text text = new Text();
     static boolean stars = false;
     static ArrayList<Pair> starpoints = new ArrayList<Pair>();
@@ -29,7 +30,7 @@ class Menu {
     
     static void drawStars()
     {
-    	tshader2.bind();
+    	starshader.bind();
     	Random rand = new Random();
     	if(!stars)
     	{
@@ -58,7 +59,7 @@ class Menu {
     			}
     		}
     	}
-    	tshader2.stop();
+    	starshader.stop();
     }
     private static void drawTitle()
     {
