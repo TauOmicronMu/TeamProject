@@ -21,6 +21,8 @@ public class AudioEngine {
     // Set up the sounds for the AudioEngine
     public static final int BLOP = AUDIO_ENGINE.createTrack("blopalop.wav");
     public static final int WHOOSH = AUDIO_ENGINE.createTrack("hswoosh.wav");
+    public static final int GRAVDOWN = AUDIO_ENGINE.createTrack("gravdown.wav");
+    public static final int GRAVUP = AUDIO_ENGINE.createTrack("gravup.wav");
     // We don't want to play if we're in the client!
     public static boolean isClient = true;
 
