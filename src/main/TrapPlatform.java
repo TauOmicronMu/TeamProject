@@ -12,8 +12,8 @@ class TrapPlatform extends Platform implements Serializable {
      *@param width the width of the platform
      *@param height the height of the platform
      */
-    TrapPlatform(double x, double y, int width, int height) {
-        super(x, y, width, height);
+    TrapPlatform(double x, double y, int width, int height, double speed) {
+        super(x, y, width, height, speed);
     }
 
     /*

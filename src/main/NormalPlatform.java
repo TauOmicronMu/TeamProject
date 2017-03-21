@@ -3,8 +3,8 @@ package main;
 
 public class NormalPlatform extends Platform {
 
-    NormalPlatform(double x, double y, int width, int height) {
-        super(x, y, width, height);
+    NormalPlatform(double x, double y, int width, int height, double speed) {
+        super(x, y, width, height, speed);
     }
 
     @Override

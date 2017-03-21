@@ -29,8 +29,8 @@ public class Main extends NetworkClient {
      */
     private void play() {
 
-        myGame = new GameState(windowWidth, windowHeight);
-        oppGame = new GameState(windowWidth, windowHeight);
+        myGame = new GameState(windowWidth, windowHeight, 2);
+        oppGame = new GameState(windowWidth, windowHeight, 2);
 
         myWindow = new Window(windowHeight, windowWidth);
         myWindow.init(myGame, this);

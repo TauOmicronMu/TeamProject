@@ -5,39 +5,47 @@ package main;
  */
 public class GameModes {
 
-    private int platformsNumberEasyMode;
-    private int platformsNumberNormalMode;
-    private int platformsNumberHardMode;
-    private double platformsSpeedEasyMode;
-    private double platformsSpeedNormalMode;
-    private double platformsSpeedHardMode;
+    private static final int platformsNumberEasyMode = 20;
+    private static final int platformsNumberNormalMode = 22;
+    private static final int platformsNumberHardMode = 15;
+    private static final double platformsSpeedEasyMode = Constants.PLATFORM_START_DY - 3;
+    private static final double platformsSpeedNormalMode = Constants.PLATFORM_START_DY;
+    private static final double platformsSpeedHardMode = Constants.PLATFORM_START_DY + 10;
+    private int identity;
+    private static final int platformsWidthEasyMode = 140;
+    private static final int platformsWidthNormalMode = 120;
+    private static final int platformsWidthHardMode = 100;
+    private static final int itemsNumberEasyMode = 6;
+    private static final int itemsNumberNormalMode = 5;
+    private static final int itemsNumberHardMode = 3;
 
-    GameModes() {
-        this.platformsNumberEasyMode = 30;
-        this.platformsNumberNormalMode = 25;
-        this.platformsNumberHardMode = 15;
-        this.platformsSpeedEasyMode = 2;
-        this.platformsSpeedNormalMode = 3;
-        this.platformsSpeedHardMode = 4;
-    }
 
-    public int getEasyModeNrPlatforms(){
-        return this.platformsNumberEasyMode;
+    public static int getNrPlatforms(int mode){
+        switch(mode){
+            case 1: return platformsNumberEasyMode;
+            case 2: return platformsNumberNormalMode;
+            default: return platformsNumberHardMode;
+        }
     }
-    public int getNormalModeNrPlatforms(){
-        return this.platformsNumberNormalMode;
+    public static double getPlatformsSpeed(int mode) {
+        switch(mode){
+            case 1: return platformsSpeedEasyMode;
+            case 2: return platformsSpeedNormalMode;
+            default: return platformsSpeedHardMode;
+        }
     }
-    public int getHardModeNrPlatforms(){
-        return this.platformsNumberHardMode;
+    public static int getPlatformsWidth(int mode) {
+        switch(mode){
+            case 1: return platformsWidthEasyMode;
+            case 2: return platformsWidthNormalMode;
+            default: return platformsWidthHardMode;
+        }
     }
-    public double getPlatformsSpeedEasyMode() {
-        return this.platformsSpeedEasyMode;
+    public static int getNrItems(int mode){
+        switch(mode){
+            case 1: return itemsNumberEasyMode;
+            case 2: return itemsNumberNormalMode;
+            default: return itemsNumberHardMode;
+        }
     }
-    public double getPlatformsSpeedNormalMode() {
-        return this.platformsSpeedEasyMode;
-    }
-    public double getPlatformsSpeedHardMode() {
-        return this.platformsSpeedEasyMode;
-    }
-
 }
