@@ -32,12 +32,10 @@ class Window {
 	private static ShaderProgram pshader3;
 	private static ShaderProgram tshader2;
     private long window;
-    private int windowHeight = 800;
-    private int windowWidth = 800;
-    private static boolean shouldChangeToGame = false;
+    private int windowHeight = 600;
+    private int windowWidth = 600;
     private static boolean shouldQuit = false;
-    private static boolean shouldChangeToMenu = false;
-
+    private static boolean changeAudio = false;
 
     Window(int windowHeight, int windowWidth) {
         this.windowHeight = windowHeight;
@@ -183,7 +181,14 @@ class Window {
         long startTime;
     	rshader.bind();
         if (screen == Screen.MAIN_MENU) {
-           Menu.drawAll();
+            Menu.drawAll();
+        } else if(screen == Screen.SETTINGS){
+            Menu.drawBackToMenuButton();
+            Settings.drawAudioBar();
+            Settings.drawSlider();
+        } else if(screen == Screen.MULTIPLAYER) {
+            Menu.drawBackToMenuButton();
+            MultiplayerUI.drawAll();
         } else {
         	if(debug) System.out.println("draw platforms for our game state");
             if(debug) startTime = currentTimeMillis();
@@ -308,13 +313,33 @@ class Window {
     }
 
     /**
-     * Test whether the coordinate (x, y) is within the Play Game button.
+     * Test whether the coordinate (x, y) is within the Singleplayer button.
      * @param x The coordinate's X component.
      * @param y The coordinate's Y component.
      * @return Whether the coordinate is within the button.
      */
-    private boolean onPlayGameButton(double x, double y) {
+    private boolean onSingleplayerButton(double x, double y) {
+        return withinBounds(x, y, -0.4, 0.4, 0.05, 0.25);
+    }
+
+    /**
+     * Test whether the coordinate (x, y) is within the Multiplayer button.
+     * @param x The coordinate's X component.
+     * @param y The coordinate's Y component.
+     * @return Whether the coordinate is within the button.
+     */
+    private boolean onMultiplayerButton(double x, double y) {
         return withinBounds(x, y, -0.4, 0.4, -0.2, 0);
+    }
+
+    /**
+     * Test whether the coordinate (x, y) is within the Settings button.
+     * @param x The coordinate's X component.
+     * @param y The coordinate's Y component.
+     * @return Whether the coordinate is within the button.
+     */
+    private boolean onSettingsButton(double x, double y){
+        return withinBounds(x, y, -0.4, 0.4, -0.45, -0.25);
     }
 
     /**
@@ -338,6 +363,16 @@ class Window {
     }
 
     /**
+     * Test whether the coordinate (x, y) is within the Audio Slider button.
+     * @param x The coordinate's X component.
+     * @param y The coordinate's Y component.
+     * @return Whether the coordinate is within the button.
+     */
+    private boolean onAudioBar(double x, double y) {
+        return withinBounds(x, y, -0.2, 0.6, -0.05, 0);
+    }
+
+    /**
      * Handle the left mouse button being pressed.
      * @param gameState The game state, in case we need to retrieve or set any
      *                  information about the objects which it comprises.
@@ -353,12 +388,42 @@ class Window {
 
             // If we're on the main menu:
             case MAIN_MENU: {
-                if (onPlayGameButton(x, y)) {
-                    client.startGame(OpponentType.HUMAN);
+                if (onSingleplayerButton(x,y)) {
+                    client.initialize();
+                    screen = Screen.GAME;
                 } else if (onQuitButton(x, y)) {
                     quit();
+                } else if(onSettingsButton(x, y)) {
+                    screen = Screen.SETTINGS;
+                } else if(onMultiplayerButton(x, y)) {
+                    screen = Screen.MULTIPLAYER;
                 }
                 break;
+            }
+
+            // If we're on the multiplayer screen:
+            case MULTIPLAYER: {
+                if (onBackToMenuButton(x, y)) {
+                    screen = Screen.MAIN_MENU;
+                } //TODO: Add AI and Multiplayer integration
+            }
+
+            // If we're on the settings page:
+            case SETTINGS: {
+                if (onBackToMenuButton(x, y)) {
+                    screen = Screen.MAIN_MENU;
+                    changeAudio = false;
+                } else if (onAudioBar(x, y)){
+                    changeAudio = true;
+                    Settings.setXLower(x - 0.025);
+                    Settings.drawSlider();
+                }
+                if(onAudioBar(x, y)){
+                    changeAudio = true;
+                }
+                if(!onAudioBar(x, y)){
+                    changeAudio = false;
+                }
             }
 
             // If we're in the game:
@@ -387,17 +452,31 @@ class Window {
      */
     private void registerInputCallbacks(GameState gameState, Main client) {
         // Callback for when the left mouse button is released:
-        GLFWMouseButtonCallbackI mousecallback = (window1, button, action, mods) -> {
+        GLFWMouseButtonCallbackI mousecallback = (window, button, action, mods) -> {
             // Check that we're handling a left-mouse-button click.
-            if (button != GLFW_MOUSE_BUTTON_LEFT || action != GLFW_RELEASE) return;
-            DoubleBuffer xposbuf = BufferUtils.createDoubleBuffer(1);
-            DoubleBuffer yposbuf = BufferUtils.createDoubleBuffer(1);
-            glfwGetCursorPos(window, xposbuf, yposbuf);
-            double x = xposbuf.get();
-            double y = yposbuf.get();
-            handleMouseClick(gameState, client, x, y);
+            if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+                DoubleBuffer xposbuf = BufferUtils.createDoubleBuffer(1);
+                DoubleBuffer yposbuf = BufferUtils.createDoubleBuffer(1);
+                glfwGetCursorPos(window, xposbuf, yposbuf);
+                double x = xposbuf.get();
+                double y = yposbuf.get();
+                handleMouseClick(gameState, client, x, y);
+            }
         };
         glfwSetMouseButtonCallback(window, mousecallback);
+        GLFWCursorPosCallbackI cursorcallback = (window, xpos, ypos) -> {
+            cursorXPosition = (int) xpos;
+            cursorYPosition = (int) ypos;
+            if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && screen == Screen.SETTINGS) {
+                double x = glScaleX(cursorXPosition);
+                double y = glScaleY(cursorYPosition);
+                if(changeAudio) {
+                    Settings.setXLower(x - 0.025);
+                    Settings.drawSlider();
+                }
+            }
+        };
+        glfwSetCursorPosCallback(window, cursorcallback);
     }
 
 

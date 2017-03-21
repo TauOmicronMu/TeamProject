@@ -15,6 +15,18 @@ class Menu {
     static boolean stars = false;
     static ArrayList<Pair> starpoints = new ArrayList<Pair>();
 
+    private static void drawSinglePlayerButton(){
+        double[] vertices = {-0.4f, 0.25, 0, 0.4f, 0.25, 0, 0.4f, 0.05f, 0, -0.4f, 0.05f, 0};
+        rshader.bind();
+        Rectangle.drawrectangle(vertices);
+        rshader.stop();
+        tshader.bind();
+        text.draw("singleplayer", -2.8f, 2f, 0.4f, 3.5f);
+        tshader.stop();
+    }
+
+    private static void drawMultiplayerButton() {
+        double[] vertices = {-0.4f, 0, 0, 0.4f, 0, 0, 0.4f, -0.2f, 0, -0.4f, -0.2f, 0};
     
     private static void drawBackground()
     {
@@ -87,6 +99,11 @@ class Menu {
         rshader.bind();
         Rectangle.drawrectangle(vertices,rmodel, true);
         rshader.stop();
+
+        tshader.bind();
+        text.draw("multiplayer", -2.5f, -0.3f, 0.45f, 3.5f);
+        tshader.stop();
+      
         tshader2.bind();
         Text.draw("start",-1.1f, -0.5f, 0.5f);
         tshader2.stop();
@@ -123,9 +140,11 @@ class Menu {
     }
 
     static void drawAll() {
-    	drawBackground();
-    	drawStars();
-    	drawTitle();
+        drawSinglePlayerButton();
+        drawMultiplayerButton();
+       	drawBackground();
+      	drawStars();
+      	drawTitle();
         drawPlayButton();
         drawSettingsButton();
         drawQuitButton();
