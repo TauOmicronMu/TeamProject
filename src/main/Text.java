@@ -155,6 +155,11 @@ class Text{
 	          case '0':
 	        	  draw0(scale,startX,y);
 	              break;
+	          case '.':
+	        	  drawDot(scale,startX,y);
+	        	  break;
+	          case '+':
+	        	  drawPlus(scale,startX,y);
 	          }
 	          if(!space){
 	        	  startX += scale * 0.65/scale;
@@ -169,6 +174,16 @@ class Text{
 	      }
 	   }
 
+	private static void drawPlus(float scale, float startX, float y)
+	{
+		convert(scale * (startX - 0.3f),scale * (y - 0.4f),scale * (startX-0.1f),scale * (y - 0.4f));
+        convert(scale * (startX - 0.2f), scale * (y - 0.2f),scale * (startX - 0.2f), scale * (y - 0.6f));
+	}
+	
+	private static void drawDot(float scale, float startX, float y)
+	{
+        convert(scale * startX, scale * y,scale * startX, scale * y);
+	}
 	/**
 	 * Draws the back button within the main game
 	 * @param scale passed from draw method

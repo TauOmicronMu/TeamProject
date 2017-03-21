@@ -9,8 +9,9 @@ import static main.Circle.createCircle;
 class Item implements Serializable {
 
     private int x, y, dy, radius, type, highestPoint;
+    private static Text text = new Text();
     private boolean noDraw;
-
+  
     /*
      * Constructor for item class(PowerUps)
      * @param y the y position of the powerUp
@@ -29,6 +30,17 @@ class Item implements Serializable {
     }
 
     /*
+     * Return the type of powerUp
+     * 1 for GraveDown
+     * 2 for GraveUp
+     * 3 for FlyUp
+     * 4 for add points
+     */
+    public int getType() {
+		return type;
+	}
+    /*
+     * Get method for Y
      * Updates the position of the PowerUp
      */
     void update(GameState game, double timeStep) {
@@ -93,45 +105,35 @@ class Item implements Serializable {
     /**
      * Paints the powerUps
      */
+    public void paint(Window window) {
+    	double[] vertices = null;
+    	if(type == 1)
+    	{
+    		vertices = new double[]{window.glScaleX(this.x), window.glScaleY(this.y),0.8f,(window.glScaleX(this.x)+0.03f),(window.glScaleY(this.y)+0.03f),0.8f,(window.glScaleX(this.x)-0.03f),(window.glScaleY(this.y)+0.03f),0.8f};
+    	}
+    	if(type == 2)
+    	{
+    		vertices = new double[]{window.glScaleX(this.x), window.glScaleY(this.y),0.8f,(window.glScaleX(this.x)+0.03f),(window.glScaleY(this.y)-0.03f),0.8f,(window.glScaleX(this.x)-0.03f),(window.glScaleY(this.y)-0.03f),0.8f};
+    	}
+    	if(type == 4)
+    	{
+    		vertices = createCircle(window.glScaleX(this.x), window.glScaleY(this.y), 0.2f, 0.02f);
+    	}
+    	if(type == 3)
+    	{
+    		vertices = createCircle(window.glScaleX(this.x), window.glScaleY(this.y), 0.2f, 0.02f);
+    		Text.draw("+300",(float)(window.glScaleX(this.x)), (float)(window.glScaleY(this.y)), 0.3f);
+    	}
+
+    	if(type != 5)
+    	{
+    		Model triangles = new Model(vertices);
+
+    		triangles.render(vertices);
+    	}
     public void paint(Window window, boolean opponent) {
         if(noDraw) return;
         double[] vertices = createCircle(window.glScaleX(x, opponent, Screen.GAME), window.glScaleY(y), 0.2f, 0.02f, 5);
         Model circle1 = new Model(vertices);
         circle1.render(vertices, false);
-    }
-    /*
-     * Return the type of powerUp
-     * 1 for GraveDown
-     * 2 for GraveUp
-     * 3 for FlyUp
-     * 4 for Points
-     */
-    public int getType() {
-        return type;
-    }
-    public void setDraw(boolean noDraw) {
-        this.noDraw = noDraw;
-    }
-    public boolean getDraw() {
-        return this.noDraw;
-    }
-    /*
-     * Get method for Y
-     */
-    int getY() {
-        return y;
-    }
-    /*
-     * Get method for X
-     */
-    public int getX() {
-        return x;
-    }
-    /*
-     * Set method for x
-     * @param x
-     */
-    public void setX(int x) {
-        this.x = x;
-    }
 }

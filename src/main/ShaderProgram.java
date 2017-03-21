@@ -11,7 +11,7 @@ import java.io.IOException;
  * @author Ella
  *
  */
-public abstract class ShaderProgram {
+public class ShaderProgram {
 	
 	private int program;
 	private int vs; //vertex shader
