@@ -1,14 +1,18 @@
 package main;
+
+import java.util.Arrays;
+
 //Find the highest and reachable platform
 public class SelectPlatform {
 	
 	private GameState game;
-	private double vy = 90;//y-velocity
+	private double vy = 0;//y-velocity
 	//double min_vx = -5;//minimum x-velocity
-	private double max_vx = 50;//maximum x-velocity
+	private double max_vx = 5;//maximum x-velocity
 	private final double g = 15;//gravity
 	private final double radius = 20;
-	private Platform tempPlatform = new Platform(0,800,120,40);
+	private Platform tempPlatform = new Platform(400,750,140,20);
+	private boolean collision = false;
 	
 	/**
 	 * Select a platform, which the ball should land, from a list of platform
@@ -25,52 +29,102 @@ public class SelectPlatform {
 	 * @return a platform the ball should land
 	 */
 	public Platform select(Ball b, Platform[] ps){
+//		if(game.selected != null){
+//			if(!game.selected.isNull && Arrays.asList(ps).contains(game.selected)){
+//				return game.selected;
+//			}
+//		}
+		
+//		for(int i = 0; i < ps.length; i++){
+//			if(ps[i].checkCollisionAI(b, game)){
+//				collision = true;
+//				break;
+//			}
+//		}
+//		if(!collision && game.selected != null){
+//			return game.selected;
+//		}
+		
+//		if(ps == null){
+//			return tempPlatform;
+//		}
+		
 		vy = b.getDy();
 		//Find reachable
 		//If the platform is not reachable, replace x,y by 0,800.
 		Platform[] reachable = new Platform[ps.length];
 		
 		for(int i = 0; i < ps.length; i++){
-			double dx = ps[i].getX() - b.getX();
-			double dy = Math.abs(b.getY() - ps[i].getY());
-			if(dy > 250){
+			
+			//Not showing platform
+			if(ps[i].y < 0){
 				reachable[i] = tempPlatform;
-				System.out.println("higher 250");
 				continue;
 			}
 			
-			double t = (vy + Math.sqrt(vy*vy - 2*g*(dy+radius)))/g;//total time of ball travel
-			double max_x = t*max_vx;
-
-			if(Math.abs(dx) <= max_x + 120){
-				reachable[i] = ps[i];
-			}else{
+			if((ps[i] instanceof TrapPlatform)){//MovingHorizontallyPlatform
 				reachable[i] = tempPlatform;
-				System.out.println("More than x-max");
+				continue;
+			}
+			
+			double dx = ps[i].x - b.getX();
+			double dy = ps[i].y - b.getY();
+			double dt = vy*vy - 2*g*((-dy)+radius);
+			
+			//Platform too high
+			if(dt < 0){
+				reachable[i] = tempPlatform;
+				continue;
+			}
+			
+			//Ball cannot go to higher platform when it is going down
+			if(vy>0 && ps[i].y<b.getY()){
+				reachable[i] = tempPlatform;
+				continue;
+			}
+			
+			double t;
+			if(vy<0){
+				t = (vy + Math.sqrt(dt))/g;//total time of ball travel
+			}else{
+				t = (vy - Math.sqrt(dt))/g;
+			}
+			
+			double max_x = Math.abs(t)*max_vx*10;
+			
+			if(dx >= 0){
+				if(dx <= max_x){
+					reachable[i] = ps[i];
+				}else{
+					reachable[i] = tempPlatform;
+					continue;
+				}
+			}else{
+				if(Math.abs(dx) <= max_x+140){
+					reachable[i] = ps[i];
+				}else{
+					reachable[i] = tempPlatform;
+					continue;
+				}
+					
 			}
 		}
 		
 		
 		//Find highest
 		//y is smaller, platform is higher
-		Platform highest = reachable[0];
-		int counter2 = 0;
+		Platform highest = tempPlatform;
 		double middle = game.getWindowWidth()/2;
 		
-		while(reachable != null && counter2 < reachable.length){
-			System.out.println("Current y: " + reachable[counter2].getY());
-			if(reachable[counter2].getY() < highest.getY()){
-				highest = reachable[counter2];
-			}else if(reachable[counter2].getY() == highest.getY()){
-				
-				if(Math.abs(reachable[counter2].getX()-middle) < Math.abs(highest.getX()-middle)){
-					highest = reachable[counter2];
+		for(int i = 0; i < reachable.length; i++){
+			if(reachable[i].y < highest.y){
+				highest = reachable[i];
+			}else if(reachable[i].y == highest.y){
+				if(Math.abs(reachable[i].x-middle) < Math.abs(highest.x-middle)){
+					highest = reachable[i];
 				}
 			}
-			counter2++;
 		}
-		
-		System.out.println("Platform: " + highest.getX() + "," + highest.getY());
 		return highest;
 	}
 }
