@@ -29,7 +29,7 @@ class Window {
 	private static ShaderProgram pshader1;
 	private static ShaderProgram pshader2;
 	private static ShaderProgram pshader3;
-	private static ShaderProgram tshader2;
+	private static ShaderProgram starshader;
     private long window;
     private int windowHeight = Constants.WINDOW_HEIGHT;
     private int windowWidth = Constants.WINDOW_WIDTH;
@@ -79,7 +79,7 @@ class Window {
 		pshader1 = new ShaderProgram("shaders/pshader.vs","shaders/shader.fs");
 		pshader2 = new ShaderProgram("shaders/pshader2.vs","shaders/shader.fs");
 		pshader3 = new ShaderProgram("shaders/pshader3.vs","shaders/shader.fs");
-		tshader2 = new ShaderProgram("shaders/tshader2.vs","shaders/shader.fs");
+		starshader = new ShaderProgram("shaders/starshader.vs","shaders/shader.fs");
 
         registerInputCallbacks(gameState, client);
     }
@@ -132,9 +132,9 @@ class Window {
             	}
             	if(type == 4)
             	{
-            		tshader2.bind();
-            		item.paint(this);
-            		tshader2.stop();
+            		starshader.bind();
+            		item.paint(this,opponent);
+            		starshader.stop();
             	}
             }
         }
@@ -153,7 +153,7 @@ class Window {
             int length = scoreText.length();
             tshader2.bind();
             int xOffset = opponent ? Constants.WINDOW_WIDTH/2 : 0;
-            Text.draw(scoreText, xOffset + 5.8f - (length * 0.3f), 6.8f, 0.6f);
+            Text.draw(scoreText, xOffset + 5.8f - (length * 0.3f), 6.8f, 0.6f,opponent);
             tshader2.stop();
         }
         else
