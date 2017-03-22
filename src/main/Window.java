@@ -9,6 +9,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
 import java.nio.DoubleBuffer;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -36,6 +37,7 @@ class Window {
     private int windowWidth = Constants.WINDOW_WIDTH;
     private static boolean shouldQuit = false;
     private boolean changeAudio;
+    private static boolean finishedLoading;
     private static Window instance;
 
 
@@ -190,6 +192,16 @@ class Window {
             Menu.drawBackToMenuButton();
             Settings.drawAudioBar();
             Settings.drawSlider();
+        } else if(screen == Screen.LOADING){
+            if(!finishedLoading){
+                LoadingScreen.drawLoadingWord();
+                Menu.drawStars();
+                LoadingScreen.drawLoadingDot();
+
+                /*if(finishedLoading){
+                client.startGame(OpponentType.HUMAN);
+                 }*/
+            }
         }
         else {
 
@@ -391,7 +403,8 @@ class Window {
             case MAIN_MENU: {
                 if (onMultiplayerButton(x, y)) {
                     System.out.println("Multiplayer button clicked");
-                    client.startGame(OpponentType.HUMAN);
+                    finishedLoading = false;
+                    screen = Screen.LOADING;
                 } else if (onQuitButton(x, y)) {
                     quit();
                 } else if (onSinglePlayerButton(x, y)) {
@@ -437,6 +450,7 @@ class Window {
                 }
                 break;
             }
+
             default:
                 System.err.println("Game screen not initialized!");
 
