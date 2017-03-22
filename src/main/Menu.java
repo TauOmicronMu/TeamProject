@@ -84,6 +84,8 @@ class Menu {
 	static Model imodel = new Model(verticesi);
 	static double[] verticesp = new double[27];
 	static Model pmodel = new Model(verticesp);
+	static double[] verticesPlatformPowerup = new double[25];
+	static Model platformPowerupModel = new Model(verticesPlatformPowerup);
 
     private static void drawSettingsButton() {
         double[] vertices = {
@@ -204,7 +206,11 @@ class Menu {
     {
     	return pmodel;
     }
-    
+
+    static Model getPlatformPowerupModel() {
+        return platformPowerupModel;
+    }
+
     static Model getItemModel()
     {
     	return imodel;

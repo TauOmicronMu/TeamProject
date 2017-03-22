@@ -134,9 +134,10 @@ class Item implements Serializable {
             rectangles.render(vertices2, false);
 
         }
-
-        if (type != 5) {
-        	
+        if (type == 5) {
+            vertices = createCircle(window.glScaleX(this.x, opponent, Screen.GAME), window.glScaleY(this.y), 0.2f, 0.02f,6);
+            Model circles = Menu.getPlatformPowerupModel();
+            circles.render(vertices, false);
         }
 
     }
