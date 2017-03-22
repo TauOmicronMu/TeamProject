@@ -1,7 +1,5 @@
 package main;
 
-import ai.AI;
-
 import java.io.IOException;
 import java.util.Optional;
 

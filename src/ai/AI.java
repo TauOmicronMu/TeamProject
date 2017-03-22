@@ -4,49 +4,32 @@ import main.Ball;
 import main.GameState;
 import main.Platform;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Hashtable;
-import java.util.Random;
-
-/**
- * Call this class
- * @author ava
- *
- */
 public class AI {
 
-	private GameState game;
-	private Hashtable<String, Double> database;
-	private ObjectInputStream ois;
-	
-	@SuppressWarnings("unchecked")
-	/**
-	 * Read database
-	 * @param g GameState
-	 */
-	public AI() throws IOException, ClassNotFoundException{
-		FileInputStream fin = new FileInputStream("data.tmp");
-		ois = new ObjectInputStream(fin);
-		this.database = (Hashtable<String, Double>) ois.readObject();
-		System.out.println("Read hashtable success");
-	}
-	
-	/**
-	 * Use this method when the ball bit the platform every time
-	 * @param ball
-	 * @param platform list
-	 * @return
-	 */
-	public double apply(Ball b, Platform[] ps) {
-		readData rd = new readData();
-		double xVelocity = rd.AI(b,ps,database,game);
-		xVelocity += (-b.getMaxSpeed() + new Random().nextInt(b.getMaxSpeed()*2))-1;
-		return xVelocity;
-	}
+    public AI(){}
+
+    public enum Move {
+        LEFT, RIGHT, NO_MOVE
+    }
+
+    // Uses a heuristic to choose the optimal platform for a given game state
+    private Platform choosePlatform(GameState game) {
+        Platform[] platforms = game.getBasicPlatforms();
+        return platforms[0];
+    }
+
+    public Move getMove(GameState game) {
+        // Calculate the optimal platform
+        Platform optimalPlatform = choosePlatform(g)
+
+        // Work out if the optimal platform is to the left, right or where we are (horizontally)
+        Ball ball = game.getBall();
+        double ballx = ball.getX();
+        double platformx = optimalPlatform.getX();
+
+        double diff = ballx - platformx;
+        if(diff == 0) return Move.NO_MOVE; // Don't move if we're above the platform
+        return (ballx - platformx > 0) ? Move.LEFT : Move.RIGHT; // Move in the direction of the platform
+    }
+
 }
