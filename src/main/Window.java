@@ -34,11 +34,17 @@ class Window {
     private int windowHeight = Constants.WINDOW_HEIGHT;
     private int windowWidth = Constants.WINDOW_WIDTH;
     private static boolean shouldQuit = false;
+    private static Window instance;
 
 
     Window(int windowHeight, int windowWidth) {
         this.windowHeight = windowHeight;
         this.windowWidth = windowWidth;
+        Window.instance = this;
+    }
+
+    static Window getInstance() {
+        return instance;
     }
 
     void quit() {
@@ -136,6 +142,12 @@ class Window {
             		item.paint(this,opponent);
             		starshader.stop();
             	}
+            	if (type == 5)
+                {
+                    cshader.bind();
+                    item.paint(this, opponent);
+                    cshader.stop();
+                }
             }
         }
     }
@@ -282,9 +294,7 @@ class Window {
             gameState.getBall().doubleJump();
             client.sendMessage(new Message("Space"));
         } else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_TRUE) {
-            // System.out.println("[INFO] Window.handleKeyboardInput : Key(D) pressed.");
-            gameState.makeClosestPlatformUnusable();
-            client.sendMessage(new Message("Shift"));
+            // client.sendMessage(new Message("Shift"));
         }
     }
 

@@ -1,7 +1,6 @@
 package main;
 
-import main.Ball;
-import main.Item;
+import networking.Message;
 
 public class MakeOpponentPlatformDissapearPowerUp extends main.Item{
 
@@ -11,12 +10,15 @@ public class MakeOpponentPlatformDissapearPowerUp extends main.Item{
 
     @Override
     public void performAction(GameState game) {
-        game.makeClosestPlatformUnusable();
+        if (AudioEngine.isClient) {
+            Main.getInstance().sendMessage(
+                    new Message("PlatformDelete")
+            );
+        }
     }
 
     @Override
     public void paint(Window window, boolean opponent) {
-        //colour
         super.paint(window, opponent);
     }
 }

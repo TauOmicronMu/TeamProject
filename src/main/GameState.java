@@ -24,7 +24,6 @@ public class GameState implements Serializable {
     private static final int PLATFORM_WIDTH = 140;
     private static final int PLATFORM_HEIGHT = 20;
     int score;
-    int counter=0;
 
     GameState(int width, int height) {
         this.windowWidth = width;
@@ -122,7 +121,8 @@ public class GameState implements Serializable {
                 if (items[i].getY() >= windowHeight) {
                     //items[i] = null;
                     int y = (int)this.getHighestItem();
-                    switch (random.nextInt(4)) {
+
+                    switch (random.nextInt(5)) {
                         case 0:
                             items[i]=new main.GravDown( -1000 + y - random.nextInt(500), 1);
                             break;
@@ -134,6 +134,9 @@ public class GameState implements Serializable {
                             break;
                         case 3:
                             items[i]=new main.PointsItem(-1000 + y - random.nextInt(500), 4);
+                            break;
+                        case 4:
+                            items[i]=new MakeOpponentPlatformDissapearPowerUp(-1000 + y - random.nextInt(500), 5);
                             break;
                     }
                 }
@@ -215,8 +218,6 @@ public class GameState implements Serializable {
         for (Item item : items) {
             if (item != null) item.update(this, timeStep);
         }
-        if(counter>0) counter--;
-  
     }
 
 
@@ -226,8 +227,7 @@ public class GameState implements Serializable {
      */
     void generateItems() {
         for (int i = 0; i < items.length; i++) {
-            // Todo: understand and refactor this "magic number".
-            switch (random.nextInt(4)) {
+            switch (random.nextInt(5)) {
                 case 0:
                     items[i]=new main.GravDown(- i * 500 + random.nextInt(500), 1);
                     break;
@@ -239,6 +239,9 @@ public class GameState implements Serializable {
                     break;
                 case 3:
                     items[i]=new main.PointsItem(-i * 500 + random.nextInt(500), 4);
+                    break;
+                case 4:
+                    items[i]=new main.MakeOpponentPlatformDissapearPowerUp(-i * 500 + random.nextInt(500), 5);
                     break;
             }
         }
@@ -356,13 +359,10 @@ public class GameState implements Serializable {
      * Make the closest platform to the ball unusable
      */
     public  void makeClosestPlatformUnusable(){
-        if(counter == 0){
-            int index = getClosestPlatform();
-            platforms[index].setNoDraw(true);
-            System.out.println("THIS WORKS");
-            System.out.println(index);
-            counter = 100;
-        }
+        int index = getClosestPlatform();
+        platforms[index].setNoDraw(true);
+        System.out.println("Platform was deleted!");
+        System.out.println(index);
     }
 
 }
