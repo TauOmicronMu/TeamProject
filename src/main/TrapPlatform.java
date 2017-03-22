@@ -3,7 +3,7 @@ package main;
 import java.io.Serializable;
 
 
-class TrapPlatform extends Platform implements Serializable {
+public class TrapPlatform extends Platform implements Serializable {
 
     /*
      *Constructor for platform object

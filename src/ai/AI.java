@@ -43,7 +43,7 @@ public class AI {
         double minDist = Double.POSITIVE_INFINITY;
         for(Platform platform : platforms) {
             double d = dist(platform, ball);
-            if(d > minDist) continue;
+            if(d > minDist || platform instanceof TrapPlatform) continue;
             closestPlatform = platform;
             minDist = d;
         }
