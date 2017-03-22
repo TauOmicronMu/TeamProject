@@ -411,8 +411,8 @@ class Window {
                     screen = Screen.MAIN_MENU;
                 } else {
                     // Todo: N.B. This is for demonstrating the server-client synch.
-                    gameState.getBall().setX(cursorXPosition);
-                    gameState.getBall().setY(cursorYPosition);
+                    // gameState.getBall().setX(cursorXPosition);
+                    // gameState.getBall().setY(cursorYPosition);
                 }
                 break;
             }
