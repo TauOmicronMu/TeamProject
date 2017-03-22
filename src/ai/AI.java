@@ -1,8 +1,6 @@
 package ai;
 
-import main.Ball;
 import main.GameState;
-import main.Platform;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -12,7 +10,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Hashtable;
-import java.util.Random;
 
 /**
  * Call this class
@@ -37,16 +34,8 @@ public class AI {
 		System.out.println("Read hashtable success");
 	}
 	
-	/**
-	 * Use this method when the ball bit the platform every time
-	 * @param ball
-	 * @param platform list
-	 * @return
-	 */
-	public double apply(Ball b, Platform[] ps) {
-		readData rd = new readData();
-		double xVelocity = rd.AI(b,ps,database,game);
-		xVelocity += (-b.getMaxSpeed() + new Random().nextInt(b.getMaxSpeed()*2))-1;
-		return xVelocity;
+	public Hashtable<String, Double> getDB(){
+		return database;
 	}
+
 }

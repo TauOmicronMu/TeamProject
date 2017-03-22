@@ -8,7 +8,7 @@ import java.util.ArrayList;
 //import java.util.Arrays;
 
 public class EDA {
-	private final int xv = 100; // number of NEW samples per iteration: x-velocity
+	private final int xv = 20; // number of NEW samples per iteration: x-velocity
     
     private ArrayList<Double> score = new ArrayList<>(); //store score which show where the ball hit
     private ArrayList<Double> xVelocity = new ArrayList<>(); //x-velocity corresponding to score list
@@ -43,13 +43,14 @@ public class EDA {
  
     	while (iterationCounter < time){
     		double meanD = mean(keepSample);
-            double varianceD = variance(keepSample)+5; //if maximum x velocity is bigger
+            double varianceD = variance(keepSample)+2; //if maximum x velocity is bigger
             NormalDistribution M = new NormalDistribution(meanD,varianceD); //Normal distribution of parameter
             ArrayList<Double> sampleArray = sampleRange(M.sample(xv)); // choose S samples from M distribution
             ArrayList<Double> result = f.apply(sampleArray); // apply sample into function f
             if(result == null){
             	return -1.0;
             }
+
 //            System.out.println("Sample:");
 //            printArray(sampleArray);
 //            System.out.println("Result:");
@@ -66,24 +67,28 @@ public class EDA {
             		maxIndex = i;
             	}
             }
-            
+
 //            System.out.println("Next sample:");
 //            printArray(keepSample);
 //            System.out.println("MaxIndex: " + maxIndex + " Result size: " + result.size());
+            
             if(result.size() == 0){
             	return -1.0;
             }
+
             score.add(result.get(maxIndex));
             xVelocity.add(sampleArray.get(maxIndex));
             iterationCounter++;
+
     	}
+
     	int bestXV = 0;//index of x-velocity
     	for(int i = 0; i < score.size(); i++){
     		if(score.get(i) > score.get(bestXV)){
     			bestXV = i;
     		}
     	}
-//    	System.out.println(xVelocity.get(bestXV));
+
     	return xVelocity.get(bestXV);
     }
     

@@ -439,7 +439,6 @@ class Window {
             }
             default:
                 System.err.println("Game screen not initialized!");
-
         }
     }
 

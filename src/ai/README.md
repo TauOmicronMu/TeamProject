@@ -1,10 +1,25 @@
 # TeamProject
 AI:
+Library:
+Add the 6 commons-math3-3.6.1- jar files.
+
 Prepare in advance:
-Run AIEngine class first, it will generate a hashtable which contains all the trainning data, and output as an object file.
+Run the TestingAI class to generate the hashtable object file first, which need to run once only.
 
 Start the game:
-Run AI class, it will read the object file and convert to hashtable.
+Put this in the main class(the initializeGame method):
+
+    System.out.println("Reading Hashtable...");
+		AI t = new AI(game);  //run this before the game start
+		Hashtable<String, Double> database = t.getDB();
+		AIThread ai = new AIThread(database, game);
+		game.setAI(ai);
+		ai.start();
+    
 
 Running the game:
-Call the AI.apply function while the ball contact with the platform, and it will return the x velocity.
+Put this in the GameState class(I put it in the top of the updatePhysics method):
+
+        ai.ps = this.platforms;
+	    	ai.ball = this.ball;
+	    	ai.run();

@@ -1,16 +1,18 @@
 package ai;
 
+import main.Constants;
+
 import java.util.ArrayList;
 
 public class toScore {
 	
 	private int dx;//x-distance between platform and ball
 	private int dy;//y-distance between platform and ball
-	private final double g = 15;//gravity(can be variable)
+	private final double g = Constants.GRAVITY;//gravity(can be variable)
 	private double vy = 0;//y-velocity
 //	private final double xFriction = 0.9;
-	private final double radius = 20;//Ball radius(can be variable)
-	private final double platformW = 140;//Platform width(can be variable)
+	private final double radius = Constants.ITEM_RADIUS;//Ball radius(can be variable)
+	private double platformW = Constants.PLATFORM_WIDTH;//Platform width(can be variable)
 	
 	/**
 	 * 
@@ -18,7 +20,7 @@ public class toScore {
 	 * @param y y-distance between platform and ball
 	 * @param vy current y-velocity of the ball
 	 */
-	public toScore(int x, int y, int vy){
+	public toScore(int x, int y, int vy, double platformW){
 		dx = x;
 		dy = y;
 		this.vy = vy;

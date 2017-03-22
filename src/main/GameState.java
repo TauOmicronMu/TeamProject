@@ -1,6 +1,7 @@
 package main;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -55,7 +56,7 @@ public class GameState implements Serializable {
         platforms[0] = new NormalPlatform(
                 0,
                 400,
-                800,
+                Constants.PLATFORM_WIDTH,
                 PLATFORM_HEIGHT
         );
 
@@ -259,7 +260,7 @@ public class GameState implements Serializable {
     /**
      * Retrieve the ball that's currently on-screen.
      */
-    Ball getBall() {
+    public Ball getBall() {
         return ball;
     }
 
@@ -365,4 +366,7 @@ public class GameState implements Serializable {
         System.out.println(index);
     }
 
+    public Platform[] getPlatforms() {
+        return platforms;
+    }
 }

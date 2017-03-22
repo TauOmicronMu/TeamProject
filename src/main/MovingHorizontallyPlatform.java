@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Random;
 
 
-class MovingHorizontallyPlatform extends Platform implements Serializable {
+public class MovingHorizontallyPlatform extends Platform implements Serializable {
 
     private double x1, x2;
     private int score = 0;
