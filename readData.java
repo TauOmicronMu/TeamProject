@@ -58,7 +58,17 @@ public class readData {
 			}
 			dy = Math.abs(b.getY() - p.getY());//y-distance between ball and platform 
 			vy = b.getDy();
-		
+			if((!(p instanceof MovingHorizontallyPlatform)) && vy>=-10 && b.getX()>p.x+10 && b.getX()<p.x+p.width-10 && b.getY()<p.y){
+				double currentDx = b.getDx();
+				double isb = 0.0;
+				if(currentDx > isb){
+					return -1;
+				}else if(currentDx < isb){
+					return 1;
+				}else{
+					return 0;
+				}
+			}
 		
 		
 		//Score function is symmetric and domain connected.
