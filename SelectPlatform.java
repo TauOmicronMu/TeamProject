@@ -90,7 +90,7 @@ public class SelectPlatform {
 				t = (vy - Math.sqrt(dt))/g;
 			}
 			
-			double max_x = Math.abs(t)*max_vx*10;
+			double max_x = Math.abs(t)*max_vx*15;
 			
 			if(dx >= 0){
 				if(dx <= max_x){
