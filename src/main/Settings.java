@@ -28,9 +28,9 @@ public class Settings {
     static void drawSlider(){
         double[] vertices = {
                 getXLower(), 0.01, 0,
-                0.8+getXUpper(), 0.01, 0,
-                0.8+getXUpper(), -0.06f, 0,
-                0.8+getXLower(), -0.06f, 0
+                getXUpper(), 0.01, 0,
+                getXUpper(), -0.06f, 0,
+                getXLower(), -0.06f, 0
         };
         rshader.bind();
         Rectangle.drawrectangle(vertices, Menu.getRectangleModel(), false);
@@ -38,10 +38,10 @@ public class Settings {
     }
 
     static void setXLower(double x){
-        if(x<=-0.6){
-            xLower = -0.6;
-        } else if(x>=-0.2){
-            xLower = -0.6;
+        if(x<=-0.225){
+            xLower = -0.225;
+        } else if(x>=0.575){
+            xLower = 0.575;
         } else{
             xLower = x;
         }
@@ -57,6 +57,6 @@ public class Settings {
     }
 
     static double volumePercentage(){
-        return ((getXLower() - (-0.425))/0.8)*100;
+        return (((getXLower()+0.025) - (-0.2))/0.8)*100;
     }
 }

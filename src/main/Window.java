@@ -324,12 +324,6 @@ class Window {
      * @return Whether the coordinate is within the button.
      */
     private boolean onSinglePlayerButton(double x, double y) {
-        double[] vertices = {
-                -0.4f, -0.06f, 0.1f,
-                0.4f, -0.06f, 0.1f,
-                0.4f, -0.26f, 0.1f,
-                -0.4f, -0.26f, 0.1f
-        };
         return withinBounds(x, y, -0.4, 0.4, -0.26, -0.06);
     }
 
@@ -342,7 +336,8 @@ class Window {
     }
 
     private boolean onAudioBar(double x, double y) {
-        return withinBounds(x, y, -0.6, -0.2, -0.05, 0);
+        double newX = ((1+x)*2)-1;
+        return withinBounds(newX, y, -0.2, 0.6, -0.05, 0);
     }
 
     /**
@@ -416,8 +411,12 @@ class Window {
                 } else if (onAudioBar(x, y)){
                     System.out.println("On audio bar.");
                     changeAudio = true;
-                    Settings.setXLower(x - 0.025);
+                    double newX = ((1+x)*2)-1;
+                    Settings.setXLower(newX - 0.025);
                     Settings.drawSlider();
+                }
+                if(onAudioBar(x, y)){
+                    changeAudio = true;
                 }
                 if(!onAudioBar(x, y)){
                     changeAudio = false;
@@ -457,8 +456,10 @@ class Window {
                 double x = glScaleX(cursorXPosition);
                 double y = glScaleY(cursorYPosition);
                 if(changeAudio) {
-                    Settings.setXLower(x - 0.025);
+                    double newX = ((1+x)/0.5)*2+-1;
+                    Settings.setXLower(newX - 0.025);
                     Settings.drawSlider();
+                    System.out.println("Volume Percentage: " + Settings.volumePercentage());
                 }
             }
         };
