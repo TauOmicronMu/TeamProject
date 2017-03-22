@@ -10,7 +10,7 @@ public class toScore {
 	private double vy = 0;//y-velocity
 //	private final double xFriction = 0.9;
 	private final double radius = 20;//Ball radius(can be variable)
-	private final double platformW = 140;//Platform width(can be variable)
+	private double platformW = 140;//Platform width(can be variable)
 	
 	/**
 	 * 
@@ -18,7 +18,7 @@ public class toScore {
 	 * @param y y-distance between platform and ball
 	 * @param vy current y-velocity of the ball
 	 */
-	public toScore(int x, int y, int vy){
+	public toScore(int x, int y, int vy, double platformW){
 		dx = x;
 		dy = y;
 		this.vy = vy;
