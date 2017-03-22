@@ -3,9 +3,14 @@ package ai;
 import main.*;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class AI {
 
+    /** We don't want to make more than one of these! */
+    private static Random random = new Random();
+
+    /** Enum used to represent the domain of all possible moves the AI could make. */
     public enum Move {
         LEFT, RIGHT, NO_MOVE
     }
@@ -18,11 +23,11 @@ public class AI {
      */
     private static double dist(Platform p, Ball b) {
         return Math.min(
-                Math.hypot( // Left edge of platform
+                Math.hypot( /* Left edge of platform */
                         b.getX() - p.getX(),
                         b.getY() - p.getY()
                 ),
-                Math.hypot( // Right edge of platform
+                Math.hypot( /* Right edge of platform */
                         b.getX() - (p.getX() + Constants.PLATFORM_WIDTH),
                         b.getY() - p.getY()
                 )
@@ -38,9 +43,12 @@ public class AI {
         Platform[] platforms = game.getBasicPlatforms();
         Ball ball = game.getBall();
 
-        // Work out which platform is closest to us!
+        // TODO: Only use the reachable platforms
+
+        /* Work out which platform is closest to us! */
         Platform closestPlatform = null;
         double minDist = Double.POSITIVE_INFINITY;
+
         for(Platform platform : platforms) {
             double d = dist(platform, ball);
             if(d > minDist || platform instanceof TrapPlatform) continue;
@@ -61,17 +69,18 @@ public class AI {
      * @return The optimal Move for the AI to make.
      */
     public static Move getMove(GameState game) {
-        // Calculate the optimal platform
+        /* Calculate the optimal platform */
         Platform optimalPlatform = choosePlatform(game);
 
-        // Work out if the optimal platform is to the left, right or where we are (horizontally)
+        /* Work out if the optimal platform is to the left, right or where we are (horizontally) */
         Ball ball = game.getBall();
         double ballx = ball.getX();
-        double platformx = optimalPlatform.getX();
+        double platformx = optimalPlatform.getX() +
+                           random.nextInt(Constants.PLATFORM_WIDTH/2); /* Aim for *somewhere* on the Platform */
 
         double diff = ballx - platformx;
-        if(diff == 0) return Move.NO_MOVE; // Don't move if we're above the platform
-        return (ballx - platformx > 0) ? Move.LEFT : Move.RIGHT; // Move in the direction of the platform
+        if(diff == 0) return Move.NO_MOVE; /* Don't move if we're above the platform */
+        return (ballx - platformx > 0) ? Move.LEFT : Move.RIGHT; /* Move in the direction of the platform */
     }
 
 }
