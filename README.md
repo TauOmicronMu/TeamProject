@@ -1,5 +1,8 @@
 # TeamProject
 AI:
+Library:
+Add the 6 commons-math3-3.6.1- jar files.
+
 Prepare in advance:
 Run the TestingAI class to generate the hashtable object file first, which need to run once only.
 
