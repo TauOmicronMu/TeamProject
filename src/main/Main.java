@@ -9,6 +9,11 @@ public class Main extends NetworkClient {
 
     private static final int windowHeight = Constants.WINDOW_HEIGHT;
     private static final int windowWidth = Constants.WINDOW_WIDTH;
+    private static NetworkClient instance;
+
+    public static NetworkClient getInstance() {
+        return instance;
+    }
 
     public Window getWindow() {
         return myWindow;
@@ -19,10 +24,8 @@ public class Main extends NetworkClient {
 
     private Main(String host, int port) {
         super(host, port);
+        Main.instance = this;
     }
-
-
-    // XXJ312
 
     /**
      * The play() method implements the main myGame loop.
@@ -105,6 +108,7 @@ public class Main extends NetworkClient {
     }
 
     public static void main(String[] args) {
+        AudioEngine.isClient = true;
         Main main = new Main(Constants.HOST, Constants.PORT);
         main.play();
     }

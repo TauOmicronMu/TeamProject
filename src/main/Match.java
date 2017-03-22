@@ -72,7 +72,10 @@ public class Match implements Runnable {
 
                     // Update game state locally (mutate)
                     // TODO: Handle powerups
-                    playerOneGameState.handleInput(move);
+                    if (move.equals("PlatformDelete")) {
+                        playerTwoGameState.makeClosestPlatformUnusable();
+                    }
+                    else playerOneGameState.handleInput(move);
 
                     // Relay new game state to clients
                     try {
@@ -89,8 +92,10 @@ public class Match implements Runnable {
                     // Handle player two input
                     String move = playerTwoMove.get();
                     // System.out.println("[INFO] Match.run : got a move from Player Two: " + move);
-
-                    playerTwoGameState.handleInput(move);
+                    if (move.equals("PlatformDelete")) {
+                        playerOneGameState.makeClosestPlatformUnusable();
+                    }
+                    else playerTwoGameState.handleInput(move);
 
                     // Relay to both clients
                     try {

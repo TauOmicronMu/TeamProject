@@ -25,7 +25,6 @@ public class GameState implements Serializable {
     private static final int PLATFORM_HEIGHT = 20;
     int score;
 
-
     GameState(int width, int height) {
         this.windowWidth = width;
         this.windowHeight = height;
@@ -122,7 +121,8 @@ public class GameState implements Serializable {
                 if (items[i].getY() >= windowHeight) {
                     //items[i] = null;
                     int y = (int)this.getHighestItem();
-                    switch (random.nextInt(4)) {
+
+                    switch (random.nextInt(5)) {
                         case 0:
                             items[i]=new main.GravDown( -1000 + y - random.nextInt(500), 1);
                             break;
@@ -134,6 +134,9 @@ public class GameState implements Serializable {
                             break;
                         case 3:
                             items[i]=new main.PointsItem(-1000 + y - random.nextInt(500), 4);
+                            break;
+                        case 4:
+                            items[i]=new MakeOpponentPlatformDissapearPowerUp(-1000 + y - random.nextInt(500), 5);
                             break;
                     }
                 }
@@ -215,7 +218,6 @@ public class GameState implements Serializable {
         for (Item item : items) {
             if (item != null) item.update(this, timeStep);
         }
-  
     }
 
 
@@ -225,8 +227,7 @@ public class GameState implements Serializable {
      */
     void generateItems() {
         for (int i = 0; i < items.length; i++) {
-            // Todo: understand and refactor this "magic number".
-            switch (random.nextInt(4)) {
+            switch (random.nextInt(5)) {
                 case 0:
                     items[i]=new main.GravDown(- i * 500 + random.nextInt(500), 1);
                     break;
@@ -238,6 +239,9 @@ public class GameState implements Serializable {
                     break;
                 case 3:
                     items[i]=new main.PointsItem(-i * 500 + random.nextInt(500), 4);
+                    break;
+                case 4:
+                    items[i]=new main.MakeOpponentPlatformDissapearPowerUp(-i * 500 + random.nextInt(500), 5);
                     break;
             }
         }
@@ -292,6 +296,9 @@ public class GameState implements Serializable {
             case "Space":
                 getBall().doubleJump();
                 break;
+            case "Shift":
+                this.makeClosestPlatformUnusable();
+                break;
             default:
                 System.err.println("[WARN] GameState.handleInput : Bad move => " + move);
         }
@@ -307,4 +314,55 @@ public class GameState implements Serializable {
         }
         return max;
     }
+    /**
+     * Returns the y position of the highest platform
+     */
+    public double getHighestPlatform(){
+        double max = 0;
+        for(int i = 0; i<platforms.length; i++){
+            if(platforms[i].getY()<max)
+                max = platforms[i].getY();
+        }
+        return max;
+    }
+    /**
+     * Returns the index of the closest platform to the ball
+     */
+    public int getClosestPlatform(){
+
+        double ballXPosition = ball.getX();
+        double ballYPosition = ball.getY();
+
+        double platformXPosition = platforms[0].getX();
+        double platformYPosition = platforms[0].getY();
+
+        //Compute the distance between the ball and the first platform
+        double smallest =  Math.sqrt( Math.pow(ballXPosition - platformXPosition, 2) + Math.pow(ballYPosition - platformYPosition , 2));
+        int index = 0;
+        for(int i = 1; i<platforms.length; i++){
+
+            platformXPosition = platforms[i].getX();
+            platformYPosition = platforms[i].getY();
+
+            //now we do the same thing for every platform and select the one with the smallest distance
+            double distance = Math.sqrt( Math.pow(ballXPosition - platformXPosition, 2) + Math.pow(ballYPosition - platformYPosition , 2));
+            if(distance < smallest) {
+                smallest = distance;
+                index = i;
+            }
+        }
+        //return the index of the closest platform
+        return index;
+    }
+
+    /**
+     * Make the closest platform to the ball unusable
+     */
+    public  void makeClosestPlatformUnusable(){
+        int index = getClosestPlatform();
+        platforms[index].setNoDraw(true);
+        System.out.println("Platform was deleted!");
+        System.out.println(index);
+    }
+
 }
