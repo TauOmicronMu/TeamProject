@@ -20,7 +20,7 @@ public class AI {
 
     public Move getMove(GameState game) {
         // Calculate the optimal platform
-        Platform optimalPlatform = choosePlatform(g)
+        Platform optimalPlatform = choosePlatform(game);
 
         // Work out if the optimal platform is to the left, right or where we are (horizontally)
         Ball ball = game.getBall();
