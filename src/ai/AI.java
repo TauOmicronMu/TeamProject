@@ -75,8 +75,7 @@ public class AI {
         /* Work out if the optimal platform is to the left, right or where we are (horizontally) */
         Ball ball = game.getBall();
         double ballx = ball.getX();
-        double platformx = optimalPlatform.getX() +
-                           random.nextInt(Constants.PLATFORM_WIDTH/2); /* Aim for *somewhere* on the Platform */
+        double platformx = optimalPlatform.getX() + Constants.PLATFORM_WIDTH/2; /* Aim for the center of the Platform */
 
         double diff = ballx - platformx;
         if(diff == 0) return Move.NO_MOVE; /* Don't move if we're above the platform */
