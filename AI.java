@@ -33,17 +33,8 @@ public class AI {
 		System.out.println("Read hashtable success");
 	}
 	
-	/**
-	 * Use this method when the ball bit the platform every time
-	 * @param ball
-	 * @param platform list
-	 * @return
-	 */
-	public double apply(Ball b, Platform[] ps) {		
-		readData rd = new readData();
-		double xVelocity = rd.AI(b,ps,database,game);
-		return xVelocity;
-
+	public Hashtable<String, Double> getDB(){
+		return database;
 	}
 
 }
