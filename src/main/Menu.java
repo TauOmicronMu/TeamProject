@@ -87,38 +87,43 @@ class Menu {
 	static double[] verticesPlatformPowerup = new double[25];
 	static Model platformPowerupModel = new Model(verticesPlatformPowerup);
 
-    private static void drawPlayButton() {
-        double[] vertices = {-0.4f, -0.04f, 0.1f, 0.4f, -0.04f, 0.1f, 0.4f, -0.24f, 0.1f, -0.4f, -0.24f, 0.1f};
-        rshader.bind();
-        Rectangle.drawrectangle(vertices,rmodel, true);
-        rshader.stop();
-        tshader2.bind();
-        Text.draw("start",-1.1f, -0.5f, 0.5f,false);
-        tshader2.stop();
-    }
-
     private static void drawSettingsButton() {
-        double[] vertices = {-0.4f, -0.27f, 0.1f, 0.4f, -0.27f, 0.1f, 0.4f, -0.47f, 0.1f, -0.4f, -0.47f, 0.1f};
+        double[] vertices = {
+                -0.4f, -0.5f, 0.1f,
+                0.4f, -0.5f, 0.1f,
+                0.4f, -0.7f, 0.1f,
+                -0.4f, -0.7f, 0.1f
+        };
         rshader.bind();
         Rectangle.drawrectangle(vertices,rmodel, true);
         rshader.stop();
         tshader.bind();
-        Text.draw("settings", -1.9f, -2.4f, 0.5f,false);
+        Text.draw("settings", -1.9f, -4.2f, 0.5f,false);
         tshader.stop();
     }
 
     private static void drawQuitButton() {
-        double[] vertices = {-0.4f, -0.5f, 0.1f, 0.4f, -0.5f, 0.1f, 0.4f, -0.7f, 0.1f, -0.4f, -0.7f, 0.1f};
+        double[] vertices = {
+                -0.4f, -0.72f, 0.1f,
+                0.4f, -0.72f, 0.1f,
+                0.4f, -0.92f, 0.1f,
+                -0.4f, -0.92f, 0.1f
+        };
         rshader.bind();
         Rectangle.drawrectangle(vertices,rmodel, true);
         rshader.stop();
         tshader.bind();
-        Text.draw("quit", -0.6f, -4.1f, 0.5f,false);
+        Text.draw("quit", -0.6f, -5.9f, 0.5f,false);
         tshader.stop();     
     }
 
     static void drawBackToMenuButton() {
-        double[] vertices = {-0.95f, 0.95f, 0.1f, -0.85f, 0.95f, 0.1f, -0.85f, 0.845f, 0.1f, -0.95f, 0.845f, 0.1f};
+        double[] vertices = {
+                -0.95f, 0.95f, 0.1f,
+                -0.85f, 0.95f, 0.1f,
+                -0.85f, 0.845f, 0.1f,
+                -0.95f, 0.845f, 0.1f
+        };
         rshader.bind();
         Rectangle.drawrectangle(vertices,rmodel, true);
         rshader.stop();
@@ -131,7 +136,8 @@ class Menu {
     	drawBackground();
     	drawStars();
     	drawTitle();
-        drawPlayButton();
+        drawSinglePlayerButton();
+        drawMultiplayerButton();
         drawSettingsButton();
         drawQuitButton();
         
@@ -154,7 +160,38 @@ class Menu {
             System.out.println("Final score: " + score);
         }
     }
-      
+
+    private static void drawSinglePlayerButton(){
+        double[] vertices = {
+                -0.4f, -0.06f, 0.1f,
+                0.4f, -0.06f, 0.1f,
+                0.4f, -0.26f, 0.1f,
+                -0.4f, -0.26f, 0.1f
+        };
+        rshader.bind();
+        Rectangle.drawrectangle(vertices,rmodel, true);
+        rshader.stop();
+        tshader.bind();
+        Text.draw("singleplayer", -2.8f, -0.8f, 0.45f, false);
+        tshader.stop();
+    }
+
+    private static void drawMultiplayerButton() {
+        double[] vertices = {
+                -0.4f, -0.28f, 0.1f,
+                0.4f, -0.28f, 0.1f,
+                0.4f, -0.48f, 0.1f,
+                -0.4f, -0.48f, 0.1f
+        };
+        rshader.bind();
+        Rectangle.drawrectangle(vertices,rmodel, true);
+        rshader.stop();
+        tshader.bind();
+        Text.draw("multiplayer", -2.5f, -2.8f, 0.45f, false);
+        tshader.stop();
+
+    }
+
     static Model getRectangleModel()
     {
     	return rmodel;

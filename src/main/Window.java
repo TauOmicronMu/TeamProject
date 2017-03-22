@@ -3,6 +3,7 @@ package main;
 import networking.Message;
 import networking.NetworkClient;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
@@ -34,6 +35,7 @@ class Window {
     private int windowHeight = Constants.WINDOW_HEIGHT;
     private int windowWidth = Constants.WINDOW_WIDTH;
     private static boolean shouldQuit = false;
+    private boolean changeAudio;
     private static Window instance;
 
 
@@ -184,7 +186,12 @@ class Window {
 
         if (screen == Screen.MAIN_MENU) {
            Menu.drawAll();
-        } else {
+        } else if (screen == Screen.SETTINGS){
+            Menu.drawBackToMenuButton();
+            Settings.drawAudioBar();
+            Settings.drawSlider();
+        }
+        else {
 
             Menu.drawStars();
             rshader.bind();
@@ -330,8 +337,21 @@ class Window {
      * @param y The coordinate's Y component.
      * @return Whether the coordinate is within the button.
      */
-    private boolean onPlayGameButton(double x, double y) {
-        return withinBounds(x, y, -0.4, 0.4, -0.2, 0);
+    private boolean onSinglePlayerButton(double x, double y) {
+        return withinBounds(x, y, -0.4, 0.4, -0.26, -0.06);
+    }
+
+    private boolean onMultiplayerButton(double x, double y) {
+        return withinBounds(x, y, -0.4, 0.4, -0.48, -0.28);
+    }
+
+    private boolean onSettingsButton(double x, double y){
+        return withinBounds(x, y, -0.4, 0.4, -0.7, -0.5);
+    }
+
+    private boolean onAudioBar(double x, double y) {
+        double newX = ((1+x)*2)-1;
+        return withinBounds(newX, y, -0.2, 0.6, -0.05, 0);
     }
 
     /**
@@ -341,7 +361,7 @@ class Window {
      * @return Whether the coordinate is within the button.
      */
     private boolean onQuitButton(double x, double y) {
-        return withinBounds(x, y, -0.4, 0.4, -0.7, -0.5);
+        return withinBounds(x, y, -0.4, 0.4, -0.92, -0.72);
     }
 
     /**
@@ -351,7 +371,7 @@ class Window {
      * @return Whether the coordinate is within the button.
      */
     private boolean onBackToMenuButton(double x, double y) {
-        return withinBounds(x, y, -0.95, -0.85, 0.85, 0.95);
+        return withinBounds(x, y, -0.95, -0.85, 0.845, 0.95);
     }
 
     /**
@@ -367,13 +387,19 @@ class Window {
 
         // Handle mouse input depending on which screen we're on.
         switch(screen) {
-
             // If we're on the main menu:
             case MAIN_MENU: {
-                if (onPlayGameButton(x, y)) {
+                if (onMultiplayerButton(x, y)) {
+                    System.out.println("Multiplayer button clicked");
                     client.startGame(OpponentType.HUMAN);
                 } else if (onQuitButton(x, y)) {
                     quit();
+                } else if (onSinglePlayerButton(x, y)) {
+                    System.out.println("Single player button clicked");
+                    client.startGame(OpponentType.AI);
+                } else if (onSettingsButton(x, y)) {
+                    System.out.println("Settings button clicked");
+                    screen = Screen.SETTINGS;
                 }
                 break;
             }
@@ -387,6 +413,27 @@ class Window {
                     // Todo: N.B. This is for demonstrating the server-client synch.
                     gameState.getBall().setX(cursorXPosition);
                     gameState.getBall().setY(cursorYPosition);
+                }
+                break;
+            }
+
+            case SETTINGS: {
+                if (onBackToMenuButton(x, y)) {
+                    screen = Screen.MAIN_MENU;
+                    changeAudio = false;
+                    // break;
+                } else if (onAudioBar(x, y)){
+                    System.out.println("On audio bar.");
+                    changeAudio = true;
+                    double newX = ((1+x)*2)-1;
+                    Settings.setXLower(newX - 0.025);
+                    Settings.drawSlider();
+                }
+                if(onAudioBar(x, y)){
+                    changeAudio = true;
+                }
+                if(!onAudioBar(x, y)){
+                    changeAudio = false;
                 }
                 break;
             }
@@ -404,17 +451,33 @@ class Window {
      */
     private void registerInputCallbacks(GameState gameState, Main client) {
         // Callback for when the left mouse button is released:
-        GLFWMouseButtonCallbackI mousecallback = (window1, button, action, mods) -> {
+        GLFWMouseButtonCallbackI mousecallback = (window, button, action, mods) -> {
             // Check that we're handling a left-mouse-button click.
-            if (button != GLFW_MOUSE_BUTTON_LEFT || action != GLFW_RELEASE) return;
-            DoubleBuffer xposbuf = BufferUtils.createDoubleBuffer(1);
-            DoubleBuffer yposbuf = BufferUtils.createDoubleBuffer(1);
-            glfwGetCursorPos(window, xposbuf, yposbuf);
-            double x = xposbuf.get();
-            double y = yposbuf.get();
-            handleMouseClick(gameState, client, x, y);
+            if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+                DoubleBuffer xposbuf = BufferUtils.createDoubleBuffer(1);
+                DoubleBuffer yposbuf = BufferUtils.createDoubleBuffer(1);
+                glfwGetCursorPos(window, xposbuf, yposbuf);
+                double x = xposbuf.get();
+                double y = yposbuf.get();
+                handleMouseClick(gameState, client, x, y);
+            }
         };
         glfwSetMouseButtonCallback(window, mousecallback);
+        GLFWCursorPosCallbackI cursorcallback = (window, xpos, ypos) -> {
+            cursorXPosition = (int) xpos;
+            cursorYPosition = (int) ypos;
+            if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && screen == Screen.SETTINGS) {
+                double x = glScaleX(cursorXPosition);
+                double y = glScaleY(cursorYPosition);
+                if(changeAudio) {
+                    double newX = ((1+x)/0.5)*2+-1;
+                    Settings.setXLower(newX - 0.025);
+                    Settings.drawSlider();
+                    System.out.println("Volume Percentage: " + Settings.volumePercentage());
+                }
+            }
+        };
+        glfwSetCursorPosCallback(window, cursorcallback);
     }
 
 

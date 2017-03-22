@@ -113,7 +113,8 @@ class Text{
 	        	  drawW(scale, startX, y);
 	              break;
 	          case 'v':
-	        	  drawV(scale, startX, y);
+				  case 'V':
+					  drawV(scale, startX, y);
 	              break;
 	          case 'x':
 	        	  drawX(scale, startX, y);
@@ -448,8 +449,8 @@ class Text{
 	}
 	
 	private static void drawV(float scale, float startX, float y)
-	{        
-        GL11.glLineWidth(3.5f);
+	{
+		GL11.glLineWidth(3.5f);
         GL11.glBegin(GL11.GL_LINE_STRIP);
         GL11.glEnable(GL11.GL_LINE_WIDTH);
         GL11.glVertex2f(scale * (startX - 0.3f), scale * (y-0.4f));
