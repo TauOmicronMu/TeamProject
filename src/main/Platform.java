@@ -20,7 +20,7 @@ public class Platform implements Serializable {
      *@param width the width of the platform
      *@param height the height of the platform
      */
-    Platform(double x, double y, int width, int height) {
+    public Platform(double x, double y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -98,5 +98,9 @@ public class Platform implements Serializable {
     }
     public void setNull(boolean x) {
         isNull = x;
+    }
+
+    public double getX() {
+        return x;
     }
 }

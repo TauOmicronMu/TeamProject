@@ -23,7 +23,7 @@ public class Ball implements Serializable {
     public int doubleJump = 0;
 
 
-    Ball(double i, double j) {
+    public Ball(double i, double j) {
         x = i;
         y = j;
     }
@@ -112,7 +112,7 @@ public class Ball implements Serializable {
         }
     }
 
-    double getX() {
+    public double getX() {
         return x;
     }
 
@@ -128,7 +128,7 @@ public class Ball implements Serializable {
         this.y = y;
     }
 
-    void setDy(double dy) {
+    public void setDy(double dy) {
         this.dy = dy;
     }
 

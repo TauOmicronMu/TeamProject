@@ -357,7 +357,7 @@ class Window {
             // If we're on the main menu:
             case MAIN_MENU: {
                 if (onPlayGameButton(x, y)) {
-                    client.startGame(OpponentType.HUMAN);
+                    client.startGame(OpponentType.AI);
                 } else if (onQuitButton(x, y)) {
                     quit();
                 }
@@ -371,8 +371,8 @@ class Window {
                     screen = Screen.MAIN_MENU;
                 } else {
                     // Todo: N.B. This is for demonstrating the server-client synch.
-                    gameState.getBall().setX(cursorXPosition);
-                    gameState.getBall().setY(cursorYPosition);
+                    // gameState.getBall().setX(cursorXPosition);
+                    // gameState.getBall().setY(cursorYPosition);
                 }
                 break;
             }
