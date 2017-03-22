@@ -112,7 +112,7 @@ public class Ball implements Serializable {
         }
     }
 
-    double getX() {
+    public double getX() {
         return x;
     }
 

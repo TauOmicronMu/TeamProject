@@ -259,7 +259,7 @@ public class GameState implements Serializable {
     /**
      * Retrieve the ball that's currently on-screen.
      */
-    Ball getBall() {
+    public Ball getBall() {
         return ball;
     }
 
@@ -267,7 +267,7 @@ public class GameState implements Serializable {
     /**
      * Retrieve each platform currently on-screen.
      */
-    Platform[] getBasicPlatforms() {
+    public Platform[] getBasicPlatforms() {
         return platforms;
     }
     

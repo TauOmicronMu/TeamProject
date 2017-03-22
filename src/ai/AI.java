@@ -12,8 +12,7 @@ public class AI {
 
     // Uses a heuristic to choose the optimal platform for a given game state
     private static Platform choosePlatform(GameState game) {
-        Platform[] platforms = gam
-        e.getBasicPlatforms();
+        Platform[] platforms = game.getBasicPlatforms();
         return platforms[0];
     }
 
