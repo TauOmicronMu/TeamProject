@@ -3,6 +3,7 @@ package ai;
 import main.*;
 import org.apache.commons.math3.analysis.function.Constant;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Vector;
@@ -57,13 +58,13 @@ public class AI {
      * @param p The Platform to find the closest point on
      * @param b The Ball to find the closest point to
      * @return The closest point on the Platform, p, to the Ball, b
-     *         in the form <X, Y>.
+     *         in the form [X, Y].
      */
-    private static Vector<Double> closestPoint(Platform p, Ball b) {
+    private static double[] closestPoint(Platform p, Ball b) {
         double s1 = leftDist(p, b);
         double s2 = rightDist(p, b);
-        return (s1 < s2) ? new Vector<Double>(p.getX(), p.getY()) :
-                           new Vector<Double>(p.getX() + Constants.PLATFORM_WIDTH, p.getY());
+        return (s1 < s2) ? new double[]{p.getX(),p.getY()} :
+                           new double[]{p.getX() + Constants.PLATFORM_WIDTH, p.getY()};
     }
 
     /**
@@ -93,13 +94,12 @@ public class AI {
         /* We can't reach a Platform if it's going off of the screen! */
         if (p.getY() + p.getDy() > Constants.WINDOW_HEIGHT) return false;
 
-        Vector<Double> pClosestPoint = closestPoint(p, b);
+        double[] pClosestPoint = closestPoint(p, b);
 
-        /* pClosestPoint is in the form <X,Y> so just use first/last Element rather than get */
-        double sx = Math.abs(b.getX() - pClosestPoint.firstElement());
-        double sy = Math.abs(b.getY() - pClosestPoint.lastElement());
+        double sx = Math.abs(b.getX() - pClosestPoint[0]);
+        double sy = Math.abs(b.getY() - pClosestPoint[1]);
 
-        double ux = Constants.MAX_SPEED /* Assume that we are travelling at the max speed (because we can! ^-^ ) */
+        double ux = Constants.MAX_SPEED; /* Assume that we are travelling at the max speed (because we can! ^-^ ) */
         double uy = b.getDy();
 
         double ax = 0.0; /* No acceleration in the x direction */
