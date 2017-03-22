@@ -1,8 +1,8 @@
 package ai;
 
-import main.Ball;
-import main.GameState;
-import main.Platform;
+import main.*;
+
+import java.util.Arrays;
 
 public class AI {
 
@@ -10,12 +10,56 @@ public class AI {
         LEFT, RIGHT, NO_MOVE
     }
 
-    // Uses a heuristic to choose the optimal platform for a given game state
-    private static Platform choosePlatform(GameState game) {
-        Platform[] platforms = game.getBasicPlatforms();
-        return platforms[0];
+    /**
+     * Returns the distance from a Platform, p, to a Ball, b.
+     * @param p The Platform to find the distance from
+     * @param b The Ball to find the distance to
+     * @return The distance between the ball and the platform.
+     */
+    private static double dist(Platform p, Ball b) {
+        return Math.min(
+                Math.hypot( // Left edge of platform
+                        b.getX() - p.getX(),
+                        b.getY() - p.getY()
+                ),
+                Math.hypot( // Right edge of platform
+                        b.getX() - (p.getX() + Constants.PLATFORM_WIDTH),
+                        b.getY() - p.getY()
+                )
+        );
     }
 
+    /**
+     * Return the optimal Platform to move towards based on the GameState
+     * @param game The GameState from which to find the optimal Platform
+     * @return The optimal Platform
+     */
+    private static Platform choosePlatform(GameState game) {
+        Platform[] platforms = game.getBasicPlatforms();
+        Ball ball = game.getBall();
+
+        // Work out which platform is closest to us!
+        Platform closestPlatform = null;
+        double minDist = Double.POSITIVE_INFINITY;
+        for(Platform platform : platforms) {
+            double d = dist(platform, ball);
+            if(d > minDist) continue;
+            closestPlatform = platform;
+            minDist = d;
+        }
+
+        return closestPlatform;
+    }
+
+    /**
+     * Given a GameState, return one of:
+     *     >> Move.LEFT
+     *     >> Move.RIGHT
+     *     >> Move.NO_MOVE
+     * based on the optimal decision for the AI with the current GameState
+     * @param game The GameState from which to find the optimal Move.
+     * @return The optimal Move for the AI to make.
+     */
     public static Move getMove(GameState game) {
         // Calculate the optimal platform
         Platform optimalPlatform = choosePlatform(game);
