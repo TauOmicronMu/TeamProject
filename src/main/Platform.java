@@ -87,9 +87,7 @@ public class Platform implements Serializable {
         glColor4f(1, 0, 0, 0);
         Rectangle.drawrectangle(verticesb, Menu.getRectangleModel(), true);
     }
-    public void setDx(int dx){
-        this.dy = dx;
-    }
+    public double getDy() { return this.dy; }
     public double getY() {
         return y;
     }
