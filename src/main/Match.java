@@ -107,7 +107,7 @@ public class Match implements Runnable {
                         break MainLoop;
                     }
                 }
-            } while (playerOneMove.isPresent() || playerTwoMove.isPresent());
+            } while (playerOneMove.isPresent() || (!(playerTwo instanceof AIPlayer) && playerTwoMove.isPresent()));
 
             if (loopNum % Constants.SRVR_MS_PER_UPDT == 0) {
                 try {
