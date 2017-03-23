@@ -11,7 +11,7 @@ public class GravUp extends main.Item{
 	@Override
 	public void performAction(GameState game) {
 		Ball ball = game.getBall();
-		ball.setGravity(ball.getGravity() + 2);
+		ball.setGravity(ball.getGravity() + Constants.GRAVITY_UP_STEP);
 	}
 	
 	

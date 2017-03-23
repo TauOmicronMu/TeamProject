@@ -9,6 +9,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
 import java.nio.DoubleBuffer;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -36,6 +37,7 @@ class Window {
     private int windowWidth = Constants.WINDOW_WIDTH;
     private static boolean shouldQuit = false;
     private boolean changeAudio;
+    private static boolean finishedLoading;
     private static Window instance;
 
 
@@ -190,6 +192,11 @@ class Window {
             Menu.drawBackToMenuButton();
             Settings.drawAudioBar();
             Settings.drawSlider();
+        } else if(screen == Screen.LOADING){
+            if(!finishedLoading){
+                LoadingScreen.drawLoadingWord();
+                Menu.drawStars();
+            }
         }
         else {
 
@@ -391,6 +398,8 @@ class Window {
             case MAIN_MENU: {
                 if (onMultiplayerButton(x, y)) {
                     System.out.println("Multiplayer button clicked");
+                    finishedLoading = false;
+                    screen = Screen.LOADING;
                     client.startGame(OpponentType.HUMAN);
                 } else if (onQuitButton(x, y)) {
                     quit();
@@ -410,7 +419,7 @@ class Window {
                     System.out.println("Back to main menu.");
                     screen = Screen.MAIN_MENU;
                 } else {
-                    // Todo: N.B. This is for demonstrating the server-client synch.
+                    // Todo: N.B. This is for demonstrating the server-client sync.
                     gameState.getBall().setX(cursorXPosition);
                     gameState.getBall().setY(cursorYPosition);
                 }
@@ -437,6 +446,7 @@ class Window {
                 }
                 break;
             }
+
             default:
                 System.err.println("Game screen not initialized!");
 

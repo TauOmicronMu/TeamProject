@@ -10,9 +10,8 @@ public class PointsItem extends Item{
 
     @Override
     public void performAction(GameState game) {
-        game.score = game.score + 3000;
+        game.score = game.score + Constants.POINT_ITEM_STEP;
         if (AudioEngine.isClient) AudioEngine.getInstance().playTrack(AudioEngine.POINTS);
-        //System.out.println("POINTs");
     }
 
 

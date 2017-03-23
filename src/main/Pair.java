@@ -2,33 +2,33 @@ package main;
 
 public class Pair<X,Y> {
 	
-	private float X;
-	private float Y;
+	private X x;
+	private Y y;
 	
-	public Pair(float x,float y)
+	public Pair(X x,Y y)
 	{
-		this.X = x;
-		this.Y = y;
+		this.x = x;
+		this.y = y;
 	}
 	
-	public float getX()
+	public X getX()
 	{
-		return this.X;
+		return this.x;
 	}
 	
-	public float getY()
+	public Y getY()
 	{
-		return this.Y;
+		return this.y;
 	}
 	
-	public void setX(float x)
+	public void setX(X x)
 	{
-		this.X = x;
+		this.x = x;
 	}
 	
-	public void setY(float y)
+	public void setY(Y y)
 	{
-		this.Y = y;
+		this.y = y;
 	}
 
 }
