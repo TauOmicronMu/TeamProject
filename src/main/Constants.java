@@ -36,4 +36,6 @@ public class Constants {
     public static final int SRVR_MS_PER_UPDT = 6;
 
     public static final int PLATFORM_WIDTH = 200;
+
+    public static final double AI_MAX_DIST = 400.00;
 }

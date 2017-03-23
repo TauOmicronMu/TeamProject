@@ -44,6 +44,7 @@ public class Match implements Runnable {
         System.out.println("[INFO] Match.run : Starting match...");
 
         boolean running = true;
+        boolean p2MoveDone = false;
         int loopNum = 0;
         long timeStep = 1;
 
@@ -89,6 +90,8 @@ public class Match implements Runnable {
                 }
 
                 if (playerTwoMove.isPresent()) {
+                    playerTwoGameState.updatePhysics(timeStep);
+                    p2MoveDone = true;
                     // Handle player two input
                     String move = playerTwoMove.get();
                     // System.out.println("[INFO] Match.run : got a move from Player Two: " + move);
@@ -124,7 +127,8 @@ public class Match implements Runnable {
 
             // Physics tick
             playerOneGameState.updatePhysics(timeStep);
-            playerTwoGameState.updatePhysics(timeStep);
+            if(!p2MoveDone) playerTwoGameState.updatePhysics(timeStep);
+            p2MoveDone = false;
 
             loopNum++;
 
