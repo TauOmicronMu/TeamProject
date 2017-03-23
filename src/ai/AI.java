@@ -101,7 +101,7 @@ public class AI {
 
         if(p instanceof TrapPlatform) return false; /* Don't jump on traps */
 
-        if(dist(p, b) > Constants.AI_MAX_DIST) return false;
+        // if(dist(p, b) > Constants.AI_MAX_DIST) return false;
 
         return true;
     }
