@@ -128,12 +128,16 @@ public class Main extends NetworkClient {
         //       game finishes, which throws one player out of sync!
         if (someonesGame.isMyGame()) {
             myGame = (GameState) someonesGame.getObject();
-            myGame.oppscore = Math.max(oppGame.getScore(), myGame.getOppscore());
-            //System.out.println("[INFO] Main.handleMessage : Server updated our game state.");
+            if (!(myGame.gameOver() || oppGame.gameOver())) {
+                myGame.oppscore = Math.max(oppGame.getScore(), myGame.getOppscore());
+                //System.out.println("[INFO] Main.handleMessage : Server updated our game state.");
+            }
         }
         else {
             oppGame = (GameState) someonesGame.getObject();
-            oppGame.oppscore = Math.max(myGame.getScore(), oppGame.getOppscore());
+            if (!(myGame.gameOver() || oppGame.gameOver())) {
+                oppGame.oppscore = Math.max(myGame.getScore(), oppGame.getOppscore());
+            }
         }
     }
 }
