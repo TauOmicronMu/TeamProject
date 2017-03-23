@@ -39,6 +39,7 @@ class Window {
     private boolean changeAudio;
     private static boolean finishedLoading;
     private static Window instance;
+    private static boolean winner = false;
 
 
     Window(int windowHeight, int windowWidth) {
@@ -59,6 +60,9 @@ class Window {
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
+    void setWinner(boolean winner) { winner = winner; }
+
+    boolean getWinner() { return winner; }
 
     /**
      * Initializes the GLFW library, creating a window and any necessary shaders.
@@ -197,6 +201,8 @@ class Window {
                 LoadingScreen.drawLoadingWord();
                 Menu.drawStars();
             }
+        } else if(screen == Screen.GAME_OVER) {
+            GameOverScreen.drawScreen(winner);
         }
         else {
 
