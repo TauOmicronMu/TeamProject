@@ -8,6 +8,7 @@ import graphics.ui.Window;
 
 public class GravUp extends Item {
 
+
 	public GravUp(int y, int type) {
 		super(y, type);
 		// TODO Auto-generated constructor stub

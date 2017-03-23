@@ -16,8 +16,8 @@ public class GravDown extends Item {
 	public void performAction(GameState game) {
 		Ball ball = game.getBall();
 		if(ball.getGravity() > Constants.GRAVITY_DOWN_THRESH) {
-		ball.setGravity(ball.getGravity() - Constants.GRAVITY_DOWN_STEP);
-			if(ball.getGravity() < Constants.GRAVITY_DOWN_THRESH){
+			ball.setGravity(ball.getGravity() - Constants.GRAVITY_DOWN_STEP);
+			if (ball.getGravity() < Constants.GRAVITY_DOWN_THRESH) {
 				ball.setGravity(Constants.GRAVITY_DOWN_THRESH);
 			}
 		}
@@ -25,8 +25,6 @@ public class GravDown extends Item {
 	
 	@Override
 	public void paint(Window window, boolean opponent) {
-		
-		//colour
 		super.paint(window, opponent);
 	}
 }

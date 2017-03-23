@@ -1,5 +1,6 @@
 package ai;
 
+
 import object.Ball;
 import object.platform.Platform;
 import object.platform.TrapPlatform;
@@ -7,6 +8,8 @@ import shared.Constants;
 import shared.GameState;
 
 import java.util.Random;
+
+//import org.apache.commons.math3.analysis.function.Constant;
 
 public class AI {
 

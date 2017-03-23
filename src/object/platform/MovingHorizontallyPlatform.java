@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class MovingHorizontallyPlatform extends Platform implements Serializable {
 
-    private double x1, x2;
+    public double x1, x2;
     private int score = 0;
     private double dx;
 

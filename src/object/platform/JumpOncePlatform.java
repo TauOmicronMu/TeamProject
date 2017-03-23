@@ -64,7 +64,6 @@ public class JumpOncePlatform extends Platform implements Serializable {
         double rectTop = y;
         double rectLeft = x;
 
-        // Todo: How is only half the platform colliding?
         double rectRight = x + width*2;
 
         // Check if the ball is above the platform *and* will be below
@@ -89,9 +88,5 @@ public class JumpOncePlatform extends Platform implements Serializable {
      */
     public void paint(Window game, boolean opponent) {
         super.paint(game, opponent);
-    }
-
-    public void setDx(int dx){
-        this.dy = dx;
     }
 }

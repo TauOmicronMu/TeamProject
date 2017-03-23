@@ -17,19 +17,19 @@ public class Ball implements Serializable {
     private static final double energyloss = 1;
     private static final double xFriction = 0.9;
     private double gameDy = -90;
-    private int agility = Constants.AGILITY; // was 1
+    public int agility = Constants.AGILITY; // was 1
     private int maxSpeed = Constants.MAX_SPEED; // was 5
     private int countFlyPower = 0;
     private boolean heightLocked = false;
-    private boolean gameOver = false;
+    public boolean gameOver = false;
     private int maxHeight = Constants.MAX_BALL_HEIGHT;
     public int doubleJump = 0;
 
 
     public Ball(double i, double j) {
         x = i;
+        y = j;
     }
-
 
     public void moveRight() {
     	if (gameOver) return;

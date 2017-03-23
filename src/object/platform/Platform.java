@@ -63,7 +63,7 @@ public class Platform implements Serializable {
             double rectLeft = x;
 
 
-            // Todo: How is only half the platform colliding?
+
             double rectRight = x + width*2;
 
             // Check if the ball is above the platform *and* will be below
@@ -108,4 +108,5 @@ public class Platform implements Serializable {
         isNull = x;
     }
     public void setNoDraw(boolean x){noDraw = x;}
+
 }

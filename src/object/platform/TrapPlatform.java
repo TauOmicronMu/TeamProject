@@ -112,8 +112,4 @@ public class TrapPlatform extends Platform implements Serializable {
         double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
         Rectangle.drawrectangle(verticesb, Menu.getRectangleModel(), false);
     }
-
-    public void setDx(int dx){
-        this.dy = dx;
-    }
 }

@@ -20,16 +20,16 @@ public class GameState implements Serializable {
 
     private final int windowWidth;
     private final int windowHeight;
-    Random random;
-    private Ball ball;
-    private Platform platforms[] = new Platform[15];
+    public Random random;
+    public Ball ball;
+    public Platform platforms[] = new Platform[15];
 
-    private Item items[] = new Item[3];
+    public Item items[] = new Item[5];
 
     private static final int PLATFORM_WIDTH = 140;
     private static final int PLATFORM_HEIGHT = 20;
-    int score;
-    int oppscore = 0;
+    public int score;
+    public int oppscore = 0;
 
     public GameState(int width, int height) {
         this.windowWidth = width;
@@ -45,11 +45,11 @@ public class GameState implements Serializable {
         return windowHeight == other.windowHeight && windowWidth == other.windowWidth;
     }
 
-    int getWindowWidth() {
+    public int getWindowWidth() {
         return windowWidth;
     }
 
-    int getWindowHeight() {
+    public int getWindowHeight() {
         return windowHeight;
     }
 
@@ -125,7 +125,7 @@ public class GameState implements Serializable {
      * Update the powerup items in the current game state
      * If item is offscreen, create a random new one!
      */
-    private void updateItems() {
+    public void updateItems() {
         if(gameOver()) return;
 
         for (int i = 0; i < items.length; i++) {
@@ -158,7 +158,7 @@ public class GameState implements Serializable {
      * Update the platforms in the current game state.
      * If platform is offscreen, create a random new one!
      */
-    private void updatePlatforms() {
+    public void updatePlatforms() {
         if(gameOver()) return;
 
         double yPosition;
@@ -168,11 +168,12 @@ public class GameState implements Serializable {
 //        }
         for (int i = 0; i < platforms.length; i++) {
             if(platforms[i].getY() >= windowHeight) {
-                if(i-1<0) {
-                    yPosition = (platforms[platforms.length-1]).getY() - 100;
-
-                }
-                else yPosition = platforms[i-1].getY() - 100;
+//                if(i-1<0) {
+//                    yPosition = (platforms[platforms.length-1]).getY() - 100;
+//
+//                }
+//                else yPosition = platforms[i-1].getY() - 100;
+                yPosition = getHighestPlatform() - 100;
                 //System.out.println(yPosition);
                 if (i % 2 != 0) {
 
@@ -184,8 +185,9 @@ public class GameState implements Serializable {
                             PLATFORM_HEIGHT
                     );
                 } else {
-                    switch (random.nextInt(10)) {
-                        case 1:case 2:case 3:case 4:
+
+                    switch (random.nextInt(9)) {
+                        case 1:case 2:case 3:case 4:case 5:
                             xPosition = Math.max(Math.min(random.nextInt(windowWidth - 2*PLATFORM_WIDTH), windowWidth - 400 - PLATFORM_WIDTH), 400 + PLATFORM_WIDTH);
                             platforms[i] = new MovingHorizontallyPlatform(
                                     xPosition,
@@ -205,7 +207,7 @@ public class GameState implements Serializable {
                                     PLATFORM_HEIGHT
                             );
                             break;
-                        case 5:case 7:case 8:
+                        case 7:case 8:
                             xPosition = random.nextInt(windowWidth - 2*PLATFORM_WIDTH);
                             platforms[i] = new JumpOncePlatform(
                                     xPosition,
@@ -328,8 +330,10 @@ public class GameState implements Serializable {
     public double getHighestItem(){
         if(gameOver()) return 0;
 
-        double max = 0;
-        for(int i = 0; i<items.length; i++){
+        double max = items[0].getY();
+
+
+        for(int i = 1; i<items.length; i++){
             if(items[i].getY()<max)
                 max = items[i].getY();
         }
@@ -341,8 +345,9 @@ public class GameState implements Serializable {
     public double getHighestPlatform(){
         if(gameOver()) return 0;
 
-        double max = 0;
-        for(int i = 0; i<platforms.length; i++){
+        double max = platforms[0].getY();
+
+        for(int i = 1; i<platforms.length; i++){
             if(platforms[i].getY()<max)
                 max = platforms[i].getY();
         }

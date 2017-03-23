@@ -40,9 +40,9 @@ public class Constants {
 
     public static final double AI_MAX_DIST = 400.00;
 
-    public static final int GRAVITY_UP_STEP = 2;
-    public static final int GRAVITY_DOWN_STEP = 2;
-    public static final int GRAVITY_DOWN_THRESH = 7;
+    public static final int GRAVITY_UP_STEP = 1;
+    public static final int GRAVITY_DOWN_STEP = 1;
+    public static final int GRAVITY_DOWN_THRESH = 2;
 
     public static final int POINT_ITEM_STEP = 3000;
 
