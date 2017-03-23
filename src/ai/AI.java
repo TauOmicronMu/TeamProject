@@ -95,51 +95,11 @@ public class AI {
         /* We can't reach a Platform if it's going off of the screen! */
         if (p.getY() + p.getDy() > Constants.WINDOW_HEIGHT) return false;
 
-        if(1 == 1) return true;
+        if(p.y < 0) return false; /* The platform is not on the screen */
 
-        double[] pClosestPoint = closestPoint(p, b);
-        System.out.println("Closest x : " + pClosestPoint[0]);
-        System.out.println("Closest y : " + pClosestPoint[1]);
+        if(p instanceof TrapPlatform) return false; /* Don't jump on traps */
 
-        double sx = Math.abs(b.getX() - pClosestPoint[0]);
-        double sy = Math.abs(b.getY() - pClosestPoint[1]);
-
-        double ux = Constants.MAX_SPEED; /* Assume that we are travelling at the max speed (because we can! ^-^ ) */
-        double uy = b.getDy()/Constants.TIME_STEP_COEFFICIENT;
-
-        double ax = 0.0; /* No acceleration in the x direction */
-        double ay = Constants.GRAVITY;
-
-        double tx = sx/ux;
-        double ty = sy/uy;
-
-        System.out.println("sx : " + sx + ", ux : " + ux + ", ax : " + ax + ", tx : " + tx);
-        System.out.println("sy : " + sy + ", uy : " + uy + ", ay : " + ay + ", ty : " + ty);
-
-        /* Can we reach the platform in time given our speed? */
-        /* Can we reach it in the x direction? */
-        double dx = 0;
-        if (p instanceof MovingHorizontallyPlatform) {
-            MovingHorizontallyPlatform hp = (MovingHorizontallyPlatform) p;
-            dx = hp.getDx();
-        }
-
-        double totalxs = dx * tx + sx; /* How far do we have to travel to reach the platform? */
-
-        if (ux * tx < totalxs) return false;
-
-        System.out.println("Was x-reachable!");
-
-        /* Can we reach it in the y direction? */
-        double dy = p.dy * Constants.TIME_STEP_COEFFICIENT;
-
-        double totalys = dy * ty + sy; /* How far do we have to travel to reach the platform? */
-
-        System.out.println("dy " + dy);
-        System.out.println("totalys : " + totalys);
-        System.out.println("uy : " + uy + ", ty : " + ty);
-
-        return (uy * ty >= totalys); /* Just return if it's reachable in y (it already is in x) */
+        return true;
     }
 
     /**
@@ -157,11 +117,10 @@ public class AI {
 
         for(Platform platform : platforms) {
             double d = dist(platform, ball);
-            if(!reachable(platform, ball) || d > minDist || platform instanceof TrapPlatform) continue;
+            if(!reachable(platform, ball) || d > minDist) continue;
             closestPlatform = platform;
             minDist = d;
         }
-
         return closestPlatform;
     }
 
@@ -176,6 +135,7 @@ public class AI {
      */
     public static Move getMove(GameState game) {
         Platform optimalPlatform = choosePlatform(game);
+        if(optimalPlatform == null) return Move.NO_MOVE;
 
         /* Work out if the optimal platform is to the left, right or where we are (horizontally) */
         Ball ball = game.getBall();
