@@ -459,13 +459,15 @@ class Window {
                 if (onBackToMenuButton(x, y)) {
                     System.out.println("Back to main menu.");
                     screen = Screen.MAIN_MENU;
+                    break;
                 }
             }
             case LOADING: {
                 // Do nothing
+                break;
             }
             default:
-                System.err.println("Game screen not initialized!");
+                System.err.println("[WARN] Window.handleMouseClick : Game screen not initialized!");
         }
     }
 
