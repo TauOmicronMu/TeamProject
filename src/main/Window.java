@@ -463,9 +463,10 @@ class Window {
             }
             case LOADING: {
                 // Do nothing
+                break;
             }
             default:
-                System.err.println("Game screen not initialized!");
+                System.err.println("[WARN] Window.handleMouseClick : Game screen not initialized!");
         }
     }
 
