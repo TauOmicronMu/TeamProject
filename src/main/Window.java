@@ -202,6 +202,7 @@ class Window {
                 Menu.drawStars();
             }
         } else if(screen == Screen.GAME_OVER) {
+            Menu.drawStars();
             GameOverScreen.drawScreen(winner);
             Menu.drawBackToMenuButton();
         }
@@ -459,6 +460,9 @@ class Window {
                     System.out.println("Back to main menu.");
                     screen = Screen.MAIN_MENU;
                 }
+            }
+            case LOADING: {
+                // Do nothing
             }
             default:
                 System.err.println("Game screen not initialized!");
