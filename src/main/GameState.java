@@ -382,4 +382,6 @@ public class GameState implements Serializable {
 
     public int getOppscore() { return this.oppscore; }
 
+    public void setOppscore(int score) {this.oppscore = Math.max(this.oppscore, score); }
+
 }

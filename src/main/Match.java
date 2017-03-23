@@ -90,7 +90,6 @@ public class Match implements Runnable {
                 }
 
                 if (playerTwoMove.isPresent()) {
-                    playerTwoGameState.updatePhysics(timeStep);
                     p2MoveDone = true;
                     // Handle player two input
                     String move = playerTwoMove.get();
@@ -125,17 +124,17 @@ public class Match implements Runnable {
                 }
             }
 
+
             if (playerOneGameState.gameOver() || playerTwoGameState.gameOver()) {
-                try {
-                    playerOne.updateGameState(playerOneGameState, true);
-                    playerOne.updateGameState(playerTwoGameState, false);
-                    playerTwo.updateGameState(playerTwoGameState, true);
-                    playerTwo.updateGameState(playerOneGameState, false);
-                } catch (InterruptedException ignored) { running = false; }
+                loopNum++;
+                long endTime = System.currentTimeMillis();
+                timeStep = endTime - startTime;
                 continue;
             }
+
             // Physics tick
             playerOneGameState.updatePhysics(timeStep);
+            playerTwoGameState.updatePhysics(timeStep);
             if(!p2MoveDone) playerTwoGameState.updatePhysics(timeStep);
             p2MoveDone = false;
 

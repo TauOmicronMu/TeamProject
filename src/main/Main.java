@@ -123,20 +123,18 @@ public class Main extends NetworkClient {
     public void handleMessage(Message someonesGame) {
         // Todo: This is probably really inefficient.
         // Nah fam I'm sure it's all gucci
-
-        // TODO: don't update scores if the game is over (they currently get updated once more after the
-        //       game finishes, which throws one player out of sync!
         if (someonesGame.isMyGame()) {
             myGame = (GameState) someonesGame.getObject();
-            if (!(myGame.gameOver() || oppGame.gameOver())) {
-                myGame.oppscore = Math.max(oppGame.getScore(), myGame.getOppscore());
-                //System.out.println("[INFO] Main.handleMessage : Server updated our game state.");
+            if(myGame.gameOver()) {
+                Window.getInstance().setWinner(false); // The other player won!
+                Window.getInstance().setScreen(Screen.GAME_OVER);
             }
         }
         else {
             oppGame = (GameState) someonesGame.getObject();
-            if (!(myGame.gameOver() || oppGame.gameOver())) {
-                oppGame.oppscore = Math.max(myGame.getScore(), oppGame.getOppscore());
+            if(oppGame.gameOver()) {
+                Window.getInstance().setWinner(true); // We won!
+                Window.getInstance().setScreen(Screen.GAME_OVER);
             }
         }
     }
