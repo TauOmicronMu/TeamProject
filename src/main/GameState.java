@@ -176,8 +176,8 @@ public class GameState implements Serializable {
                             PLATFORM_HEIGHT
                     );
                 } else {
-                    switch (random.nextInt(3)) {
-                        case 0:
+                    switch (random.nextInt(10)) {
+                        case 1:case 2:case 3:case 4:
                             xPosition = Math.max(Math.min(random.nextInt(windowWidth - 2*PLATFORM_WIDTH), windowWidth - 400 - PLATFORM_WIDTH), 400 + PLATFORM_WIDTH);
                             platforms[i] = new MovingHorizontallyPlatform(
                                     xPosition,
@@ -188,7 +188,7 @@ public class GameState implements Serializable {
                                     (int) xPosition + 200
                             );
                             break;
-                        case 1:
+                        case 6:
                             xPosition = random.nextInt(windowWidth - 2*PLATFORM_WIDTH);
                             platforms[i] = new TrapPlatform(
                                     xPosition,
@@ -197,7 +197,7 @@ public class GameState implements Serializable {
                                     PLATFORM_HEIGHT
                             );
                             break;
-                        case 2:
+                        case 5:case 7:case 8:
                             xPosition = random.nextInt(windowWidth - 2*PLATFORM_WIDTH);
                             platforms[i] = new JumpOncePlatform(
                                     xPosition,
