@@ -90,21 +90,23 @@ public class Main extends NetworkClient {
         initialize();
         sendMessage(new Message(opponentType));
 
-        // Wait for the seed from the server, because we can't create the game states
-        // without it.
-        System.out.println("[INFO] Main.initializeGame : Waiting for seed...");
-        Message msg = waitForMessage();
-        int seed = (int) msg.getObject();
-        System.out.println("[INFO] Main.initializeGame : Received seed => " + seed);
+        new Thread(() -> {
+            // Wait for the seed from the server, because we can't create the game states
+            // without it.
+            System.out.println("[INFO] Main.initializeGame : Waiting for seed...");
+            Message msg = waitForMessage();
+            int seed = (int) msg.getObject();
+            System.out.println("[INFO] Main.initializeGame : Received seed => " + seed);
 
-        myGame.setSeed(seed);
-        myGame.generatePlatforms();
-        myGame.generateItems();
-        oppGame.setSeed(seed);
-        oppGame.generatePlatforms();
-        oppGame.generateItems();
+            myGame.setSeed(seed);
+            myGame.generatePlatforms();
+            myGame.generateItems();
+            oppGame.setSeed(seed);
+            oppGame.generatePlatforms();
+            oppGame.generateItems();
 
-        myWindow.setScreen(Screen.GAME);
+            myWindow.setScreen(Screen.GAME);
+        }).start();
     }
 
     public static void main(String[] args) {

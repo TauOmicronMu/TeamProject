@@ -45,5 +45,7 @@ public class Constants {
     public static final int GRAVITY_DOWN_THRESH = 7;
 
     public static final int POINT_ITEM_STEP = 3000;
+
+    public static final String LOADING_SCREEN_TEXT = "searching...";
 }
 

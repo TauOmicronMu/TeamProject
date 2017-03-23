@@ -196,11 +196,6 @@ class Window {
             if(!finishedLoading){
                 LoadingScreen.drawLoadingWord();
                 Menu.drawStars();
-                LoadingScreen.drawLoadingDot();
-
-                /*if(finishedLoading){
-                client.startGame(OpponentType.HUMAN);
-                 }*/
             }
         }
         else {
@@ -405,6 +400,7 @@ class Window {
                     System.out.println("Multiplayer button clicked");
                     finishedLoading = false;
                     screen = Screen.LOADING;
+                    client.startGame(OpponentType.HUMAN);
                 } else if (onQuitButton(x, y)) {
                     quit();
                 } else if (onSinglePlayerButton(x, y)) {
@@ -423,7 +419,7 @@ class Window {
                     System.out.println("Back to main menu.");
                     screen = Screen.MAIN_MENU;
                 } else {
-                    // Todo: N.B. This is for demonstrating the server-client synch.
+                    // Todo: N.B. This is for demonstrating the server-client sync.
                     gameState.getBall().setX(cursorXPosition);
                     gameState.getBall().setY(cursorYPosition);
                 }
