@@ -60,7 +60,7 @@ we have made it clear that any patent must be licensed for everyone's
 free use or not licensed at all.
 
   Most GNU software, including some libraries, is covered by the ordinary
-GNU General Public License, which was designed for utility programs.  This
+GNU General Public License, which was designed for shared.utility programs.  This
 license, the GNU Library General Public License, applies to certain
 designated libraries.  This license is quite different from the ordinary
 one; be sure to read it in full, and don't assume that anything in it is
@@ -70,7 +70,7 @@ the same as in the ordinary license.
 they blur the distinction we usually make between modifying or adding to a
 program and simply using it.  Linking a program with a library, without
 changing the library, is in some sense simply using the library, and is
-analogous to running a utility program or application program.  However, in
+analogous to running a shared.utility program or application program.  However, in
 a textual and legal sense, the linked executable is a combined work, a
 derivative of the original library, and the ordinary General Public License
 treats it as such.
@@ -295,7 +295,7 @@ of these things:
     materials or that you have already sent this user a copy.
 
   For an executable, the required form of the "work that uses the
-Library" must include any data and utility programs needed for
+Library" must include any data and shared.utility programs needed for
 reproducing the executable from it.  However, as a special exception,
 the source code distributed need not include anything that is normally
 distributed (in either source or binary form) with the major

@@ -55,10 +55,10 @@ derived exclusively from the RIFT SDK by you; provided, however, that RIFT SDK
 Derivatives do not include the Developer Content (engines, utilities, applications, 
 content, games or demos) which may be developed using the RIFT SDK.  By way of example 
 a mobile application or game or demo that is developed using the RIFT SDK would not 
-be a RIFT SDK Derivative , nor would a utility or tool set in a pre-existing game 
+be a RIFT SDK Derivative , nor would a shared.utility or tool set in a pre-existing game
 engine that is adapted to work with the RIFT SDK be a RIFT SDK Derivative. 
 By way of example, but not limitation, a RIFT SDK Derivative is or would be: either (i) 
-an adaptation of a utility or piece of code from the RIFT SDK to improve efficiency; 
+an adaptation of a shared.utility or piece of code from the RIFT SDK to improve efficiency;
 or (ii) an addition of code or improvement to the RIFT SDK that adds functionality. 
 
 1.3  For the sake of clarification when you use the RIFT SDK (including RIFT SDK 
@@ -68,7 +68,7 @@ your source and object code) to Oculus VR or any third parties; provided, howeve
 Oculus VR retains all rights to the RIFT SDK and the RIFT SDK Derivatives that may 
 be incorporated into your Developer Content.
 
-1.4  You agree to and you will use  the Flash main.Screen Warning and the Health and
+1.4  You agree to and you will use  the Flash graphics.screen.Screen Warning and the Health and
 Safety Warnings (collectively the "Oculus Warnings") and the Oculus VR health and 
 safety protocols found in the Oculus Best Practices Guide ("Oculus H&S Protocols"), 
 and your use of the Oculus Warnings and the Oculus end user license agreement 

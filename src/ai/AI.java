@@ -1,12 +1,12 @@
 package ai;
 
-import main.*;
-import org.apache.commons.math3.analysis.function.Constant;
+import object.Ball;
+import object.platform.Platform;
+import object.platform.TrapPlatform;
+import shared.Constants;
+import shared.GameState;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
-import java.util.Vector;
 
 public class AI {
 
