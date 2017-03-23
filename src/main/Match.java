@@ -125,6 +125,7 @@ public class Match implements Runnable {
                 }
             }
 
+            if (playerOneGameState.gameOver() || playerTwoGameState.gameOver()) continue;
             // Physics tick
             playerOneGameState.updatePhysics(timeStep);
             if(!p2MoveDone) playerTwoGameState.updatePhysics(timeStep);
