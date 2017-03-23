@@ -4,6 +4,8 @@ import graphics.shader.ShaderProgram;
 import graphics.ui.Text;
 import graphics.shape.Rectangle;
 
+import static org.lwjgl.opengl.GL11.glColor3f;
+
 /**
  * Created by Jennifer on 08/03/2017.
  */
@@ -24,9 +26,11 @@ public class Settings {
         rshader.bind();
         Rectangle.drawrectangle(vertices, Menu.getRectangleModel(), false);
         rshader.stop();
-        // tshader.bind();
+        //tshader.bind();
+        glColor3f(255, 255, 255);
         Text.draw("Volume", -6f, 0.5f, 0.5f, false);
-        // tshader.stop();
+        glColor3f(255, 255, 255);
+        //tshader.stop();
     }
 
     public static void drawSlider(){
