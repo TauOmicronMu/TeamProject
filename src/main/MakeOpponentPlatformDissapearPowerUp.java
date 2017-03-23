@@ -11,6 +11,7 @@ public class MakeOpponentPlatformDissapearPowerUp extends main.Item{
     @Override
     public void performAction(GameState game) {
         if (AudioEngine.isClient) {
+            AudioEngine.getInstance().playTrack(AudioEngine.DELETE_PLATFORM);
             Main.getInstance().sendMessage(
                     new Message("PlatformDelete")
             );

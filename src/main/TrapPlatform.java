@@ -83,7 +83,7 @@ public class TrapPlatform extends Platform implements Serializable {
             if (ballX-radius > rectRight) return;
 
             // If the ball has collided with the top of the platform ~Tom
-            // AudioEngine.getInstance().playTrack(AudioEngine.BLOP); // Play the boing sound
+            AudioEngine.getInstance().playTrack(AudioEngine.BLOP); // Play the boing sound
             //ball.setY(rectTop - radius);
             //ball.setDy(-ball.getMaxSpeed());
             noDraw = true;

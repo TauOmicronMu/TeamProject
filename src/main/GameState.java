@@ -361,8 +361,6 @@ public class GameState implements Serializable {
     public  void makeClosestPlatformUnusable(){
         int index = getClosestPlatform();
         platforms[index].setNoDraw(true);
-        System.out.println("Platform was deleted!");
-        System.out.println(index);
     }
 
 }
