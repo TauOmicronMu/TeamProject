@@ -3,7 +3,7 @@ package main;
 import java.io.Serializable;
 
 
-class JumpOncePlatform extends Platform implements Serializable {
+public class JumpOncePlatform extends Platform implements Serializable {
 
     /*
      *Constructor for platform object

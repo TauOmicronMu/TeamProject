@@ -6,7 +6,7 @@ import java.util.Random;
 import static main.Circle.createCircle;
 
 
-class Item implements Serializable {
+public class Item implements Serializable {
 
     private int x, y, dy, radius, type, highestPoint;
     private static Text text = new Text();

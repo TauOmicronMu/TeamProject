@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
  *
  */
 
-class Text{
+public class Text{
 	
 	static boolean opponent;
 

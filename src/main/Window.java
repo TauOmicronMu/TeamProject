@@ -21,7 +21,7 @@ import static org.lwjgl.opengl.GL11.*;
  *
  * @author Ella
  */
-class Window {
+public class Window {
 
     private Screen screen = Screen.MAIN_MENU;
     private static int cursorXPosition;
@@ -52,7 +52,7 @@ class Window {
         return instance;
     }
 
-    void quit() {
+    public void quit() {
         shouldQuit = true;
     }
     

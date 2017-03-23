@@ -12,7 +12,7 @@ import static org.lwjgl.opengl.GL20.*;
  *
  * @author Ella
  */
-class Shader {
+public class Shader {
 
     private int program;
     private int fs;
