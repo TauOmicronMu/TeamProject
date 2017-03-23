@@ -196,11 +196,6 @@ class Window {
             if(!finishedLoading){
                 LoadingScreen.drawLoadingWord();
                 Menu.drawStars();
-                LoadingScreen.drawLoadingDot();
-
-                /*if(finishedLoading){
-                client.startGame(OpponentType.HUMAN);
-                 }*/
             }
         }
         else {
