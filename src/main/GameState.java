@@ -26,7 +26,7 @@ public class GameState implements Serializable {
     int score;
     int oppscore = 0;
 
-    GameState(int width, int height) {
+    public GameState(int width, int height) {
         this.windowWidth = width;
         this.windowHeight = height;
         ball = new Ball(windowWidth / 2, 200);
