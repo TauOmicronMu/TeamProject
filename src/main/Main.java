@@ -125,12 +125,17 @@ public class Main extends NetworkClient {
         // Nah fam I'm sure it's all gucci
         if (someonesGame.isMyGame()) {
             myGame = (GameState) someonesGame.getObject();
-            oppGame.oppscore = myGame.getScore();
-            //System.out.println("[INFO] Main.handleMessage : Server updated our game state.");
+            if(myGame.gameOver()) {
+                Window.getInstance().setWinner(false); // The other player won!
+                Window.getInstance().setScreen(Screen.GAME_OVER);
+            }
         }
         else {
             oppGame = (GameState) someonesGame.getObject();
-            myGame.oppscore = oppGame.getScore();
+            if(oppGame.gameOver()) {
+                Window.getInstance().setWinner(true); // We won!
+                Window.getInstance().setScreen(Screen.GAME_OVER);
+            }
         }
     }
 }
