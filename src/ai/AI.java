@@ -30,7 +30,9 @@ public class AI {
 
     /**
      * Returns the distance to the left side of a Platform, p,
-     * from a Ball, b.
+     * from a Ball, b. Takes in to account the position the Ball
+     * will be in when it makes the move, rather than where it
+     * currently is.
      * @param p The Platform to find the distance to the left edge of
      * @param b The Ball to find the distance from
      * @return The distance to the left edge of the Platform, p from the Ball, b
@@ -98,6 +100,8 @@ public class AI {
         if(p.y < 0) return false; /* The platform is not on the screen */
 
         if(p instanceof TrapPlatform) return false; /* Don't jump on traps */
+
+        if(dist(p, b) > Constants.AI_MAX_DIST) return false;
 
         return true;
     }
