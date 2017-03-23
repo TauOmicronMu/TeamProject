@@ -252,7 +252,7 @@ public class GameState implements Serializable {
     /**
      * Retrieve each powerup item currently on-screen.
      */
-    Item[] getItems() {
+    public Item[] getItems() {
         return items;
     }
 

@@ -13,11 +13,10 @@ public class SelectPlatform {
 	
 	private GameState game;
 	private double vy = 0;//y-velocity
-	//double min_vx = -5;//minimum x-velocity
 	private double max_vx = Constants.MAX_SPEED;//maximum x-velocity
 	private final double g = Constants.GRAVITY;//gravity
-	private final double radius = Constants.ITEM_RADIUS;
-	private boolean collision = false;
+	private final double radius = 20;
+	//private boolean collision = false;
 	
 	/**
 	 * Select a platform, which the ball should land, from a list of platform
@@ -75,25 +74,22 @@ public class SelectPlatform {
                     reachable.add(ps[i]);
                 }
 			}else{
-				if(Math.abs(dx) <= max_x+140) {
+				if(Math.abs(dx) <= max_x+Constants.PLATFORM_WIDTH) {
                     reachable.add(ps[i]);
                 }
 			}
 		}
-		
-		
-		//Find highest
-		//y is smaller, platform is higher
-        /*if(reachable.isEmpty()) return new Platform(Constants.WINDOW_WIDTH/4 - Constants.PLATFORM_WIDTH,
-                                                    Constants.WINDOW_HEIGHT/4,
-                                                      Constants.PLATFORM_WIDTH,
-                                                      Constants.PLATFORM_HEIGHT);
-        */
 
-        if(reachable.isEmpty()) return null;
+		if(reachable.isEmpty()){
+			if(b.getY() > Constants.WINDOW_HEIGHT - 50){
+				return new Platform(Constants.WINDOW_WIDTH/2,Constants.WINDOW_HEIGHT,Constants.PLATFORM_WIDTH,Constants.PLATFORM_HEIGHT);
+			}else {
+				return null;
+			}
+		}
 
-        Platform highest = reachable.get(0);
-		double middle = game.getWindowWidth()/2;
+		Platform highest = reachable.get(0);
+		double middle = Constants.WINDOW_WIDTH/2;
 		
 		for(int i = 0; i < reachable.size(); i++){
 			if(reachable.get(i).y < highest.y){
@@ -104,6 +100,7 @@ public class SelectPlatform {
 				}
 			}
 		}
-        return highest;
+
+		return highest;
 	}
 }

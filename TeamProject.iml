@@ -1,23 +1,259 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-glfw.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-glfw-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-glfw-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-glfw-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-glfw-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-glfw-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-egl.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-egl-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-egl-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-bgfx.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-bgfx-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-bgfx-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-bgfx-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-bgfx-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-bgfx-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-assimp.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-assimp-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-assimp-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-assimp-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-assimp-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-assimp-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/joml-1.9.2.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/joml-1.9.2-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/joml-1.9.2-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-yoga-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-yoga-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-yoga-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-xxhash.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-xxhash-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-xxhash-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-xxhash-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-xxhash-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-xxhash-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nanovg.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nanovg-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nanovg-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nanovg-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nanovg-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nanovg-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-lmdb.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-lmdb-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-lmdb-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-lmdb-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-vulkan-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-vulkan-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-tinyfd.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-tinyfd-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-tinyfd-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-tinyfd-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-tinyfd-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-tinyfd-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-tinyexr.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-tinyexr-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-tinyexr-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-tinyexr-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-tinyexr-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-tinyexr-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-lmdb-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-jemalloc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-jemalloc-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-jemalloc-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-jemalloc-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-jemalloc-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-jemalloc-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-jawt.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-jawt-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-jawt-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-openal-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-openal-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-openal-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-openal-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nuklear.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nuklear-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nuklear-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nuklear-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nuklear-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nuklear-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nfd.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nfd-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nfd-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nfd-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-stb.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-stb-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-stb-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-stb-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-stb-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-lmdb-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-ovr.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-ovr-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-ovr-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-ovr-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-openvr.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-openvr-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-openvr-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-openvr-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-openvr-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-openvr-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-opengles.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-opengles-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-opengles-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nfd-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-nfd-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-stb-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-sse.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-sse-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-sse-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-sse-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-sse-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-sse-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-par.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-par-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-par-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-par-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-par-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-par-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-opengles-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-opengles-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-opengles-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-opengl.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-opengl-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-opengl-natives-windows.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-opengl-natives-macos.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-opengl-natives-linux.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-opengl-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-opencl.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-opencl-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-opencl-javadoc.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-openal.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-openal-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-vulkan.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-yoga.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-yoga-sources.jar" />
+    <libelement value="file:///home/students/evr526/TeamProject/TeamProject/lib/lwjgl/lwjgl-yoga-natives-windows.jar" />
+    <src_description expected_position="0">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
+    </src_description>
+  </component>
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/bin" />
+    <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib" type="java-resource" />
     </content>
-    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/lib/lwjgl" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/joml-1.9.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-assimp.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-bgfx.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-egl.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-glfw.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-jawt.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-jemalloc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-lmdb.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-nanovg.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-nfd.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-nuklear.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-openal.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-opencl.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-opengl.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-opengles.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-openvr.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-ovr.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-par.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-sse.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-stb.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-tinyexr.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-tinyfd.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-vulkan.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-xxhash.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-yoga.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl.jar!/" />
         </CLASSES>
-        <JAVADOC />
+        <JAVADOC>
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/joml-1.9.2-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-assimp-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-bgfx-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-egl-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-glfw-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-jawt-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-jemalloc-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-lmdb-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-nanovg-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-nfd-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-nuklear-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-openal-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-opencl-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-opengl-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-opengles-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-openvr-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-ovr-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-par-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-sse-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-stb-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-tinyexr-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-tinyfd-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-vulkan-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-xxhash-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-yoga-javadoc.jar!/" />
+        </JAVADOC>
         <SOURCES>
-          <root url="file://$MODULE_DIR$/lib/lwjgl" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/joml-1.9.2-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-assimp-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-bgfx-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-egl-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-glfw-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-jawt-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-jemalloc-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-lmdb-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-nanovg-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-nfd-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-nuklear-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-openal-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-opencl-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-opengl-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-opengles-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-openvr-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-ovr-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-par-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-sse-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-stb-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-tinyexr-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-tinyfd-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-vulkan-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-xxhash-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/lwjgl/lwjgl-yoga-sources.jar!/" />
         </SOURCES>
-        <jarDirectory url="file://$MODULE_DIR$/lib/lwjgl" recursive="false" />
-        <jarDirectory url="file://$MODULE_DIR$/lib/lwjgl" recursive="false" type="SOURCES" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Desktop/commons-math3-3.6.1/commons-math3-3.6.1-tests.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/commons-math3-3.6.1/commons-math3-3.6.1-tools.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/commons-math3-3.6.1/commons-math3-3.6.1.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://$USER_HOME$/Desktop/commons-math3-3.6.1/commons-math3-3.6.1-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://$USER_HOME$/Desktop/commons-math3-3.6.1/commons-math3-3.6.1-sources.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/commons-math3-3.6.1/commons-math3-3.6.1-test-sources.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
   </component>
