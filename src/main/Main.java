@@ -125,12 +125,12 @@ public class Main extends NetworkClient {
         // Nah fam I'm sure it's all gucci
         if (someonesGame.isMyGame()) {
             myGame = (GameState) someonesGame.getObject();
-            oppGame.oppscore = myGame.getScore();
+            myGame.oppscore = Math.max(oppGame.getScore(), myGame.getOppscore());
             //System.out.println("[INFO] Main.handleMessage : Server updated our game state.");
         }
         else {
             oppGame = (GameState) someonesGame.getObject();
-            myGame.oppscore = oppGame.getScore();
+            oppGame.oppscore = Math.max(myGame.getScore(), oppGame.getOppscore());
         }
     }
 }
