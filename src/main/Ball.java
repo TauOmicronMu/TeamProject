@@ -13,8 +13,7 @@ public class Ball implements Serializable {
     private double gravity = Constants.GRAVITY; // was 15
     private static final double energyloss = 1;
     private static final double xFriction = 0.9;
-    private double gameDy = -90;
-    private int agility = Constants.AGILITY; // was 1
+    public int agility = Constants.AGILITY; // was 1
     private int maxSpeed = Constants.MAX_SPEED; // was 5
     private int countFlyPower = 0;
     private boolean heightLocked = false;
@@ -23,13 +22,14 @@ public class Ball implements Serializable {
     public int doubleJump = 0;
 
 
-    Ball(double i, double j) {
+    public Ball(double i, double j) {
+
         x = i;
         y = j;
     }
 
 
-    void moveRight() {
+    public void moveRight() {
     	if (gameOver) return;
         if (dx + agility < maxSpeed) {
             dx += agility;
@@ -37,22 +37,25 @@ public class Ball implements Serializable {
     }
 
 
-    void moveLeft() {
+    public void moveLeft() {
     	if (gameOver) return;
         if (dx - agility > -maxSpeed) {
             dx -= agility;
+
         }
+
+
     }
 
     //Method that allows the player to double jump every 500 updates
-    void doubleJump(){
+    public void doubleJump(){
         if(doubleJump == 0){
             this.dy = -this.maxSpeed;
             this.doubleJump = 100;
         }
     }
 
-    void update(GameState game, double timeStep) {
+    public void update(GameState game, double timeStep) {
         if (timeStep == 0) return;
         double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
 
@@ -116,7 +119,7 @@ public class Ball implements Serializable {
         return x;
     }
 
-    void setX(double x) {
+    public void setX(double x) {
         this.x = x;
     }
 
@@ -124,19 +127,19 @@ public class Ball implements Serializable {
         return y;
     }
 
-    void setY(double y) {
+    public void setY(double y) {
         this.y = y;
     }
 
-    void setDy(double dy) {
+    public void setDy(double dy) {
         this.dy = dy;
     }
 
-    double getGravity() {
+    public double getGravity() {
         return gravity;
     }
 
-    void setGravity(double gravity) {
+    public void setGravity(double gravity) {
         if(gravity > this.gravity && AudioEngine.isClient) {
             AudioEngine.getInstance().playTrack(AudioEngine.GRAVUP);
         } else if(gravity < this.gravity && AudioEngine.isClient) {
@@ -145,7 +148,7 @@ public class Ball implements Serializable {
         this.gravity = gravity;
     }
 
-    int getRadius() {
+    public int getRadius() {
         return radius;
     }
 
@@ -180,5 +183,10 @@ public class Ball implements Serializable {
     public boolean heightIsLocked() {
         return heightLocked;
     }
+
+    public int getDoubleJump() {
+        return doubleJump;
+    }
+
 
 }

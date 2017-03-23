@@ -10,7 +10,6 @@ public class Platform implements Serializable {
     public int width, height;
     public double x, y;
     private double highestPoint;
-    public boolean isNull;
     public boolean noDraw;
 
     /*
@@ -27,7 +26,6 @@ public class Platform implements Serializable {
         this.height = height;
         dy = Constants.PLATFORM_START_DY;
         highestPoint = 200;
-        this.isNull = false;
         this.noDraw = false;
     }
 
@@ -94,11 +92,5 @@ public class Platform implements Serializable {
         return y;
     }
     public double getX(){ return x; }
-    public boolean getNull() {
-        return isNull;
-    }
-    public void setNull(boolean x) {
-        isNull = x;
-    }
     public void setNoDraw(boolean x){noDraw = x;}
 }
