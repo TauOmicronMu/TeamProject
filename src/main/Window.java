@@ -459,6 +459,7 @@ class Window {
                 if (onBackToMenuButton(x, y)) {
                     System.out.println("Back to main menu.");
                     screen = Screen.MAIN_MENU;
+                    break;
                 }
             }
             case LOADING: {
