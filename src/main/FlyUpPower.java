@@ -12,6 +12,8 @@ public class FlyUpPower extends main.Item{
 			AudioEngine.getInstance().loopTrack(AudioEngine.WHOOSH);
 		Ball ball = game.getBall();
 		ball.setCountFlyPower(Constants.FLY_POWERUP_SPEED);
+		ball.setX(Constants.WINDOW_WIDTH/4 + Constants.PLATFORM_WIDTH/2);
+		ball.setY(Constants.WINDOW_HEIGHT/2 + Constants.PLATFORM_HEIGHT/2);
 	}
 	
 	@Override
