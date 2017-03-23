@@ -24,7 +24,7 @@ public class AI {
      * @param b The Ball to find the distance to
      * @return The distance between the Ball, b, and the Platform, p
      */
-    private static double dist(Platform p, Ball b) {
+    public static double dist(Platform p, Ball b) {
         return Math.min(leftDist(p, b), rightDist(p, b));
     }
 
@@ -35,7 +35,7 @@ public class AI {
      * @param b The Ball to find the distance from
      * @return The distance to the left edge of the Platform, p from the Ball, b
      */
-    private static double leftDist(Platform p, Ball b) {
+    public static double leftDist(Platform p, Ball b) {
         return Math.hypot( b.getX() - p.x,
                            b.getY() - p.y );
     }
@@ -47,7 +47,7 @@ public class AI {
      * @param b The Ball to find the distance from
      * @return The distance to the right edge of the Platform, p from the Ball, b
      */
-    private static double rightDist(Platform p, Ball b) {
+    public static double rightDist(Platform p, Ball b) {
         return Math.hypot( b.getX() - (p.x + Constants.PLATFORM_WIDTH),
                            b.getY() - p.y );
     }
@@ -60,7 +60,7 @@ public class AI {
      * @return The closest point on the Platform, p, to the Ball, b
      *         in the form [X, Y].
      */
-    private static double[] closestPoint(Platform p, Ball b) {
+    public static double[] closestPoint(Platform p, Ball b) {
         double s1 = leftDist(p, b);
         double s2 = rightDist(p, b);
         return (s1 < s2) ? new double[]{p.getX(),p.getY()} :
@@ -74,13 +74,14 @@ public class AI {
      * formula on: s = ut + 0.5at^2 ) to calculate this.
      *     See: https://en.wikipedia.org/wiki/Equations_of_motion
      *          for more info.
+     * NB: denominator is (a + 1) to prevent division by zero.
      * @param s The displacement of the Ball
      * @param u The initial (current) velocity of the Ball
      * @param a The acceleration of the Ball
      * @return The time taken for a Ball to reach a Platform
      */
-    private static double timeToPlatform(double s, double u, double a) {
-        return Math.sqrt((Math.pow(u, 2) - 2 * a * s)/a);
+    public static double timeToPlatform(double s, double u, double a) {
+        return (Math.sqrt(Math.abs(Math.pow(u, 2) - 2 * a * s)) - u)/(a + 1);
     }
 
     /**
@@ -90,23 +91,30 @@ public class AI {
      * @param b The Ball trying to reach the Platform, p
      * @return Whether the given Platform, p, is within reach
      */
-    private static boolean reachable(Platform p, Ball b) {
+    public static boolean reachable(Platform p, Ball b) {
         /* We can't reach a Platform if it's going off of the screen! */
         if (p.getY() + p.getDy() > Constants.WINDOW_HEIGHT) return false;
 
+        if(1 == 1) return true;
+
         double[] pClosestPoint = closestPoint(p, b);
+        System.out.println("Closest x : " + pClosestPoint[0]);
+        System.out.println("Closest y : " + pClosestPoint[1]);
 
         double sx = Math.abs(b.getX() - pClosestPoint[0]);
         double sy = Math.abs(b.getY() - pClosestPoint[1]);
 
         double ux = Constants.MAX_SPEED; /* Assume that we are travelling at the max speed (because we can! ^-^ ) */
-        double uy = b.getDy();
+        double uy = b.getDy()/Constants.TIME_STEP_COEFFICIENT;
 
         double ax = 0.0; /* No acceleration in the x direction */
         double ay = Constants.GRAVITY;
 
-        double tx = timeToPlatform(sx, ux, ax);
-        double ty = timeToPlatform(sy, uy, ay);
+        double tx = sx/ux;
+        double ty = sy/uy;
+
+        System.out.println("sx : " + sx + ", ux : " + ux + ", ax : " + ax + ", tx : " + tx);
+        System.out.println("sy : " + sy + ", uy : " + uy + ", ay : " + ay + ", ty : " + ty);
 
         /* Can we reach the platform in time given our speed? */
         /* Can we reach it in the x direction? */
@@ -120,10 +128,16 @@ public class AI {
 
         if (ux * tx < totalxs) return false;
 
+        System.out.println("Was x-reachable!");
+
         /* Can we reach it in the y direction? */
-        double dy = p.dy;
+        double dy = p.dy * Constants.TIME_STEP_COEFFICIENT;
 
         double totalys = dy * ty + sy; /* How far do we have to travel to reach the platform? */
+
+        System.out.println("dy " + dy);
+        System.out.println("totalys : " + totalys);
+        System.out.println("uy : " + uy + ", ty : " + ty);
 
         return (uy * ty >= totalys); /* Just return if it's reachable in y (it already is in x) */
     }
@@ -133,7 +147,7 @@ public class AI {
      * @param game The GameState from which to find the optimal Platform
      * @return The optimal Platform
      */
-    private static Platform choosePlatform(GameState game) {
+    public static Platform choosePlatform(GameState game) {
         Platform[] platforms = game.getBasicPlatforms();
         Ball ball = game.getBall();
 
@@ -161,7 +175,6 @@ public class AI {
      * @return The optimal Move for the AI to make.
      */
     public static Move getMove(GameState game) {
-        /* Calculate the optimal platform */
         Platform optimalPlatform = choosePlatform(game);
 
         /* Work out if the optimal platform is to the left, right or where we are (horizontally) */
