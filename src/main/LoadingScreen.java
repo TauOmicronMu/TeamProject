@@ -1,7 +1,5 @@
 package main;
 
-import java.util.Random;
-
 public class LoadingScreen {
     static ShaderProgram tshader = new ShaderProgram("shaders/tshader.vs","shaders/shader.fs");
 
