@@ -125,7 +125,15 @@ public class Match implements Runnable {
                 }
             }
 
-            if (playerOneGameState.gameOver() || playerTwoGameState.gameOver()) continue;
+            if (playerOneGameState.gameOver() || playerTwoGameState.gameOver()) {
+                try {
+                    playerOne.updateGameState(playerOneGameState, true);
+                    playerOne.updateGameState(playerTwoGameState, false);
+                    playerTwo.updateGameState(playerTwoGameState, true);
+                    playerTwo.updateGameState(playerOneGameState, false);
+                } catch (InterruptedException ignored) { running = false; }
+                continue;
+            }
             // Physics tick
             playerOneGameState.updatePhysics(timeStep);
             if(!p2MoveDone) playerTwoGameState.updatePhysics(timeStep);
