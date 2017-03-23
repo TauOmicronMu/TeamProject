@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class MovingHorizontallyPlatform extends Platform implements Serializable {
 
-    private double x1, x2;
+    public double x1, x2;
     private int score = 0;
     private double dx;
 
@@ -17,7 +17,7 @@ public class MovingHorizontallyPlatform extends Platform implements Serializable
      *@param width the width of the platform
      *@param height the height of the platform
      */
-    MovingHorizontallyPlatform(double x, double y, int width, int height, int x1, int x2 ) {
+    public MovingHorizontallyPlatform(double x, double y, int width, int height, int x1, int x2 ) {
         super(x, y, width, height);
         this.x1 = x1;
         this.x2 = x2;
@@ -30,7 +30,7 @@ public class MovingHorizontallyPlatform extends Platform implements Serializable
      *@param ball the ball class object
      */
     @Override
-    void update(GameState game, double timeStep) {
+    public void update(GameState game, double timeStep) {
         if (timeStep <= Constants.MIN_TIME_PER_FRAME) return;
         Ball ball = game.getBall();
         if (ball.gameOver()) return;

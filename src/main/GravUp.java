@@ -3,6 +3,7 @@ package main;
 
 public class GravUp extends main.Item{
 
+
 	public GravUp(int y, int type) {
 		super(y, type);
 		// TODO Auto-generated constructor stub

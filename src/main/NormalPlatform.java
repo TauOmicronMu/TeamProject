@@ -3,12 +3,12 @@ package main;
 
 public class NormalPlatform extends Platform {
 
-    NormalPlatform(double x, double y, int width, int height) {
+    public NormalPlatform(double x, double y, int width, int height) {
         super(x, y, width, height);
     }
 
     @Override
-    void update(GameState game, double timeStep) {
+    public void update(GameState game, double timeStep) {
 
         if (timeStep < Constants.MIN_TIME_PER_FRAME) return;
         double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;

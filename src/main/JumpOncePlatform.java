@@ -3,7 +3,7 @@ package main;
 import java.io.Serializable;
 
 
-class JumpOncePlatform extends Platform implements Serializable {
+public class JumpOncePlatform extends Platform implements Serializable {
 
     /*
      *Constructor for platform object
@@ -12,7 +12,7 @@ class JumpOncePlatform extends Platform implements Serializable {
      *@param width the width of the platform
      *@param height the height of the platform
      */
-    JumpOncePlatform(double x, double y, int width, int height) {
+    public JumpOncePlatform(double x, double y, int width, int height) {
         super(x, y, width, height);
     }
 
@@ -22,7 +22,7 @@ class JumpOncePlatform extends Platform implements Serializable {
      *@param ball the ball class object
      */
     @Override
-    void update(GameState game, double timeStep) {
+    public void update(GameState game, double timeStep) {
         if (timeStep < Constants.MIN_TIME_PER_FRAME) return;
         double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
         Ball ball = game.getBall();
@@ -61,7 +61,6 @@ class JumpOncePlatform extends Platform implements Serializable {
         double rectTop = y;
         double rectLeft = x;
 
-        // Todo: How is only half the platform colliding?
         double rectRight = x + width*2;
 
         // Check if the ball is above the platform *and* will be below
@@ -87,9 +86,5 @@ class JumpOncePlatform extends Platform implements Serializable {
      */
     void paint(Window game, boolean opponent) {
         super.paint(game, opponent);
-    }
-
-    public void setDx(int dx){
-        this.dy = dx;
     }
 }

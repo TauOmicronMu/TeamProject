@@ -12,7 +12,7 @@ public class TrapPlatform extends Platform implements Serializable {
      *@param width the width of the platform
      *@param height the height of the platform
      */
-    TrapPlatform(double x, double y, int width, int height) {
+    public TrapPlatform(double x, double y, int width, int height) {
         super(x, y, width, height);
     }
 
@@ -22,7 +22,7 @@ public class TrapPlatform extends Platform implements Serializable {
      *@param ball the ball class object
      */
     @Override
-    void update(GameState game, double timeStep) {
+    public void update(GameState game, double timeStep) {
         if (timeStep < Constants.MIN_TIME_PER_FRAME) return;
         double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
         Ball ball = game.getBall();
@@ -102,9 +102,5 @@ public class TrapPlatform extends Platform implements Serializable {
 
         double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
         Rectangle.drawrectangle(verticesb, Menu.getRectangleModel(), false);
-    }
-
-    public void setDx(int dx){
-        this.dy = dx;
     }
 }

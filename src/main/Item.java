@@ -8,16 +8,16 @@ import static main.Circle.createCircle;
 
 class Item implements Serializable {
 
-    private int x, y, dy, radius, type, highestPoint;
-    private static Text text = new Text();
-    private boolean noDraw;
+    public int x, y, dy, radius, type, highestPoint;
+    public static Text text = new Text();
+    public boolean noDraw;
 
     /*
      * Constructor for item class(PowerUps)
      * @param y the y position of the powerUp
      * @param type, the type of the powerUp
      */
-    Item(int y, int type) {
+    public Item(int y, int type) {
         this.y = y;
 
         this.type = type;
@@ -44,7 +44,7 @@ class Item implements Serializable {
      * Get method for Y
      * Updates the position of the PowerUp
      */
-    void update(GameState game, double timeStep) {
+    public void update(GameState game, double timeStep) {
         if (timeStep == 0) return;
         double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
         Ball ball = game.getBall();
@@ -76,7 +76,7 @@ class Item implements Serializable {
      * Checks for collision between the ball and the powerUp
      * @param ball
      */
-    private void checkForCollision(GameState game) {
+    public void checkForCollision(GameState game) {
         if (noDraw) return;
 
         Ball ball = game.getBall();
