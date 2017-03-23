@@ -1,5 +1,7 @@
 *.class
 
+.iml
+
 # IntelliJ Files
 .idea/
 
@@ -96,4 +98,5 @@ Temporary Items
 
 .idea*
 build
+data.tmp
 *.iml

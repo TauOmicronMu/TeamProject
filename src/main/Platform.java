@@ -20,7 +20,7 @@ public class Platform implements Serializable {
      *@param width the width of the platform
      *@param height the height of the platform
      */
-    Platform(double x, double y, int width, int height) {
+    public Platform(double x, double y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -68,7 +68,7 @@ public class Platform implements Serializable {
             if (ballX-radius > rectRight) return;
 
             // If the ball has collided with the top of the platform ~Tom
-            if (AudioEngine.isClient) AudioEngine.getInstance().playTrack(AudioEngine.BLOP); // Play the boing sound
+            //if (AudioEngine.isClient) AudioEngine.getInstance().playTrack(AudioEngine.BLOP); // Play the boing sound
             ball.setY(rectTop - radius);
             ball.setDy(-ball.getMaxSpeed());
 
@@ -87,16 +87,16 @@ public class Platform implements Serializable {
         glColor4f(1, 0, 0, 0);
         Rectangle.drawrectangle(verticesb, Menu.getRectangleModel(), true);
     }
-    public void setDx(int dx){
-        this.dy = dx;
-    }
+    public double getDy() { return this.dy; }
     public double getY() {
         return y;
     }
+    public double getX(){ return x; }
     public boolean getNull() {
         return isNull;
     }
     public void setNull(boolean x) {
         isNull = x;
     }
+    public void setNoDraw(boolean x){noDraw = x;}
 }

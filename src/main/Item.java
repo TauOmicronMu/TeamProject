@@ -106,34 +106,39 @@ class Item implements Serializable {
     /**
      * Paints the powerUps
      */
-    public void paint(Window window) {
-        double[] vertices = null;
-        if (type == 1) {
-            vertices = new double[]{window.glScaleX(this.x), window.glScaleY(this.y), 0.8f, (window.glScaleX(this.x) + 0.03f), (window.glScaleY(this.y) + 0.03f), 0.8f, (window.glScaleX(this.x) - 0.03f), (window.glScaleY(this.y) + 0.03f), 0.8f};
-        }
-        if (type == 2) {
-            vertices = new double[]{window.glScaleX(this.x), window.glScaleY(this.y), 0.8f, (window.glScaleX(this.x) + 0.03f), (window.glScaleY(this.y) - 0.03f), 0.8f, (window.glScaleX(this.x) - 0.03f), (window.glScaleY(this.y) - 0.03f), 0.8f};
-        }
-        if (type == 4) {
-            vertices = createCircle(window.glScaleX(this.x), window.glScaleY(this.y), 0.2f, 0.02f);
-        }
-        if (type == 3) {
-            vertices = createCircle(window.glScaleX(this.x), window.glScaleY(this.y), 0.2f, 0.02f);
-            Text.draw("+300", (float) (window.glScaleX(this.x)), (float) (window.glScaleY(this.y)), 0.3f);
-        }
-
-        if (type != 5) {
-            Model triangles = new Model(vertices);
-
-            triangles.render(vertices, false);
-        }
-    }
-
     public void paint(Window window, boolean opponent) {
         if (noDraw) return;
-        double[] vertices = createCircle(window.glScaleX(x, opponent, Screen.GAME), window.glScaleY(y), 0.2f, 0.02f, 5);
-        Model circle1 = new Model(vertices);
-        circle1.render(vertices, false);
+        
+        double[] vertices = null;
+        if (type == 1) {
+            vertices = new double[]{window.glScaleX(this.x,opponent,Screen.GAME), window.glScaleY(this.y), 0.8f, (window.glScaleX(this.x,opponent,Screen.GAME) + 0.03f), (window.glScaleY(this.y) + 0.03f), 0.8f, (window.glScaleX(this.x,opponent,Screen.GAME) - 0.03f), (window.glScaleY(this.y) + 0.03f), 0.8f};
+            Model triangles = Menu.getTriangleModel();
+            triangles.render(vertices, false);
+        }
+        if (type == 2) {
+            vertices = new double[]{window.glScaleX(this.x,opponent,Screen.GAME), window.glScaleY(this.y), 0.8f, (window.glScaleX(this.x,opponent,Screen.GAME) + 0.03f), (window.glScaleY(this.y) - 0.03f), 0.8f, (window.glScaleX(this.x,opponent,Screen.GAME) - 0.03f), (window.glScaleY(this.y) - 0.03f), 0.8f};
+            Model triangles = Menu.getTriangleModel();
+            triangles.render(vertices, false);
+        }
+        if (type == 3) {
+            vertices = createCircle(window.glScaleX(this.x, opponent, Screen.GAME), window.glScaleY(this.y), 0.2f, 0.02f,5);
+            Model circles = Menu.getItemModel();
+            circles.render(vertices, false);
+        }
+        if (type == 4) {
+
+        	Model rectangles = Menu.getRectangleModel();
+        	double[] vertices1 = new double[]{(window.glScaleX(this.x,opponent,Screen.GAME)+0.009f), (window.glScaleY(this.y)+ 0.025f), 0.8f, (window.glScaleX(this.x,opponent,Screen.GAME)+0.009f), (window.glScaleY(this.y) - 0.02f), 0.8f,(window.glScaleX(this.x,opponent,Screen.GAME) + 0.014f), (window.glScaleY(this.y) - 0.02f), 0.8f, (window.glScaleX(this.x,opponent,Screen.GAME) + 0.014f), (window.glScaleY(this.y)+0.025f), 0.8f};
+        	double[] vertices2 = new double[]{(window.glScaleX(this.x,opponent,Screen.GAME)), (window.glScaleY(this.y)), 0.8f, (window.glScaleX(this.x,opponent,Screen.GAME)), (window.glScaleY(this.y) + 0.01f), 0.8f,(window.glScaleX(this.x,opponent,Screen.GAME) + 0.03f), (window.glScaleY(this.y) + 0.01f), 0.8f, (window.glScaleX(this.x,opponent,Screen.GAME) + 0.03f), (window.glScaleY(this.y)), 0.8f};
+            rectangles.render(vertices1, false);
+            rectangles.render(vertices2, false);
+
+        }
+        if (type == 5) {
+            vertices = createCircle(window.glScaleX(this.x, opponent, Screen.GAME), window.glScaleY(this.y), 0.2f, 0.02f,6);
+            Model circles = Menu.getPlatformPowerupModel();
+            circles.render(vertices, false);
+        }
 
     }
 

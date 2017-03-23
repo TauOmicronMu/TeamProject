@@ -44,6 +44,7 @@ public class Match implements Runnable {
         System.out.println("[INFO] Match.run : Starting match...");
 
         boolean running = true;
+        boolean p2MoveDone = false;
         int loopNum = 0;
         long timeStep = 1;
 
@@ -72,7 +73,10 @@ public class Match implements Runnable {
 
                     // Update game state locally (mutate)
                     // TODO: Handle powerups
-                    playerOneGameState.handleInput(move);
+                    if (move.equals("PlatformDelete")) {
+                        playerTwoGameState.makeClosestPlatformUnusable();
+                    }
+                    else playerOneGameState.handleInput(move);
 
                     // Relay new game state to clients
                     try {
@@ -86,11 +90,15 @@ public class Match implements Runnable {
                 }
 
                 if (playerTwoMove.isPresent()) {
+                    playerTwoGameState.updatePhysics(timeStep);
+                    p2MoveDone = true;
                     // Handle player two input
                     String move = playerTwoMove.get();
                     // System.out.println("[INFO] Match.run : got a move from Player Two: " + move);
-
-                    playerTwoGameState.handleInput(move);
+                    if (move.equals("PlatformDelete")) {
+                        playerOneGameState.makeClosestPlatformUnusable();
+                    }
+                    else playerTwoGameState.handleInput(move);
 
                     // Relay to both clients
                     try {
@@ -102,7 +110,7 @@ public class Match implements Runnable {
                         break MainLoop;
                     }
                 }
-            } while (playerOneMove.isPresent() || playerTwoMove.isPresent());
+            } while (playerOneMove.isPresent() || (!(playerTwo instanceof AIPlayer) && playerTwoMove.isPresent()));
 
             if (loopNum % Constants.SRVR_MS_PER_UPDT == 0) {
                 try {
@@ -119,7 +127,8 @@ public class Match implements Runnable {
 
             // Physics tick
             playerOneGameState.updatePhysics(timeStep);
-            playerTwoGameState.updatePhysics(timeStep);
+            if(!p2MoveDone) playerTwoGameState.updatePhysics(timeStep);
+            p2MoveDone = false;
 
             loopNum++;
 

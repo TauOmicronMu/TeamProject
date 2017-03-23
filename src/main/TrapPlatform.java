@@ -3,7 +3,7 @@ package main;
 import java.io.Serializable;
 
 
-class TrapPlatform extends Platform implements Serializable {
+public class TrapPlatform extends Platform implements Serializable {
 
     /*
      *Constructor for platform object
@@ -94,6 +94,7 @@ class TrapPlatform extends Platform implements Serializable {
      * Draws the platform
      */
     void paint(Window game, boolean opponent) {
+        if(noDraw)return;
         double scaledX = game.glScaleX(x, opponent, Screen.GAME);
         double scaledY = game.glScaleY(y);
         double widthGl = game.glScaleDistance(width);

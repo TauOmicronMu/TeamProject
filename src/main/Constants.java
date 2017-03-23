@@ -1,8 +1,8 @@
 package main;
 
 public class Constants {
-    public static final int WINDOW_WIDTH = 800*2;
-    public static final int WINDOW_HEIGHT = 800;
+    public static final int WINDOW_WIDTH = 600*2;
+    public static final int WINDOW_HEIGHT = 600;
 
     public static final int PORT = 8080;
     public static final String HOST = "localhost";
@@ -34,4 +34,8 @@ public class Constants {
     public static final int CIRCLE_SIDES = 8;
 
     public static final int SRVR_MS_PER_UPDT = 6;
+
+    public static final int PLATFORM_WIDTH = 200;
+
+    public static final double AI_MAX_DIST = 400.00;
 }
