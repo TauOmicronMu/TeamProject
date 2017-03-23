@@ -16,7 +16,7 @@ public class PlatformTest {
     @Test
     public void checkForCollision() throws Exception {
         Ball ball = new Ball(400, 400);
-        
+
     }
 
     @Test
