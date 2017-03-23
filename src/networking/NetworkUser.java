@@ -1,7 +1,5 @@
 package networking;
 
-import main.GameState;
-
 import java.util.Optional;
 
 /**

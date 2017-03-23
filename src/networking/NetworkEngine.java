@@ -1,13 +1,13 @@
 package networking;
 
 
-import main.GameState;
-
-import java.io.*;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Optional;
 import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 
@@ -119,8 +119,6 @@ abstract class NetworkEngine implements Runnable {
         }
         new Thread(this).start();
     }
-
-    void accept() {}
 
     boolean isRunning() {
         return running;

@@ -1,0 +1,17 @@
+package graphics.screen;
+
+import graphics.shader.ShaderProgram;
+import graphics.ui.Text;
+import shared.Constants;
+
+public class GameOverScreen {
+
+    private static ShaderProgram tshader = new ShaderProgram("shaders/tshader.vs","shaders/shader.fs");
+
+    public static void drawScreen(boolean won){
+        tshader.bind();
+        Text.draw(won ? Constants.GAME_WIN_TEXT : Constants.GAME_LOSE_TEXT , -3.0f, 0.5f, 0.6f, false);
+        tshader.stop();
+    }
+}
+

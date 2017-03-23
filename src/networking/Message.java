@@ -2,8 +2,8 @@ package networking;
 
 import java.awt.geom.Point2D;
 import java.io.Serializable;
-import main.GameState;
-import main.OpponentType;
+import shared.GameState;
+import shared.OpponentType;
 
 /**
  * A networking.Message is a simple wrapper around the data that will be sent between the
