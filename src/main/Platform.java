@@ -68,7 +68,7 @@ public class Platform implements Serializable {
             if (ballX-radius > rectRight) return;
 
             // If the ball has collided with the top of the platform ~Tom
-            //if (AudioEngine.isClient) AudioEngine.getInstance().playTrack(AudioEngine.BLOP); // Play the boing sound
+            if (AudioEngine.isClient) AudioEngine.getInstance().playTrack(AudioEngine.BLOP); // Play the boing sound
             ball.setY(rectTop - radius);
             ball.setDy(-ball.getMaxSpeed());
 

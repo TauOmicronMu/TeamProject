@@ -23,6 +23,8 @@ public class AudioEngine {
     public static final int WHOOSH = AUDIO_ENGINE.createTrack("hswoosh.wav");
     public static final int GRAVDOWN = AUDIO_ENGINE.createTrack("gravdown.wav");
     public static final int GRAVUP = AUDIO_ENGINE.createTrack("gravup.wav");
+    public static final int POINTS = AUDIO_ENGINE.createTrack("points.wav");
+    public static final int DELETE_PLATFORM = AUDIO_ENGINE.createTrack("platform.wav");
     // We don't want to play if we're in the client!
     public static boolean isClient = false;
 

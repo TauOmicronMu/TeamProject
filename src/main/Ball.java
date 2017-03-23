@@ -25,7 +25,6 @@ public class Ball implements Serializable {
 
     Ball(double i, double j) {
         x = i;
-        y = j;
     }
 
 
