@@ -38,4 +38,7 @@ public class Constants {
     public static final int PLATFORM_WIDTH = 200;
 
     public static final double AI_MAX_DIST = 400.00;
+
+    public static final int GRAVITY_DOWN_STEP = 2;
+    public static final int GRAVITY_DOWN_THRESH = 7;
 }
