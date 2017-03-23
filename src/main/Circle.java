@@ -1,6 +1,6 @@
 package main;
 
-class Circle {
+public class Circle {
 
     /**
      * Draws the pinball

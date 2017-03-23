@@ -16,7 +16,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
  *
  * @author Ella
  */
-class Model {
+public class Model {
 
     private int draw_count;
     private int vbo_id;

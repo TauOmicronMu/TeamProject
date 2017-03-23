@@ -3,7 +3,7 @@ package main;
 import java.util.ArrayList;
 import java.util.Random;
 
-class Menu {
+public class Menu {
 
     static ShaderProgram tshader = new ShaderProgram("shaders/tshader.vs","shaders/shader.fs");
     static ShaderProgram tshader2 = new ShaderProgram("shaders/tshader2.vs","shaders/shader.fs");

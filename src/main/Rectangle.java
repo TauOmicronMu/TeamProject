@@ -5,7 +5,7 @@ package main;
  *
  * @author Ella
  */
-class Rectangle {
+public class Rectangle {
 
 
     /**
