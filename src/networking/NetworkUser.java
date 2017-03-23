@@ -1,7 +1,5 @@
 package networking;
 
-import main.GameState;
-
 import java.util.Optional;
 
 /**
@@ -22,15 +20,18 @@ abstract class NetworkUser implements MessageHandler {
     /**
      * Call handleMessage for each message returned by the NetworkEngine.
      */
-    protected boolean handleMessages() {
-        if (!engine.isRunning()) return false;
+    protected void handleMessages() {
+        if (!engine.isRunning()) return;
         Optional<Message> maybeMessage;
         while ((maybeMessage = engine.nextMessage()).isPresent()) {
             Message m = maybeMessage.get();
             this.handleMessage(m);
         }
-        return true;
     }
 
+    /**
+     * Wrapper method allowing
+     * @return
+     */
     protected Message waitForMessage() { return engine.waitForMessage(); }
 }

@@ -8,7 +8,7 @@ public class Match implements Runnable {
     private Player playerOne;
     private Player playerTwo;
 
-    public Match(Player playerOne, Player playerTwo) {
+    Match(Player playerOne, Player playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
     }
@@ -43,26 +43,24 @@ public class Match implements Runnable {
 
         System.out.println("[INFO] Match.run : Starting match...");
 
-        boolean running = true;
         boolean p2MoveDone = false;
         int loopNum = 0;
         long timeStep = 1;
 
-        MainLoop: while (running) {
+        MainLoop: while (true) {
             long startTime = System.currentTimeMillis();
 
             // Have we received input from either client?
             // If so, relay immediately regardless of counter
-            Optional<String> playerOneMove = Optional.empty();
-            Optional<String> playerTwoMove = Optional.empty();
+            Optional<String> playerOneMove;
+            Optional<String> playerTwoMove;
 
-            InputLoop: do {
+            do {
                 try {
                     playerOneMove = playerOne.getMove();
                     playerTwoMove = playerTwo.getMove();
                 } catch (InterruptedException e) {
                     //System.err.println("[WARN] Match.run : Player disconnect while retrieving move!");
-                    running = false;
                     break MainLoop;
                 }
 
@@ -72,11 +70,9 @@ public class Match implements Runnable {
                     // System.out.println("[INFO] Match.run : got a move from Player One: " + move);
 
                     // Update game state locally (mutate)
-                    // TODO: Handle powerups
                     if (move.equals("PlatformDelete")) {
                         playerTwoGameState.makeClosestPlatformUnusable();
-                    }
-                    else playerOneGameState.handleInput(move);
+                    } else playerOneGameState.handleInput(move);
 
                     // Relay new game state to clients
                     try {
@@ -84,7 +80,6 @@ public class Match implements Runnable {
                         playerTwo.updateGameState(playerOneGameState, false);
                     } catch (InterruptedException e) {
                         //System.err.println("[WARN] Match.run : Player disconnect while updating game state after player one input!");
-                        running = false;
                         break MainLoop;
                     }
                 }
@@ -96,8 +91,7 @@ public class Match implements Runnable {
                     // System.out.println("[INFO] Match.run : got a move from Player Two: " + move);
                     if (move.equals("PlatformDelete")) {
                         playerOneGameState.makeClosestPlatformUnusable();
-                    }
-                    else playerTwoGameState.handleInput(move);
+                    } else playerTwoGameState.handleInput(move);
 
                     // Relay to both clients
                     try {
@@ -105,7 +99,6 @@ public class Match implements Runnable {
                         playerTwo.updateGameState(playerTwoGameState, true);
                     } catch (InterruptedException e) {
                         //System.err.println("[WARN] Match.run : Player disconnect while updating game state after player two input!");
-                        running = false;
                         break MainLoop;
                     }
                 }
@@ -119,7 +112,6 @@ public class Match implements Runnable {
                     playerTwo.updateGameState(playerOneGameState, false);
                 } catch (InterruptedException e) {
                     //System.err.println("[WARN] Match.run : Player disconnect while scheduled-updating game state.");
-                    running = false;
                     break;
                 }
             }

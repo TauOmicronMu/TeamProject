@@ -8,24 +8,31 @@ import java.net.Socket;
  * NetworkEngine for the local game client. It connects to a server
  * given a host and a port.
  */
-class NetworkClientEngine extends NetworkEngine implements Runnable {
+public class NetworkClientEngine extends NetworkEngine implements Runnable {
 
     /**
-     * Given a host and port, connect to a server and initialize the network engine.
-     * @param host The server's hostname.
-     * @param port The server's port.
+     * Given a host and port, make an initial connection to the server.
+     * Initialize ourselves as a NetworkEngine, using this connection.
      */
-    void initialize(String host, int port) {
+    public void initialize(String host, int port) {
+
+        // Attempt to setup the socket, handling any IO exceptions.
         Socket socket;
 
         try {
             socket = new Socket(host, port);
         } catch (IOException e) {
-            System.err.println("Couldn't initialize socket (connection to server).");
+            System.err.println("Couldn't engineInitialize socket (connection to server).");
             e.printStackTrace();
             return;
         }
 
-        super.initialize(socket);
+        // NetworkEngine's engineInitialize method should create our input/output capabilities,
+        // including starting the Thread which polls for messages and adds them to a queue.
+        super.engineInitialize(socket);
+    }
+
+    public Socket getSocket() {
+        return socket;
     }
 }
