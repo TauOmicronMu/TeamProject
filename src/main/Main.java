@@ -123,6 +123,9 @@ public class Main extends NetworkClient {
     public void handleMessage(Message someonesGame) {
         // Todo: This is probably really inefficient.
         // Nah fam I'm sure it's all gucci
+
+        // TODO: don't update scores if the game is over (they currently get updated once more after the
+        //       game finishes, which throws one player out of sync!
         if (someonesGame.isMyGame()) {
             myGame = (GameState) someonesGame.getObject();
             myGame.oppscore = Math.max(oppGame.getScore(), myGame.getOppscore());
