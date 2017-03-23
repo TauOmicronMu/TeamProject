@@ -24,6 +24,7 @@ public class GameState implements Serializable {
     private static final int PLATFORM_WIDTH = 140;
     private static final int PLATFORM_HEIGHT = 20;
     int score;
+    int oppscore = 0;
 
     GameState(int width, int height) {
         this.windowWidth = width;
@@ -117,7 +118,9 @@ public class GameState implements Serializable {
      * If item is offscreen, create a random new one!
      */
     private void updateItems() {
-            for (int i = 0; i < items.length; i++) {
+        if(gameOver()) return;
+
+        for (int i = 0; i < items.length; i++) {
                 if (items[i].getY() >= windowHeight) {
                     //items[i] = null;
                     int y = (int)this.getHighestItem();
@@ -148,6 +151,8 @@ public class GameState implements Serializable {
      * If platform is offscreen, create a random new one!
      */
     private void updatePlatforms() {
+        if(gameOver()) return;
+
         double yPosition;
         double xPosition;
 //        for(int i = 0; i<platforms.length; i++){
@@ -209,7 +214,9 @@ public class GameState implements Serializable {
 
 
     public void updatePhysics(double timeStep) {
-    	updateItems();
+        if(gameOver()) return;
+
+        updateItems();
     	updatePlatforms();
     	ball.update(this, timeStep);
         for (Platform platform : platforms) {
@@ -226,6 +233,8 @@ public class GameState implements Serializable {
      * power-ups. Currently, it's just using the GravUp power-up.
      */
     void generateItems() {
+        if(gameOver()) return;
+
         for (int i = 0; i < items.length; i++) {
             switch (random.nextInt(5)) {
                 case 0:
@@ -286,6 +295,8 @@ public class GameState implements Serializable {
     }
 
     public void handleInput(String move) {
+        if(gameOver()) return;
+
         switch(move) {
             case "a":
                 getBall().moveLeft();
@@ -307,6 +318,8 @@ public class GameState implements Serializable {
      * Returns the y position of the highest item
      */
     public double getHighestItem(){
+        if(gameOver()) return 0;
+
         double max = 0;
         for(int i = 0; i<items.length; i++){
             if(items[i].getY()<max)
@@ -318,6 +331,8 @@ public class GameState implements Serializable {
      * Returns the y position of the highest platform
      */
     public double getHighestPlatform(){
+        if(gameOver()) return 0;
+
         double max = 0;
         for(int i = 0; i<platforms.length; i++){
             if(platforms[i].getY()<max)
@@ -329,6 +344,8 @@ public class GameState implements Serializable {
      * Returns the index of the closest platform to the ball
      */
     public int getClosestPlatform(){
+
+        if(gameOver()) return 0;
 
         double ballXPosition = ball.getX();
         double ballYPosition = ball.getY();
@@ -362,5 +379,7 @@ public class GameState implements Serializable {
         int index = getClosestPlatform();
         platforms[index].setNoDraw(true);
     }
+
+    public int getOppscore() { return this.oppscore; }
 
 }

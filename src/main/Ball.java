@@ -85,7 +85,16 @@ public class Ball implements Serializable {
         // If the ball touches the ground...
         if (y >= height - radius) {
             // If we hit the floor, the game is over!
-            // gameOver = true;
+            gameOver = true;
+            game.gameOver();
+
+            int playerOneScore = game.getScore(); // I guess this is our score?
+            System.out.println("OUR SCORE : " + playerOneScore);
+            int playerTwoScore = game.getOppscore();
+            System.out.println("THEIR SCORE : " + playerTwoScore);
+            Window.getInstance().setWinner(playerOneScore > playerTwoScore);
+            Window.getInstance().setScreen(Screen.GAME_OVER);
+
             dy = -maxSpeed;
             y += dy * deltaTime;
             return;

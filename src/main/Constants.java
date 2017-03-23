@@ -47,5 +47,7 @@ public class Constants {
     public static final int POINT_ITEM_STEP = 3000;
 
     public static final String LOADING_SCREEN_TEXT = "searching...";
+    public static final String GAME_WIN_TEXT = "Success!"; // "Victory!"; //"You VVin!";
+    public static final String GAME_LOSE_TEXT = "Defeat..."; //"You Lose!";
 }
 
