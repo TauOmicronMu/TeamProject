@@ -86,6 +86,7 @@ public class Ball implements Serializable {
         if (y >= height - radius) {
             // If we hit the floor, the game is over!
             gameOver = true;
+            game.gameOver();
 
             int playerOneScore = game.getScore(); // I guess this is our score?
             System.out.println("SCORE: " + game.getScore());

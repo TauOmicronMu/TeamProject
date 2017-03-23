@@ -60,7 +60,7 @@ class Window {
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
-    void setWinner(boolean winner) { winner = winner; }
+    void setWinner(boolean w) { this.winner = w; }
 
     boolean getWinner() { return winner; }
 
