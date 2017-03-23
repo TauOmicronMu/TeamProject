@@ -24,6 +24,7 @@ public class GameState implements Serializable {
     private static final int PLATFORM_WIDTH = 140;
     private static final int PLATFORM_HEIGHT = 20;
     int score;
+    int oppscore = 0;
 
     GameState(int width, int height) {
         this.windowWidth = width;
@@ -378,5 +379,7 @@ public class GameState implements Serializable {
         int index = getClosestPlatform();
         platforms[index].setNoDraw(true);
     }
+
+    public int getOppscore() { return this.oppscore; }
 
 }

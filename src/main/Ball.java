@@ -89,12 +89,10 @@ public class Ball implements Serializable {
             game.gameOver();
 
             int playerOneScore = game.getScore(); // I guess this is our score?
-            System.out.println("SCORE: " + game.getScore());
-            int playerTwoScore = 0; // TODO: How do I even get this? ;-;
-            // Once we have the actual score for playerTwo this will be far more meaningful!
+            System.out.println("OUR SCORE : " + playerOneScore);
+            int playerTwoScore = game.getOppscore();
+            System.out.println("THEIR SCORE : " + playerTwoScore);
             Window.getInstance().setWinner(playerOneScore > playerTwoScore);
-            System.out.println(Window.getInstance().getWinner());
-
             Window.getInstance().setScreen(Screen.GAME_OVER);
 
             dy = -maxSpeed;
