@@ -110,12 +110,12 @@ public class Item implements Serializable {
         if (noDraw) return;
         
         double[] vertices = null;
-        if (type == 1) {
+        if (type == 2) {
             vertices = new double[]{window.glScaleX(this.x,opponent,Screen.GAME), window.glScaleY(this.y), 0.8f, (window.glScaleX(this.x,opponent,Screen.GAME) + 0.03f), (window.glScaleY(this.y) + 0.03f), 0.8f, (window.glScaleX(this.x,opponent,Screen.GAME) - 0.03f), (window.glScaleY(this.y) + 0.03f), 0.8f};
             Model triangles = Menu.getTriangleModel();
             triangles.render(vertices, false);
         }
-        if (type == 2) {
+        if (type == 1) {
             vertices = new double[]{window.glScaleX(this.x,opponent,Screen.GAME), window.glScaleY(this.y), 0.8f, (window.glScaleX(this.x,opponent,Screen.GAME) + 0.03f), (window.glScaleY(this.y) - 0.03f), 0.8f, (window.glScaleX(this.x,opponent,Screen.GAME) - 0.03f), (window.glScaleY(this.y) - 0.03f), 0.8f};
             Model triangles = Menu.getTriangleModel();
             triangles.render(vertices, false);

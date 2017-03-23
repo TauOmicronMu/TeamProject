@@ -126,13 +126,13 @@ public class Window {
             if (item != null)
             {
             	int type = item.getType();
-            	if(type == 1)
+            	if(type == 2)
             	{
             		pshader1.bind();
             		item.paint(this, opponent);
             		pshader1.stop();
             	}
-            	if(type == 2)
+            	if(type == 1)
             	{
             		pshader2.bind();
             		item.paint(this, opponent);
