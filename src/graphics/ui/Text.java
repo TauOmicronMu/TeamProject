@@ -171,7 +171,7 @@ public class Text{
 	        	  startX += scale * 0.65/scale;
 	              charNum++;
 	          }else{
-	              startX += scale * 3/scale;
+	              startX += scale * 0.4/scale;
 	              spaceNum++;
 	          }
 	          space = false;

@@ -96,7 +96,12 @@ public class Main extends NetworkClient {
 
     public void startGame(OpponentType opponentType) {
         initialize();
-        sendMessage(new Message(opponentType));
+        try {
+            sendMessage(new Message(opponentType));
+        } catch (NullPointerException e) {
+            System.out.println("[INFO] Main.startGame : Couldn't connect to server.");
+            return;
+        }
 
         new Thread(() -> {
             // Wait for the seed from the server, because we can't create the game states
