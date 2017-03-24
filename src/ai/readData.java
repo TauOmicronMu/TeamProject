@@ -37,7 +37,7 @@ public class readData {
 			}
 		}
 		if (item != null) {
-			p = new Platform(item.x, item.y, 10, 10);
+			p = new Platform(item.x, item.y, 5, 5);
 		} else {
 			SelectPlatform sp = new SelectPlatform(game);
 			p = sp.select(b, ps);
@@ -70,10 +70,8 @@ public class readData {
 		//Therefore, we can learn int(10) case and interpolate non-int result(between two int) with convex convernation.		
 		int dx_int = (int) (dx - (dx % 10));
 		double dx_dec = (dx % 10) / 10;
-		double vector_x = (dx_dec - 0.5) / Math.cos(45);
 		int dy_int = (int) (dy - (dy % 10));
 		double dy_dec = (dy % 10) / 10;
-		double vector_y = (dy_dec - 0.5) / Math.cos(45);
 		int vy_int = (int) Math.floor(vy);
 		double vy_dec = (10 * vy - 10 * vy_int) / 10;
 
@@ -92,7 +90,10 @@ public class readData {
 			result3 = (double) database.get(dx_int + "," + (dy_int + 10) + "," + vy_int);
 		if (database.get((dx_int + 10) + "," + (dy_int + 10) + "," + vy_int) != null)
 			result4 = (double) database.get((dx_int + 10) + "," + (dy_int + 10) + "," + vy_int);
-		double result = ((vector_x + 0.5) * result4 + (vector_y + 0.5) * result2 + (0.5 - vector_x) * result1 + (0.5 - vector_y) * result3) / 2;
+		double result = (result1+result2)/2*(dy_dec)/2 +
+				(result2+result4)/2*(1-dx_dec)/2 +
+				(result3+result4)/2*(1-dy_dec)/2 +
+				(result3+result1)/2*(dx_dec)/2;
 		if (result == 0 && dx > 300) result = 60.0;
 		if (!right) result = -result;
 //		if(vy<0) result = -result;
