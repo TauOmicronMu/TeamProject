@@ -55,38 +55,6 @@ public class AI {
     }
 
     /**
-     * Returns the coordinates of the closest point on a
-     * Platform, p, to a Ball, b.
-     * @param p The Platform to find the closest point on
-     * @param b The Ball to find the closest point to
-     * @return The closest point on the Platform, p, to the Ball, b
-     *         in the form [X, Y].
-     */
-    public static double[] closestPoint(Platform p, Ball b) {
-        double s1 = leftDist(p, b);
-        double s2 = rightDist(p, b);
-        return (s1 < s2) ? new double[]{p.getX(),p.getY()} :
-                           new double[]{p.getX() + Constants.PLATFORM_WIDTH, p.getY()};
-    }
-
-    /**
-     * Calculates the time taken to reach a Platform for a Ball
-     *                   t = √(u^2−2as)/a
-     * We use the above (from rearranging SUVAT or using the quadratic
-     * formula on: s = ut + 0.5at^2 ) to calculate this.
-     *     See: https://en.wikipedia.org/wiki/Equations_of_motion
-     *          for more info.
-     * NB: denominator is (a + 1) to prevent division by zero.
-     * @param s The displacement of the Ball
-     * @param u The initial (current) velocity of the Ball
-     * @param a The acceleration of the Ball
-     * @return The time taken for a Ball to reach a Platform
-     */
-    public static double timeToPlatform(double s, double u, double a) {
-        return (Math.sqrt(Math.abs(Math.pow(u, 2) - 2 * a * s)) - u)/(a + 1);
-    }
-
-    /**
      * Returns true if the given Platform is within reach of the
      * Platform, p, and false otherwise.
      * @param p The Platform that the Ball is trying to reach
