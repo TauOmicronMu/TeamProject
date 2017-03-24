@@ -1,7 +1,7 @@
 package server.player;
 
 import shared.GameState;
-import networking.ServerInputBroker;
+import server.ServerInputBroker;
 import networking.Message;
 import server.matchmaking.ServerSideClientHandler;
 

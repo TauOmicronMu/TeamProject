@@ -9,10 +9,12 @@ package networking;
 abstract public class NetworkClient extends NetworkUser {
     private final String host;
     private final int port;
+    public SocketFactory socketFactory;
 
-    public NetworkClient(String serverHost, int serverPort) {
+    public NetworkClient(String serverHost, int serverPort, SocketFactory socketFactory) {
         this.host = serverHost;
         this.port = serverPort;
+        this.socketFactory = socketFactory;
     }
 
     /**
@@ -24,12 +26,11 @@ abstract public class NetworkClient extends NetworkUser {
             System.out.println("[INFO] NetworkClient.initialize : stopping previous engine.");
             try {
                 this.engine.stop();
-            } catch (InterruptedException ignored) {
-                System.out.println("[INFO] NetworkClient.initialize : caught InterruptedException from stopping network client.");
-            }
+            } catch (InterruptedException e) {
+                System.out.println("[INFO] NetworkClient.initialize : caught InterruptedException from stopping network client.");}
         }
 
-        NetworkClientEngine engine = new NetworkClientEngine();
+        NetworkClientEngine engine = new NetworkClientEngine(socketFactory);
         engine.initialize(host, port);
         this.engine = engine;
     }

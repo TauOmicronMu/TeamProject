@@ -101,3 +101,5 @@ build
 data.tmp
 *.iml
 TeamProject.iml
+out
+TeamProject.iml

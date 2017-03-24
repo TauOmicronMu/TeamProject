@@ -41,6 +41,9 @@ public class GameState implements Serializable {
         this.random = new Random(seed);
     }
 
+    public boolean equals(GameState other) {
+        return windowHeight == other.windowHeight && windowWidth == other.windowWidth;
+    }
 
     int getWindowWidth() {
         return windowWidth;

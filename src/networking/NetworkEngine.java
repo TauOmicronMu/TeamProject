@@ -15,21 +15,21 @@ import java.util.concurrent.LinkedBlockingDeque;
  * A NetworkEngine exists to abstract away the sockets, streams and queues
  * into a nice interface for sending and receiving messages.
  */
-abstract class NetworkEngine implements Runnable {
+public abstract class NetworkEngine implements Runnable {
 
     private ObjectInputStream inputStream;
-    private ObjectOutputStream outputStream;
+    public ObjectOutputStream outputStream;
     private boolean running;
-    private final BlockingDeque<Message> messages = new LinkedBlockingDeque<>();
-    private Socket socket;
+    public BlockingDeque<Message> messages = new LinkedBlockingDeque<>();
+    public Socket socket;
 
     /**
      * Stop our message-reception loop from continuing at the next iteration.
      */
-    void stop() throws InterruptedException {
+    public void stop() throws InterruptedException {
         running = false;
         try {
-            socket.close();
+            if (socket != null) socket.close();
         } catch (IOException e) {
             System.err.println("Closing socket threw an exception. Still closing it.");
         }
@@ -42,7 +42,7 @@ abstract class NetworkEngine implements Runnable {
      * Optional networking.Message: either the next message in our received queue,
      * or Empty.
      */
-    Optional<Message> nextMessage() {
+    public Optional<Message> nextMessage() {
         Message m = messages.poll();
         if (m == null) return Optional.empty();
         return Optional.of(m);
@@ -84,7 +84,7 @@ abstract class NetworkEngine implements Runnable {
             while (running) {
                 try {
                     Message m = (Message) inputStream.readObject();
-                    messages.add(m);
+                    if(messages != null) messages.add(m);
                 } catch (EOFException e) {
                     System.out.println("[WARN] NetworkEngine.run : EOFException. Stopping...");
                     stop();
@@ -92,12 +92,10 @@ abstract class NetworkEngine implements Runnable {
                     System.err.println("[WARN] NetworkEngine.run : Invalid object. Continuing...");
                 } catch (IOException e) {
                     System.err.println("[WARN] NetworkEngine.run : IOException. Stopping...");
-                    stop();
-                }
+                    stop();}
             }
         } catch (InterruptedException ignored) {
-            System.err.println("[WARN] NetworkEngine.run : Stopped Networking thread.");
-        }
+            System.err.println("[WARN] NetworkEngine.run : Stopped Networking thread.");}
     }
 
     /**
@@ -114,7 +112,7 @@ abstract class NetworkEngine implements Runnable {
             inputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             System.err.println("Couldn't get one of input or output stream for socket.");
-            e.printStackTrace();
+            // e.printStackTrace();
             return;
         }
         new Thread(this).start();
@@ -122,5 +120,13 @@ abstract class NetworkEngine implements Runnable {
 
     boolean isRunning() {
         return running;
+    }
+
+    public ObjectInputStream getInputStream() {
+        return inputStream;
+    }
+
+    public void setInputStream(ObjectInputStream inputStream) {
+        this.inputStream = inputStream;
     }
 }

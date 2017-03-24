@@ -1,5 +1,6 @@
 package server;
 
+import audio.AudioEngine;
 import shared.Constants;
 import server.matchmaking.ServerSideClientHandler;
 import server.player.Player;
@@ -32,7 +33,7 @@ public class ServerMain {
     }
 
     void run() {
-        //AudioEngine.isClient = false;
+        AudioEngine.isClient = false;
         while (true) {
             try {
                 System.out.println("[INFO] ServerMain.run: Waiting for client connection.");
