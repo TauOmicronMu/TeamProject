@@ -18,27 +18,27 @@ public class Settings {
 
     public static void drawAudioBar() {
         double[] vertices = {
-                -0.2f, 0, 0,
-                0.6f, 0, 0,
-                0.6f, -0.05f, 0,
-                -0.2f, -0.05f, 0
+                -0.2f, -0.37, 0,
+                0.6f, -0.37, 0,
+                0.6f, -0.42f, 0,
+                -0.2f, -0.42f, 0
         };
         rshader.bind();
         Rectangle.drawrectangle(vertices, Menu.getRectangleModel(), false);
         rshader.stop();
         //tshader.bind();
         glColor3f(255, 255, 255);
-        Text.draw("Volume", -6f, 0.5f, 0.5f, false);
+        Text.draw("Volume", -6f, -2.5f, 0.5f, false);
         glColor3f(255, 255, 255);
         //tshader.stop();
     }
 
     public static void drawSlider(){
         double[] vertices = {
-                getXLower(), 0.01, 0,
-                getXUpper(), 0.01, 0,
-                getXUpper(), -0.06f, 0,
-                getXLower(), -0.06f, 0
+                getXLower(), -0.36, 0,
+                getXUpper(), -0.36, 0,
+                getXUpper(), -0.43, 0,
+                getXLower(), -0.43f, 0
         };
         rshader.bind();
         Rectangle.drawrectangle(vertices, Menu.getRectangleModel(), false);
@@ -67,4 +67,13 @@ public class Settings {
     public static double volumePercentage(){
         return (((getXLower()+0.025) - (-0.2))/0.8)*100;
     }
+
+    public static void drawInstructions(){
+        glColor3f(255, 255, 255);
+        Text.draw("Instructions", -6f, 5f, 0.5f, false);
+        Text.draw("To move left press a", -10.5f, 6,0.3f, false );
+        Text.draw("To move right press d", -10.5f,4.5f, 0.3f,false);
+        Text.draw("To double jump press the space bar", -10.5f, 3,0.3f,false );
+    }
+
 }

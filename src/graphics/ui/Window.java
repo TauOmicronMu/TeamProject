@@ -206,6 +206,7 @@ public class Window {
             Menu.drawBackToMenuButton();
             Settings.drawAudioBar();
             Settings.drawSlider();
+            Settings.drawInstructions();
         } else if(screen == Screen.LOADING){
             if(!finishedLoading){
                 LoadingScreen.drawLoadingWord();
@@ -376,7 +377,7 @@ public class Window {
 
     private boolean onAudioBar(double x, double y) {
         double newX = ((1+x)*2)-1;
-        return withinBounds(newX, y, -0.2, 0.6, -0.05, 0);
+        return withinBounds(newX, y, -0.2, 0.6, -0.42, -0.37);
     }
 
     /**
@@ -396,7 +397,7 @@ public class Window {
      * @return Whether the coordinate is within the button.
      */
     private boolean onBackToMenuButton(double x, double y) {
-        return withinBounds(x, y, -0.95, -0.85, 0.845, 0.95);
+        return withinBounds(x, y, /*-0.95*/ -0.97, -0.85, 0.845f, 0.95f);
     }
 
     /**
