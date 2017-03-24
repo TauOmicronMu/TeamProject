@@ -37,6 +37,13 @@ public class GameState implements Serializable {
         ball = new Ball(windowWidth / 2, 200);
     }
 
+    public GameState(int width, int height, Ball ball, Platform[] platforms) {
+        this.windowWidth = width;
+        this.windowHeight = height;
+        this.ball = ball;
+        this.platforms = platforms;
+    }
+
     public void setSeed(int seed) {
         this.random = new Random(seed);
     }

@@ -28,6 +28,7 @@ public class Ball implements Serializable {
 
     public Ball(double i, double j) {
         x = i;
+        y = j;
     }
 
 

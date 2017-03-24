@@ -118,5 +118,4 @@ public class AI {
         if(diff == 0) return Move.NO_MOVE; /* Don't move if we're above the platform */
         return (ballx - platformx > 0) ? Move.LEFT : Move.RIGHT; /* Move in the direction of the platform */
     }
-
 }
