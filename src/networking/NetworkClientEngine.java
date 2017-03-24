@@ -10,6 +10,12 @@ import java.net.Socket;
  */
 class NetworkClientEngine extends NetworkEngine implements Runnable {
 
+    private final SocketFactory socketFactory;
+
+    public NetworkClientEngine(SocketFactory socketFactory) {
+        this.socketFactory = socketFactory;
+    }
+
     /**
      * Given a host and port, connect to a server and initialize the network engine.
      * @param host The server's hostname.
@@ -19,10 +25,9 @@ class NetworkClientEngine extends NetworkEngine implements Runnable {
         Socket socket;
 
         try {
-            socket = new Socket(host, port);
+            socket = socketFactory.createSocket(host, port);
         } catch (IOException e) {
             System.err.println("Couldn't initialize socket (connection to server).");
-            e.printStackTrace();
             return;
         }
 

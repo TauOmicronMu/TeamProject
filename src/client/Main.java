@@ -6,6 +6,7 @@ import graphics.screen.Screen;
 import graphics.ui.Window;
 import networking.Message;
 import networking.NetworkClient;
+import networking.SocketFactory;
 import shared.Constants;
 import shared.GameState;
 import shared.OpponentType;
@@ -30,7 +31,7 @@ public class Main extends NetworkClient {
     private GameState myGame, oppGame;
 
     private Main(String host, int port) {
-        super(host, port);
+        super(host, port, new SocketFactory());
         Main.instance = this;
     }
 

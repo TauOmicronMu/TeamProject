@@ -6,8 +6,8 @@ import java.util.Optional;
  * A NetworkUser is a handy way of reusing message-routing code between
  * both NetworkServer and NetworkClient.
  */
-abstract class NetworkUser implements MessageHandler {
-    NetworkEngine engine;
+public abstract class NetworkUser implements MessageHandler {
+    public NetworkEngine engine;
 
     /**
      * Wrapper method around the NetworkEngine's sendMessage method.
@@ -20,7 +20,7 @@ abstract class NetworkUser implements MessageHandler {
     /**
      * Call handleMessage for each message returned by the NetworkEngine.
      */
-    protected boolean handleMessages() {
+    public boolean handleMessages() {
         if (!engine.isRunning()) return false;
         Optional<Message> maybeMessage;
         while ((maybeMessage = engine.nextMessage()).isPresent()) {
@@ -30,5 +30,5 @@ abstract class NetworkUser implements MessageHandler {
         return true;
     }
 
-    protected Message waitForMessage() { return engine.waitForMessage(); }
+    public Message waitForMessage() { return engine.waitForMessage(); }
 }

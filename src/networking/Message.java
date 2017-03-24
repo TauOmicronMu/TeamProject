@@ -36,8 +36,6 @@ public class Message implements Serializable {
 
     public Message(Integer seed) { this.seed = seed; }
 
-    public Message(Boolean isMyGame) { this.isMyGame = isMyGame; }
-
     public String getText() {
         // Todo: this is a quick hack to stop the "demo" package complaining.
         return this.key;
@@ -50,7 +48,6 @@ public class Message implements Serializable {
         if (key != null) return key;
         if (gameState != null) return gameState;
         if (opponentType != null) return opponentType;
-        if (seed != null) return seed;
-        return null;
+        else return seed;
     }
 }
