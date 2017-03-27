@@ -211,7 +211,7 @@ public class Menu {
         return platformPowerupModel;
     }
 
-    static Model getItemModel()
+    public static Model getItemModel()
     {
     	return imodel;
     }

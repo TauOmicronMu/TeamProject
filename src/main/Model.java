@@ -28,7 +28,7 @@ public class Model {
      *
      * @param vertices the edges of the pinball
      */
-    Model(double[] vertices) {
+    public Model(double[] vertices) {
         draw_count = vertices.length / 3;
       
         buffer = BufferUtils.createDoubleBuffer(vertices.length);

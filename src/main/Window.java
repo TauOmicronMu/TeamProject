@@ -42,7 +42,7 @@ public class Window {
     private static boolean winner = false;
 
 
-    Window(int windowHeight, int windowWidth) {
+    public Window(int windowHeight, int windowWidth) {
         this.windowHeight = windowHeight;
         this.windowWidth = windowWidth;
         Window.instance = this;
@@ -539,7 +539,7 @@ public class Window {
      * @param distance The onscreen distance.
      * @return The scaled distance.
      */
-    double glScaleDistance(double distance) {
+    public double glScaleDistance(double distance) {
         return 1.0f * (double) distance / (windowWidth / 2);
     }
 
