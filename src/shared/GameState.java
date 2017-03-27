@@ -21,6 +21,7 @@ public class GameState implements Serializable {
     private final int windowWidth;
     private final int windowHeight;
     public Random random;
+
     public Ball ball;
     public Platform platforms[] = new Platform[15];
 
@@ -185,7 +186,6 @@ public class GameState implements Serializable {
                             PLATFORM_HEIGHT
                     );
                 } else {
-
                     switch (random.nextInt(9)) {
                         case 1:case 2:case 3:case 4:case 5:
                             xPosition = Math.max(Math.min(random.nextInt(windowWidth - 2*PLATFORM_WIDTH), windowWidth - 400 - PLATFORM_WIDTH), 400 + PLATFORM_WIDTH);
