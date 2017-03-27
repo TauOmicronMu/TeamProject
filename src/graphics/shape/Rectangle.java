@@ -1,7 +1,7 @@
 package graphics.shape;
 
 /**
- * Class for creating all the shapes in the game
+ * Class for creating all the rectangles in the game
  *
  * @author Ella
  */

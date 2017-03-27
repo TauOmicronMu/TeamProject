@@ -47,6 +47,12 @@ public class ShaderProgram {
 		}
 	}
 
+	/**
+	 * Creates the shader that can then be used to apply colour
+	 * @param filename the file that contains the shader information
+	 * @param type the type of shader
+	 * @return the shader id
+	 */
 	private static int loadShader(String filename, int type)
 	{
 		int id = glCreateShader(type);
@@ -70,7 +76,9 @@ public class ShaderProgram {
 		glUseProgram(program);
 	}
 	
-	
+	/**
+	 * detaches the shaders from the program and stops the program
+	 */
 	public void stop()
 	{
 		glUseProgram(0);
@@ -78,6 +86,9 @@ public class ShaderProgram {
 		glDetachShader(program,fs);
 	}
 	
+	/**
+	 * Removes the shaders and program permanently
+	 */
 	public void cleanUp()
 	{
 		stop();

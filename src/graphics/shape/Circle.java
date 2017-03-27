@@ -29,7 +29,9 @@ public class Circle {
      * @param y the current y position of the centre of the powerUp
      */
     static public void paintItem(Window window, int x, int y, int radius, boolean opponent) {
-        double radius2 = window.glScaleDistance(radius);
+    	System.out.println("here");
+    	double radius2 = window.glScaleDistance(radius);
+        
         double x2 = window.glScaleX(x, opponent, Screen.GAME);
         double y2 = window.glScaleY(y);
         double[] vertices = createCircle(x2, y2, 0.3f, radius2);

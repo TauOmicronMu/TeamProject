@@ -71,7 +71,7 @@ public class Shader {
     /**
      * Reads the shader files
      *
-     * @param filename
+     * @param filename the file to be read
      * @return the file contents
      */
     private String readFile(String filename) {
@@ -93,6 +93,9 @@ public class Shader {
         return string.toString();
     }
 
+    /**
+     * Detaches the program ID from the context
+     */
     public void stop() {
         glUseProgram(0);
     }
