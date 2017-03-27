@@ -1,13 +1,12 @@
 package graphics.shape;
 
-<<<<<<< HEAD:src/graphics/shape/Circle.java
+
 import graphics.screen.Menu;
 import graphics.ui.Window;
 import graphics.screen.Screen;
 import shared.Constants;
 
-=======
->>>>>>> 3a2b8ad050758f88469141fabb0d3c654f53c3c0:src/main/Circle.java
+
 public class Circle {
 
     /**
