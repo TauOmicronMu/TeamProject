@@ -11,17 +11,20 @@ import org.lwjgl.opengl.GL11;
 
 class Text{
 	
-	static boolean opponent;
-
+	public Text()
+	{
+		
+	}
+	
 	/**
 	 * Draws the string given - breaks it down into individual letters and draws each of them
 	 * @param s the string 
 	 * @param x the beginning x coordinate
 	 * @param y the beginning y coordinate
 	 * @param scale how big the letters should be
+	 * @param width the thickness of the letters
 	 */
-	public static void draw(String s, float x, float y, float scale, boolean opponent) {
-		  opponent = opponent;
+	public static void draw(String s, float x, float y, float scale) {
 	      float startX = x;
 	      scale = scale * 0.25f;
 	      boolean lessspace = false;
@@ -113,8 +116,7 @@ class Text{
 	        	  drawW(scale, startX, y);
 	              break;
 	          case 'v':
-				  case 'V':
-					  drawV(scale, startX, y);
+	        	  drawV(scale, startX, y);
 	              break;
 	          case 'x':
 	        	  drawX(scale, startX, y);
@@ -159,11 +161,6 @@ class Text{
 	          case '0':
 	        	  draw0(scale,startX,y);
 	              break;
-	          case '.':
-	        	  drawDot(scale,startX,y);
-	        	  break;
-	          case '+':
-	        	  drawPlus(scale,startX,y);
 	          }
 	          if(!space){
 	        	  startX += scale * 0.65/scale;
@@ -178,16 +175,6 @@ class Text{
 	      }
 	   }
 
-	private static void drawPlus(float scale, float startX, float y)
-	{
-		convert(scale * (startX - 0.3f),scale * (y - 0.4f),scale * (startX-0.1f),scale * (y - 0.4f));
-        convert(scale * (startX - 0.2f), scale * (y - 0.2f),scale * (startX - 0.2f), scale * (y - 0.6f));
-	}
-	
-	private static void drawDot(float scale, float startX, float y)
-	{
-        convert(scale * startX, scale * y,scale * startX, scale * y);
-	}
 	/**
 	 * Draws the back button within the main game
 	 * @param scale passed from draw method
@@ -449,8 +436,8 @@ class Text{
 	}
 	
 	private static void drawV(float scale, float startX, float y)
-	{
-		GL11.glLineWidth(3.5f);
+	{        
+        GL11.glLineWidth(3.5f);
         GL11.glBegin(GL11.GL_LINE_STRIP);
         GL11.glEnable(GL11.GL_LINE_WIDTH);
         GL11.glVertex2f(scale * (startX - 0.3f), scale * (y-0.4f));
@@ -525,7 +512,7 @@ class Text{
 	private static void convert(float x1, float y1, float x2, float y2)
 	{
 		double[] vertices = {x1,y1,0.9,x1,(y2+0.01),0.9,(x2+0.01),(y2+0.01),0.9,(x2+0.01),y1,0.9};
-		Rectangle.drawrectangle(vertices, Menu.getRectangleModel(), opponent);
+		Rectangle.drawrectangle(vertices);
 	}
 	
 

@@ -4,8 +4,5 @@ import java.io.Serializable;
 
 public enum Screen implements Serializable {
     MAIN_MENU,
-    GAME,
-    SETTINGS,
-    GAME_OVER,
-    LOADING
+    GAME
 }

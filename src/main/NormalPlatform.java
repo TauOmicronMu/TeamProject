@@ -1,44 +1,62 @@
 package main;
 
 
-public class NormalPlatform extends Platform {
+public class NormalPlatform extends Platform{
 
     NormalPlatform(double x, double y, int width, int height) {
         super(x, y, width, height);
     }
 
     @Override
-    void update(GameState game, double timeStep) {
-
-        if (timeStep < Constants.MIN_TIME_PER_FRAME) return;
-        double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
+    void update(GameState game) {
+       
         Ball ball = game.getBall();
-
-        // If we've got the flying power-up, don't bother with collision.
-        if (ball.getCountFlyPower() > 0) {
-            y += Constants.FLY_POWERUP_SPEED * deltaTime;
-            game.score += Constants.FLY_POWERUP_SPEED * deltaTime;
-            return;
+        
+        int[] Level = game.getLevel();
+        int counter = game.getCounter();
+        if(counter == Level.length){
+        	game.setCounter(0);
+        	counter = 0;
         }
 
-        // Otherwise, check for collision with the ball.
-        checkForCollision(ball, game, deltaTime);
-
-        // If the ball's height is locked, we need to compensate by moving
-        // the platform down at the speed the ball's meant to be rising.
-        if (ball.heightIsLocked()) {
-            y -= ball.getDy() * deltaTime;
+        if(ball.gameOver()==false){
+        	if(ball.getDy() >0)
+        		ball.setPermission(false);
+            if(ball.getY() < highestPoint && ball.getDy() < 0){
+            	if(ball.getCountFlyPower() >0){
+        			y+=20;
+        			game.score+=20;
+                } else {
+                	ball.setPermission(true);
+                    double newDx = ball.getDy() + ball.getGravity() + 0.1;
+                	if(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 < -2){
+                		
+                		y +=Math.abs(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1);
+                		game.score+=ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 ;
+                	}
+                	else y += dy;
+                	game.score += dy;
+                checkForCollision(ball, game);
+                }
+            } else {
+            	if(ball.getCountFlyPower() >0){
+        			y+=20;
+        			game.score+=20;
+                } else {
+                    y += dy;
+                    game.score+= dy;
+                checkForCollision(ball, game);
+                }
+            }
+        }  else {
+        	if(y>-100){
+        		y-=6;
+        	}
         }
-
-        // Update platform Y position.
-        y += dy * deltaTime;
-        game.score += dy * deltaTime;
-
-        //System.out.println("Dy is" + dy/deltaTime);
     }
 
     @Override
-    void paint(Window game, boolean opponent) {
-        super.paint(game, opponent);
-    }
+    void paint(Window game) {
+        super.paint(game);
+    }    
 }

@@ -10,14 +10,15 @@ public class PointsItem extends Item{
 
     @Override
     public void performAction(GameState game) {
-        game.score = game.score + Constants.POINT_ITEM_STEP;
-        if (AudioEngine.isClient) AudioEngine.getInstance().playTrack(AudioEngine.POINTS);
+        game.score = game.score + 300000;
+        //System.out.println("POINTs");
     }
 
 
     @Override
-    public void paint(Window window, boolean opponent) {
+    public void paint(Window window) {
+
         //colour
-        super.paint(window, opponent);
+        super.paint(window);
     }
 }

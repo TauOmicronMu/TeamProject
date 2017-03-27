@@ -8,13 +8,12 @@ import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
+import java.awt.geom.Point2D;
 import java.nio.DoubleBuffer;
-import java.util.concurrent.TimeUnit;
-
-import static java.lang.System.currentTimeMillis;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.glClear;
 
 /**
  * main.Main class for graphics
@@ -26,43 +25,37 @@ class Window {
     private Screen screen = Screen.MAIN_MENU;
     private static int cursorXPosition;
     private static int cursorYPosition;
-    private static ShaderProgram cshader;
-	private static ShaderProgram rshader;
-	private static ShaderProgram pshader1;
-	private static ShaderProgram pshader2;
-	private static ShaderProgram pshader3;
-	private static ShaderProgram starshader;
+    private static CircleShader cshader;
+	private static RectangleShader rshader;
+	private static PowerUpShader pshader1;
+	private static PowerUpShader pshader2;
+	private static PowerUpShader pshader3;
     private long window;
-    private int windowHeight = Constants.WINDOW_HEIGHT;
-    private int windowWidth = Constants.WINDOW_WIDTH;
+    private int windowHeight = 800;
+    private int windowWidth = 800;
+    private static boolean shouldChangeToGame = false;
     private static boolean shouldQuit = false;
-    private boolean changeAudio;
-    private static boolean finishedLoading;
-    private static Window instance;
-    private static boolean winner = false;
+    private static boolean shouldChangeToMenu = false;
 
 
     Window(int windowHeight, int windowWidth) {
         this.windowHeight = windowHeight;
         this.windowWidth = windowWidth;
-        Window.instance = this;
     }
 
-    static Window getInstance() {
-        return instance;
+    int getHeight() {
+        return windowHeight;
     }
+
+    int getWidth() {
+        return windowWidth;
+    }
+
 
     void quit() {
         shouldQuit = true;
     }
-    
-    void clear() {
-        glClear(GL_COLOR_BUFFER_BIT);
-    }
 
-    void setWinner(boolean w) { this.winner = w; }
-
-    boolean getWinner() { return winner; }
 
     /**
      * Initializes the GLFW library, creating a window and any necessary shaders.
@@ -73,7 +66,7 @@ class Window {
             System.exit(1);
         }
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-        window = glfwCreateWindow(windowWidth, windowHeight, Constants.TITLE, 0, 0);
+        window = glfwCreateWindow(windowWidth, windowHeight, "Pinball", 0, 0);
         if (window == 0) {
             System.err.println("Failed to create window.");
             System.exit(1);
@@ -88,16 +81,14 @@ class Window {
         glfwMakeContextCurrent(window);
 
         GL.createCapabilities();
-        cshader = new ShaderProgram("shaders/cshader.vs","shaders/shader.fs");
-		rshader = new ShaderProgram("shaders/rshader.vs","shaders/shader.fs");
-		pshader1 = new ShaderProgram("shaders/pshader.vs","shaders/shader.fs");
-		pshader2 = new ShaderProgram("shaders/pshader2.vs","shaders/shader.fs");
-		pshader3 = new ShaderProgram("shaders/pshader3.vs","shaders/shader.fs");
-		starshader = new ShaderProgram("shaders/starshader.vs","shaders/shader.fs");
+        cshader = new CircleShader();
+		rshader = new RectangleShader();
+		pshader1 = new PowerUpShader("pshader");
+		pshader2 = new PowerUpShader("pshader2");
+		pshader3 = new PowerUpShader("pshader3");
 
         registerInputCallbacks(gameState, client);
     }
-
 
 
     /**
@@ -120,168 +111,67 @@ class Window {
     /**
      * Draw each powerup item in the current game state.
      */
-    private void drawAllItems(GameState gameState, boolean opponent) {
+    private void drawAllItems(GameState gameState) {
         Item[] items = gameState.getItems();
         for (Item item : items) {
             if (item != null)
             {
             	int type = item.getType();
-            	if(type == 2)
-            	{
-            		pshader1.bind();
-            		item.paint(this, opponent);
-            		pshader1.stop();
-            	}
             	if(type == 1)
             	{
+            		pshader1.bind();
+            		item.paint(this);
+            		pshader1.stop();
+            	}
+            	if(type == 2)
+            	{
             		pshader2.bind();
-            		item.paint(this, opponent);
+            		item.paint(this);
             		pshader2.stop();
             	}
-            	if(type == 3)
+            	else
             	{
             		pshader3.bind();
-            		item.paint(this, opponent);
+            		item.paint(this);
             		pshader3.stop();
             	}
-            	if(type == 4)
-            	{
-            		starshader.bind();
-            		item.paint(this,opponent);
-            		starshader.stop();
-            	}
-            	if (type == 5)
-                {
-                    cshader.bind();
-                    item.paint(this, opponent);
-                    cshader.stop();
-                }
             }
         }
     }
 
-    /**
-     * Prints the score, given a ball and platform.
-     * @param ball
-     */
-    public static void printScore(int score, Ball ball, boolean opponent) {
-        if(!ball.gameOver())
-        {
-            String scoreText = String.valueOf(score / 1000);
-
-            Shader tshader2 = new Shader("tshader2.vs");
-            int length = scoreText.length();
-            tshader2.bind();
-            int xOffset = opponent ? Constants.WINDOW_WIDTH/2 : 0;
-            Text.draw(scoreText, xOffset + 5.8f - (length * 0.3f), 6.8f, 0.6f,opponent);
-            tshader2.stop();
-        }
-        else
-        {
-            System.out.println("Final score: "+score);
-        }
-    }
 
     /**
      * Redraw the screen with data from the given main.GameState.
-     * @param ourGameState Information about the position about each item.
+     * @param gameState Information about the position about each item.
      */
-    void repaint(GameState ourGameState, GameState theirGameState) {
-        final boolean debug = false;
-        long startTime;
+    void repaint(GameState gameState) {
+        glClear(GL_COLOR_BUFFER_BIT);
+        rshader.bind();
 
         if (screen == Screen.MAIN_MENU) {
-           Menu.drawAll();
-        } else if (screen == Screen.SETTINGS){
-            Menu.drawBackToMenuButton();
-            Settings.drawAudioBar();
-            Settings.drawSlider();
-        } else if(screen == Screen.LOADING){
-            if(!finishedLoading){
-                LoadingScreen.drawLoadingWord();
-                Menu.drawStars();
-            }
-        } else if(screen == Screen.GAME_OVER) {
-            Menu.drawStars();
-            GameOverScreen.drawScreen(winner);
-            Menu.drawBackToMenuButton();
-        }
-        else {
-
-            Menu.drawStars();
-            rshader.bind();
-
-        	if(debug) System.out.println("draw platforms for our game state");
-            if(debug) startTime = currentTimeMillis();
-
-            drawAllPlatforms(ourGameState, false);
-
-            if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
-            if(debug) System.out.println("draw platforms for opponent game state");
-            if(debug) startTime = currentTimeMillis();
-
-            drawAllPlatforms(theirGameState, true);
-
-        	if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
-
-            rshader.stop();
-
-        	if(debug) System.out.println("draw items for our game state");
-            if(debug) startTime = currentTimeMillis();
-
-            drawAllItems(ourGameState, false);
-
-            if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
-            if(debug) System.out.println("draw items for opponent game state");
-            if(debug) startTime = currentTimeMillis();
-
-            drawAllItems(theirGameState, true);
-
-            if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
-
+            Menu.drawAll();
+        } else {
+        	drawAllPlatforms(gameState);
+        	rshader.stop();
+            drawAllItems(gameState);
             cshader.bind();
-
-            if(debug) System.out.println("draw ball for our game state");
-            if(debug) startTime = currentTimeMillis();
-
-            drawBall(ourGameState, false);
-
-            if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
-            if(debug) System.out.println("draw ball for opponent game state");
-            if(debug) startTime = currentTimeMillis();
-
-            drawBall(theirGameState, true);
-
-            if(debug) System.out.println((currentTimeMillis() - startTime) + "ms");
-
-            drawCenterLine();
-
+            drawBall(gameState);
             cshader.stop();
             Menu.drawBackToMenuButton();
-            // Menu.printScore(ourGameState.score, ourGameState.getBall(), false);
-            // Menu.printScore(theirGameState.score, ourGameState.getBall(), true);
+            Menu.printScore(gameState.score, gameState.getBall());
         }
 
         glfwSwapBuffers(window);
     }
 
-    private void drawCenterLine() {
-        glBegin(GL_LINES);
-            glLineWidth(3.0f);
-            glColor3i(255,255,255);
-            glVertex2f(0, -1);
-            glColor3i(255, 255, 255);
-            glVertex2f(0, 1);
-        glEnd();
-    }
 
     /**
      * Utility method to delegate to main.Circle in order to render the ball.
      * @param gameState The game-state containing the ball.
      */
-    private void drawBall(GameState gameState, boolean opponent) {
+    private void drawBall(GameState gameState) {
         Ball ball = gameState.getBall();
-        Circle.paintPinball(this, ball.getX(), ball.getY(), ball.getRadius(), opponent);
+        Circle.paintPinball(this, ball.getX(), ball.getY(), ball.getRadius());
     }
 
 
@@ -289,12 +179,19 @@ class Window {
      * Utility method to iterate through each platform and render it.
      * @param gameState The game-state containing each platform.
      */
-    private void drawAllPlatforms(GameState gameState, boolean opponent) {
-        // System.out.println("DRAW ALL PLATFORMS :O :O :O :O :O");
-        Platform[] platforms = gameState.getBasicPlatforms();
+    private void drawAllPlatforms(GameState gameState) {
+        Platform[] platforms = gameState.getPlatforms();
         for (Platform platform : platforms) {
-            if (platform != null) platform.paint(this, opponent);
+            if (platform != null) platform.paint(this);
         }
+//        Platform[] movingPlatforms = gameState.getMovingPlatforms();
+//        for (Platform movingPlatform : movingPlatforms) {
+//            if (movingPlatform != null) movingPlatform.paint(this);
+//        }
+//        Platform[] jumpOncePlatforms = gameState.getJumpOncePlatform();
+//        for (Platform jumpOncePlatform : jumpOncePlatforms) {
+//            if (jumpOncePlatform != null) jumpOncePlatform.paint(this);
+//        }
     }
 
 
@@ -302,21 +199,20 @@ class Window {
      * Use GLFW to handle the current state of the keyboard.
      */
     private void handleKeyboardInput(GameState gameState, NetworkClient client) {
-        //System.out.println("[INFO] Window.handleKeyboardInput : Handling input.");
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_TRUE) {
-            // System.out.println("[INFO] Window.handleKeyboardInput : Key(A) pressed.");
-            gameState.getBall().moveLeft();
             client.sendMessage(new Message("a"));
         } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_TRUE) {
-            // System.out.println("[INFO] Window.handleKeyboardInput : Key(D) pressed.");
             gameState.getBall().moveRight();
             client.sendMessage(new Message("d"));
-        } else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_TRUE) {
-            // System.out.println("[INFO] Window.handleKeyboardInput : Key(D) pressed.");
-            gameState.getBall().doubleJump();
-            client.sendMessage(new Message("Space"));
-        } else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_TRUE) {
-            // client.sendMessage(new Message("Shift"));
+        }
+        else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_TRUE ) {
+            //if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+
+            client.sendMessage(new Message("space"));
+        }
+        else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_TRUE) {
+
+            client.sendMessage(new Message("leftshift"));
         }
     }
 
@@ -352,21 +248,8 @@ class Window {
      * @param y The coordinate's Y component.
      * @return Whether the coordinate is within the button.
      */
-    private boolean onSinglePlayerButton(double x, double y) {
-        return withinBounds(x, y, -0.4, 0.4, -0.26, -0.06);
-    }
-
-    private boolean onMultiplayerButton(double x, double y) {
-        return withinBounds(x, y, -0.4, 0.4, -0.48, -0.28);
-    }
-
-    private boolean onSettingsButton(double x, double y){
-        return withinBounds(x, y, -0.4, 0.4, -0.7, -0.5);
-    }
-
-    private boolean onAudioBar(double x, double y) {
-        double newX = ((1+x)*2)-1;
-        return withinBounds(newX, y, -0.2, 0.6, -0.05, 0);
+    private boolean onPlayGameButton(double x, double y) {
+        return withinBounds(x, y, -0.4, 0.4, -0.2, 0);
     }
 
     /**
@@ -376,7 +259,7 @@ class Window {
      * @return Whether the coordinate is within the button.
      */
     private boolean onQuitButton(double x, double y) {
-        return withinBounds(x, y, -0.4, 0.4, -0.92, -0.72);
+        return withinBounds(x, y, -0.4, 0.4, -0.7, -0.5);
     }
 
     /**
@@ -386,7 +269,7 @@ class Window {
      * @return Whether the coordinate is within the button.
      */
     private boolean onBackToMenuButton(double x, double y) {
-        return withinBounds(x, y, -0.95, -0.85, 0.845, 0.95);
+        return withinBounds(x, y, -0.95, -0.85, 0.85, 0.95);
     }
 
     /**
@@ -396,27 +279,21 @@ class Window {
      * @param client
      */
     private void handleMouseClick(GameState gameState, Main client, double x, double y) {
-        x = glScaleX(x, false, client.getWindow().getScreen());
+        x = glScaleX(x);
         y = glScaleY(y);
-        System.out.printf("[INFO] Mouse press at (%.2f, %.2f).\n", x, y);
+        System.out.printf("Mouse press at (%.2f, %.2f).\n", x, y);
 
         // Handle mouse input depending on which screen we're on.
         switch(screen) {
+
             // If we're on the main menu:
             case MAIN_MENU: {
-                if (onMultiplayerButton(x, y)) {
-                    System.out.println("Multiplayer button clicked");
-                    finishedLoading = false;
-                    screen = Screen.LOADING;
-                    client.startGame(OpponentType.HUMAN);
+                if (onPlayGameButton(x, y)) {
+                    client.initialize();
+                    screen = Screen.GAME;
+
                 } else if (onQuitButton(x, y)) {
                     quit();
-                } else if (onSinglePlayerButton(x, y)) {
-                    System.out.println("Single player button clicked");
-                    client.startGame(OpponentType.AI);
-                } else if (onSettingsButton(x, y)) {
-                    System.out.println("Settings button clicked");
-                    screen = Screen.SETTINGS;
                 }
                 break;
             }
@@ -427,47 +304,15 @@ class Window {
                     System.out.println("Back to main menu.");
                     screen = Screen.MAIN_MENU;
                 } else {
-                    // Todo: N.B. This is for demonstrating the server-client sync.
+                    // Todo: N.B. This is for demonstrating the server-client synch.
                     gameState.getBall().setX(cursorXPosition);
                     gameState.getBall().setY(cursorYPosition);
                 }
                 break;
             }
-
-            case SETTINGS: {
-                if (onBackToMenuButton(x, y)) {
-                    screen = Screen.MAIN_MENU;
-                    changeAudio = false;
-                    // break;
-                } else if (onAudioBar(x, y)){
-                    System.out.println("On audio bar.");
-                    changeAudio = true;
-                    double newX = ((1+x)*2)-1;
-                    Settings.setXLower(newX - 0.025);
-                    Settings.drawSlider();
-                }
-                if(onAudioBar(x, y)){
-                    changeAudio = true;
-                }
-                if(!onAudioBar(x, y)){
-                    changeAudio = false;
-                }
-                break;
-            }
-
-            case GAME_OVER: {
-                if (onBackToMenuButton(x, y)) {
-                    System.out.println("Back to main menu.");
-                    screen = Screen.MAIN_MENU;
-                    break;
-                }
-            }
-            case LOADING: {
-                // Do nothing
-                break;
-            }
             default:
-                System.err.println("[WARN] Window.handleMouseClick : Game screen not initialized!");
+                System.err.println("Game screen not initialized!");
+
         }
     }
 
@@ -479,33 +324,17 @@ class Window {
      */
     private void registerInputCallbacks(GameState gameState, Main client) {
         // Callback for when the left mouse button is released:
-        GLFWMouseButtonCallbackI mousecallback = (window, button, action, mods) -> {
+        GLFWMouseButtonCallbackI mousecallback = (window1, button, action, mods) -> {
             // Check that we're handling a left-mouse-button click.
-            if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
-                DoubleBuffer xposbuf = BufferUtils.createDoubleBuffer(1);
-                DoubleBuffer yposbuf = BufferUtils.createDoubleBuffer(1);
-                glfwGetCursorPos(window, xposbuf, yposbuf);
-                double x = xposbuf.get();
-                double y = yposbuf.get();
-                handleMouseClick(gameState, client, x, y);
-            }
+            if (button != GLFW_MOUSE_BUTTON_LEFT || action != GLFW_RELEASE) return;
+            DoubleBuffer xposbuf = BufferUtils.createDoubleBuffer(1);
+            DoubleBuffer yposbuf = BufferUtils.createDoubleBuffer(1);
+            glfwGetCursorPos(window, xposbuf, yposbuf);
+            double x = xposbuf.get();
+            double y = yposbuf.get();
+            handleMouseClick(gameState, client, x, y);
         };
         glfwSetMouseButtonCallback(window, mousecallback);
-        GLFWCursorPosCallbackI cursorcallback = (window, xpos, ypos) -> {
-            cursorXPosition = (int) xpos;
-            cursorYPosition = (int) ypos;
-            if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && screen == Screen.SETTINGS) {
-                double x = glScaleX(cursorXPosition);
-                double y = glScaleY(cursorYPosition);
-                if(changeAudio) {
-                    double newX = ((1+x)/0.5)*2+-1;
-                    Settings.setXLower(newX - 0.025);
-                    Settings.drawSlider();
-                    System.out.println("Volume Percentage: " + Settings.volumePercentage());
-                }
-            }
-        };
-        glfwSetCursorPosCallback(window, cursorcallback);
     }
 
 
@@ -515,13 +344,9 @@ class Window {
      * @param x The X coordinate to scale to the OpenGL viewport.
      * @return The converted coordinate.
      */
-    double glScaleX(double x, boolean opponent, Screen screen) {
-        if(screen == Screen.MAIN_MENU) return -1.0f + x / (float) (windowWidth/2);
-        if (opponent) return x / (float) (windowWidth);
-        return -1.0f + x / (float) (windowWidth);
+    double glScaleX(double x) {
+        return -1.0f + x / (float) (windowWidth / 2);
     }
-
-    double glScaleX(double x) { return -1.0f + x / (float) windowWidth/2; }
 
     /**
      * Converts an y-coordinate to float equivalent (needed for drawing with openGL)
@@ -545,9 +370,5 @@ class Window {
 
     public Screen getScreen() {
         return screen;
-    }
-
-    public void setScreen(Screen screen) {
-        this.screen = screen;
     }
 }

@@ -3,15 +3,15 @@ package main;
 import java.io.Serializable;
 import static org.lwjgl.opengl.GL11.glColor4f;
 
-
-public class Platform implements Serializable {
+class Platform implements Serializable {
 
     public int dy;
     public int width, height;
-    public double x, y;
-    private double highestPoint;
+    public double x;
+	public double y;
+    public int score = 0;
+    public double highestPoint;
     public boolean isNull;
-    public boolean noDraw;
 
     /*
      *Constructor for platform object
@@ -20,83 +20,81 @@ public class Platform implements Serializable {
      *@param width the width of the platform
      *@param height the height of the platform
      */
-    public Platform(double x, double y, int width, int height) {
+    Platform(double x, double y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        dy = Constants.PLATFORM_START_DY;
+        dy = 2;
         highestPoint = 200;
-        this.isNull = false;
-        this.noDraw = false;
+        this.isNull= false;
     }
 
-    /**
-     * Updates the position of the platform
-     * @param game the game class object
-     * @param timeStep The elapsed time in the last frame.
+    /*
+     *Updates the position of the platform
+     *@param game the game class object
+     *@param ball the ball class object
      */
-
-
-    void update(GameState game, double timeStep) {
+    void update(GameState game) {
         //Every type of platforms has its own implementation of this method
     }
 
-    public void checkForCollision(Ball ball, GameState game, double deltaTime) {
-        if(noDraw) return;
-            double ballX = ball.getX();
-            double ballY = ball.getY();
+    /*
+     * Returns the score of the player
+     */
+    public int getScore() {
+		return score;
+	}
+    /*
+     * Checks if any ball has collided with the platform
+     * @param ball the ball object
+     */
+    public void checkForCollision(Ball ball, GameState game) {
+        if(isNull == false) {
+            int ballX = (int) ball.getX();
+            int ballY = (int) ball.getY();
             int radius = ball.getRadius();
 
-
-            double ballBottom = ballY + radius;
-            double rectTop = y;
-            double rectLeft = x;
-
-
-            // Todo: How is only half the platform colliding?
-            double rectRight = x + width*2;
-
-            // Check if the ball is above the platform *and* will be below
-            // it after exactly one tick at the current framerate.
-            if (ballBottom >= rectTop) return;
-            double newBallBottom = ballBottom + ball.getDy() * deltaTime;
-            if (newBallBottom <= rectTop) return;
-
-            // Check the ball is aligned with the top of the platform.
-            if (ballX+radius < rectLeft) return;
-            if (ballX-radius > rectRight) return;
-
-            // If the ball has collided with the top of the platform ~Tom
-            if (AudioEngine.isClient) AudioEngine.getInstance().playTrack(AudioEngine.BLOP); // Play the boing sound
-            ball.setY(rectTop - radius);
-            ball.setDy(-ball.getMaxSpeed());
-
+            if (ballY + radius > y && ballY + radius < y + height) {
+                if (ballX > x && ballX < x + width) {
+                    double newDy = ball.getGameDy();
+                    if(ball.getDy()>0){
+//                        AudioEngine.getInstance().playTrack(AudioEngine.BOING);
+                        ball.setDy(newDy);
+                    }
+                    ball.setY(y - radius);
+                }
+            }
+        }
     }
+
     /*
      * Draws the platform
      */
-    void paint(Window game, boolean opponent) {
-        if(noDraw) return;
-        double scaledX = game.glScaleX(x, opponent, Screen.GAME);
-        double scaledY = game.glScaleY(y);
-        double widthGl = game.glScaleDistance(width);
-        double heightGl = game.glScaleDistance(height);
+    void paint(Window game) {
+        if(isNull == false) {
+            double scaledX = game.glScaleX(x);
+            double scaledY = game.glScaleY(y);
+            double widthGl = game.glScaleDistance(width);
+            double heightGl = game.glScaleDistance(height);
 
-        double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
-        glColor4f(1, 0, 0, 0);
-        Rectangle.drawrectangle(verticesb, Menu.getRectangleModel(), true);
+            double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
+            glColor4f(1, 0, 0, 0);
+            Rectangle.drawrectangle(verticesb);
+        }
     }
-    public double getDy() { return this.dy; }
+
+    public void setDx(int dx){
+    	this.dy = dx;
+    }
     public double getY() {
         return y;
     }
-    public double getX(){ return x; }
     public boolean getNull() {
         return isNull;
     }
     public void setNull(boolean x) {
         isNull = x;
     }
-    public void setNoDraw(boolean x){noDraw = x;}
 }
+

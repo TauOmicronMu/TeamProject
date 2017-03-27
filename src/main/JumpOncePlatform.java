@@ -1,95 +1,84 @@
 package main;
 
-import java.io.Serializable;
-
-
-class JumpOncePlatform extends Platform implements Serializable {
-
-    /*
-     *Constructor for platform object
-     *@param x the current x position of the platform(the top left corner of the platform)
-     *@param y the current y position of the platform(the top left corner of the platform)
-     *@param width the width of the platform
-     *@param height the height of the platform
-     */
+class JumpOncePlatform extends Platform {
+	
     JumpOncePlatform(double x, double y, int width, int height) {
+
         super(x, y, width, height);
     }
 
-    /*
-     *Updates the position of the platform
-     *@param game the game class object
-     *@param ball the ball class object
-     */
     @Override
-    void update(GameState game, double timeStep) {
-        if (timeStep < Constants.MIN_TIME_PER_FRAME) return;
-        double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
+    void update(GameState game) {
+        
         Ball ball = game.getBall();
-
-        // If we've got the flying power-up, don't bother with collision.
-        if (ball.getCountFlyPower() > 0) {
-            y += Constants.FLY_POWERUP_SPEED * deltaTime;
-            game.score += Constants.FLY_POWERUP_SPEED * deltaTime;
-            return;
+        
+        int[] Level = game.getLevel();
+        int counter = game.getCounter();
+        
+        if(counter == Level.length){
+        	game.setCounter(0);
+        	counter = 0;
         }
+        	       
+        if(ball.gameOver()==false){
+        	
+        	if(ball.getDy() >0)
+        		ball.setPermission(false);
 
-        // Otherwise, check for collision with the ball.
-        checkForCollision(ball, game, deltaTime);
+            if(ball.getY() < highestPoint && ball.getDy() < 0){
+            	if(ball.getCountFlyPower() >0){
+        			y+=20;
+        			score+=20;
+                } else {
+                	ball.setPermission(true);
 
-        // If the ball's height is locked, we need to compensate by moving
-        // the platform down at the speed the ball's meant to be rising.
-        if (ball.heightIsLocked()) {
-            y -= ball.getDy() * deltaTime;
+                	if(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 < -3){
+                		
+                		y +=Math.abs(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1);
+                		score+=ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 ;
+                	}
+                	else y += dy;
+                	score += dy;
+                checkForCollision(ball, game);
+                }
+            } else {
+            	if(ball.getCountFlyPower() >0){
+        			y+=20;
+        			score+=20;
+                } else {
+                    y += dy;
+                    score+= dy;
+                checkForCollision(ball, game);
+                }
+            }
+        }  else {
+        	if(y>-100){
+        		y-=6;
+        	}
         }
-
-        // Update platform Y position.
-        y += dy * deltaTime;
-        game.score += dy * deltaTime;
-
-        //System.out.println("Dy is" + dy/deltaTime);
     }
-
+    
     @Override
-    public void checkForCollision(Ball ball, GameState game, double deltaTime) {
-        if(noDraw)return;
-        double ballX = ball.getX();
-        double ballY = ball.getY();
+    public void checkForCollision(Ball ball,GameState game) {
+        int ballX = (int) ball.getX();
+        int ballY = (int) ball.getY();
         int radius = ball.getRadius();
 
-        double ballBottom = ballY + radius;
-        double rectTop = y;
-        double rectLeft = x;
-
-        // Todo: How is only half the platform colliding?
-        double rectRight = x + width*2;
-
-        // Check if the ball is above the platform *and* will be below
-        // it after exactly one tick at the current framerate.
-        if (ballBottom >= rectTop) return;
-        double newBallBottom = ballBottom + ball.getDy() * deltaTime;
-        if (newBallBottom <= rectTop) return;
-
-        // Check the ball is aligned with the top of the platform.
-        if (ballX+radius < rectLeft) return;
-        if (ballX-radius > rectRight) return;
-
-        // If the ball has collided with the top of the platform ~Tom
-        if (AudioEngine.isClient) AudioEngine.getInstance().playTrack(AudioEngine.BLOP); // Play the boing sound
-        ball.setY(rectTop - radius);
-        ball.setDy(-ball.getMaxSpeed());
-        noDraw = true; // the platform wont be drawn anymore and the collision wont happen
-
+        
+        
+        if (ballY + radius > y && ballY + radius < y + height) {
+            if (ballX > x && ballX < x + width) {
+                double newDy = ball.getGameDy();
+                if(ball.getDy()>0){
+                	ball.setY(y - radius);
+                	ball.setDy(newDy);
+                    isNull = true;
+                }            
+            }
+        }
     }
 
-    /*
-     * Draws the platform
-     */
-    void paint(Window game, boolean opponent) {
-        super.paint(game, opponent);
-    }
-
-    public void setDx(int dx){
-        this.dy = dx;
+    void paint(Window game) {
+        super.paint(game);
     }
 }

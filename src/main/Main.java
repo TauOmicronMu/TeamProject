@@ -1,141 +1,94 @@
 package main;
 
+import java.io.IOException;
+import java.util.Hashtable;
+
 import networking.Message;
 import networking.NetworkClient;
 
-import static java.lang.System.currentTimeMillis;
-
 public class Main extends NetworkClient {
 
-    private static final int windowHeight = Constants.WINDOW_HEIGHT;
-    private static final int windowWidth = Constants.WINDOW_WIDTH;
-    private static NetworkClient instance;
-
-    public static NetworkClient getInstance() {
-        return instance;
-    }
+    private static final int windowHeight = 800;
+    private static final int windowWidth = 800;
 
     public Window getWindow() {
-        return myWindow;
+        return window;
     }
 
-    private Window myWindow;
-    private GameState myGame, oppGame;
+    private Window window;
+    private GameState game;
 
     private Main(String host, int port) {
         super(host, port);
-        Main.instance = this;
     }
 
     /**
-     * The play() method implements the main myGame loop.
+     * Setup the game by creating a Window and a GameState,
+     * and initializing both of them.
+     * @throws IOException 
+     * @throws ClassNotFoundException 
      */
-    private void play() {
-
-        myGame = new GameState(windowWidth, windowHeight);
-        oppGame = new GameState(windowWidth, windowHeight);
-
-        myWindow = new Window(windowHeight, windowWidth);
-        myWindow.init(myGame, this);
-
+    private void initializeGame() throws ClassNotFoundException, IOException {
+        window = new Window(windowHeight, windowWidth);
+        game = new GameState(windowWidth, windowHeight);
+        
+        System.out.println("Reading Hashtable...");		
+        AI t = new AI(game);  //run this before the game start
+        Hashtable<String, Double> database = t.getDB();   		
+        AIThread ai = new AIThread(database, game);        		
+        game.ai = ai;    		
+        ai.start();
+        
+        game.setUp();
+        game.generatePlatforms();
+        game.generateItems();
+        window.init(game, this);
+    }
+    /**
+     * The play() method implements the main game loop.
+     * @throws IOException 
+     * @throws ClassNotFoundException 
+     */
+    private void play() throws ClassNotFoundException, IOException {
+        initializeGame();
         Menu.drawAll();
-
-        long gcCounter = 0;
-        long timeStep = 0;
-
-        while (!myWindow.shouldClose()) {
-            long startTime = currentTimeMillis();
-
-            // Clear *all of the stuff* that gets
-            // created by openGL that we can't remove
-            // manually
-            if(gcCounter % 20 == 0) System.gc();
-            gcCounter++;
-
-            if (myWindow.getScreen() == Screen.GAME) {
+        
+        double gcCounter = 0.0;
+        
+        while (!window.shouldClose()) {
+        	
+        	if(gcCounter % 10000 == 0) System.gc();
+        	gcCounter++;
+        	
+            if (window.getScreen() == Screen.GAME) {
                 handleMessages();
-                myGame.updatePhysics(timeStep);
-                oppGame.updatePhysics(timeStep);
+                game.updateLogic();
+                game.updatePhysics();
             }
+            window.handleInput(game, this);
+            window.repaint(game);
 
-            myWindow.clear();
-            myWindow.handleInput(myGame, this);
-            myWindow.repaint(myGame, oppGame);
-            long endTime = currentTimeMillis();
-            timeStep = endTime - startTime;
-
-            /*
-            if (timeStep >= Constants.MAX_TIME_PER_FRAME ) {
-                if (myWindow.getScreen() == Screen.GAME)
-                    System.err.println("[WARN] Main.play : Exceeded target time per frame: " + timeStep);
-                continue;
-            }*/
-
-/*            try {
-                Thread.sleep(Constants.MAX_TIME_PER_FRAME - timeStep);
-                endTime = currentTimeMillis();
-                timeStep = endTime - startTime
+            try {
+                Thread.sleep(1000/700);
             } catch (InterruptedException e) {
-                System.err.println("[WARN] Main.play : main loop interrupted.");
-                break;
-            }*/
+                e.printStackTrace();
+            }
         }
-        myWindow.end();
-        System.out.println("[INFO] Main.play : Window closed.");
-        AudioEngine.getInstance().destroy();
-        System.exit(0);
+        window.end();
     }
 
-    void startGame(OpponentType opponentType) {
-        initialize();
-        sendMessage(new Message(opponentType));
-
-        new Thread(() -> {
-            // Wait for the seed from the server, because we can't create the game states
-            // without it.
-            System.out.println("[INFO] Main.initializeGame : Waiting for seed...");
-            Message msg = waitForMessage();
-            int seed = (int) msg.getObject();
-            System.out.println("[INFO] Main.initializeGame : Received seed => " + seed);
-
-            myGame.setSeed(seed);
-            myGame.generatePlatforms();
-            myGame.generateItems();
-            oppGame.setSeed(seed);
-            oppGame.generatePlatforms();
-            oppGame.generateItems();
-
-            myWindow.setScreen(Screen.GAME);
-        }).start();
-    }
-
-    public static void main(String[] args) {
-        AudioEngine.isClient = true;
-        Main main = new Main(Constants.HOST, Constants.PORT);
+    public static void main(String[] args) throws ClassNotFoundException, IOException {
+        Main main = new Main("localhost", 8080);
         main.play();
     }
 
     /**
      * This method is called whenever we receive a message from the Server.
-     * @param someonesGame The message we've just received.
+     * @param message The message we've just received.
      */
     @Override
-    public void handleMessage(Message someonesGame) {
+    public void handleMessage(Message message) {
         // Todo: This is probably really inefficient.
-        // Nah fam I'm sure it's all gucci
-        if (someonesGame.isMyGame()) {
-            myGame = (GameState) someonesGame.getObject();
-            if(myGame.gameOver()) {
-                Window.getInstance().setWinner(false); // The other player won!
-                Window.getInstance().setScreen(Screen.GAME_OVER);
-            }
-        }
-        else {
-            oppGame = (GameState) someonesGame.getObject();
-            if(oppGame.gameOver()) {
-                Window.getInstance().setWinner(true); // We won!
-                Window.getInstance().setScreen(Screen.GAME_OVER);
-            }
-        }
+        game = (GameState) message.getObject();
     }
 }

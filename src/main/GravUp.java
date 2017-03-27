@@ -11,14 +11,15 @@ public class GravUp extends main.Item{
 	@Override
 	public void performAction(GameState game) {
 		Ball ball = game.getBall();
-		ball.setGravity(ball.getGravity() + Constants.GRAVITY_UP_STEP);
+		ball.setGravity(ball.getGravity() + 2);
+		//System.out.println("GRAVEUP");
 	}
 	
 	
 	@Override
-	public void paint(Window window, boolean opponent) {
+	public void paint(Window window) {
 		
 		//colour
-		super.paint(window, opponent);
+		super.paint(window);
 	}
 }

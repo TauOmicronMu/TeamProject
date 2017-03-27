@@ -1,110 +1,84 @@
 package main;
 
-import java.io.Serializable;
 
-
-public class TrapPlatform extends Platform implements Serializable {
-
-    /*
-     *Constructor for platform object
-     *@param x the current x position of the platform(the top left corner of the platform)
-     *@param y the current y position of the platform(the top left corner of the platform)
-     *@param width the width of the platform
-     *@param height the height of the platform
-     */
-    TrapPlatform(double x, double y, int width, int height) {
+class TrapPlatform extends Platform {
+	
+	TrapPlatform(double x, double y, int width, int height) {
         super(x, y, width, height);
     }
 
-    /*
-     *Updates the position of the platform
-     *@param game the game class object
-     *@param ball the ball class object
-     */
+
     @Override
-    void update(GameState game, double timeStep) {
-        if (timeStep < Constants.MIN_TIME_PER_FRAME) return;
-        double deltaTime = timeStep * Constants.TIME_STEP_COEFFICIENT;
+    void update(GameState game) {
+        
         Ball ball = game.getBall();
-
-//        // If platform is offscreen, move it back on!
-//        if (y > game.getWindowHeight()) {
-//            //System.out.println("[INFO] Platform.update : y is > window height " + game.getWindowHeight() + " at " + y);
-//            y -= game.getWindowHeight()*1.3;
-//            x = game.random.nextInt(game.getWindowWidth() - width);
-//            return;
-//        }
-
-        // If we've got the flying power-up, don't bother with collision.
-        if (ball.getCountFlyPower() > 0) {
-            y += Constants.FLY_POWERUP_SPEED * deltaTime;
-            game.score += Constants.FLY_POWERUP_SPEED * deltaTime;
-            return;
+        
+        int[] Level = game.getLevel();
+        int counter = game.getCounter();
+        
+        if(counter == Level.length){
+        	game.setCounter(0);
+        	counter = 0;
         }
-
-        // Otherwise, check for collision with the ball.
-        checkForCollision(ball, game, deltaTime);
-
-        // If the ball's height is locked, we need to compensate by moving
-        // the platform down at the speed the ball's meant to be rising.
-        if (ball.heightIsLocked()) {
-            y -= ball.getDy() * deltaTime;
+        	       
+        if(ball.gameOver()==false){
+        	
+        	if(ball.getDy() >0)
+        		ball.setPermission(false);
+            
+            if(ball.getY() < highestPoint && ball.getDy() < 0){
+            	if(ball.getCountFlyPower() >0){
+        			y+=20;
+        			score+=20;
+                } else {
+                	
+                	ball.setPermission(true);
+                	double newDx = ball.getDy() + ball.getGravity() + 0.1;
+                	
+                	if(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 < -3){
+                		
+                		y +=Math.abs(ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1);
+                		score+=ball.getDy() * 0.1 + 0.5 * ball.getGravity() * 0.1 * 0.1 ;
+                	}
+                	else y += dy;
+                	score += dy;
+                checkForCollision(ball, game);
+                }
+            } else {
+                if(ball.getCountFlyPower() >0){
+                    y+=20;
+                    score+=20;
+                } else {
+                    y += dy;
+                    score+= dy;
+                    checkForCollision(ball, game);
+                }
+            }
+        }  else {
+        	if(y>-100){
+        		y-=6;
+        	}
         }
-
-        // Update platform Y position.
-        y += dy * deltaTime;
-        game.score += dy * deltaTime;
-
-        //System.out.println("Dy is" + dy/deltaTime);
     }
-
+    
     @Override
-    public void checkForCollision(Ball ball, GameState game, double deltaTime) {
-        if(noDraw)return;
-            double ballX = ball.getX();
-            double ballY = ball.getY();
-            int radius = ball.getRadius();
+    public void checkForCollision(Ball ball,GameState game) {
+        int ballX = (int) ball.getX();
+        int ballY = (int) ball.getY();
+        int radius = ball.getRadius();
 
-            double ballBottom = ballY + radius;
-            double rectTop = y;
-            double rectLeft = x;
+        if (ballY + radius > y && ballY + radius < y + height) {
+            if (ballX > x && ballX < x + width) {
 
-            // Todo: How is only half the platform colliding?
-            double rectRight = x + width*2;
-
-            // Check if the ball is above the platform *and* will be below
-            // it after exactly one tick at the current framerate.
-            if (ballBottom >= rectTop) return;
-            double newBallBottom = ballBottom + ball.getDy() * deltaTime;
-            if (newBallBottom <= rectTop) return;
-
-            // Check the ball is aligned with the top of the platform.
-            if (ballX+radius < rectLeft) return;
-            if (ballX-radius > rectRight) return;
-
-            // If the ball has collided with the top of the platform ~Tom
-            AudioEngine.getInstance().playTrack(AudioEngine.BLOP); // Play the boing sound
-            //ball.setY(rectTop - radius);
-            //ball.setDy(-ball.getMaxSpeed());
-            noDraw = true;
-
+                double newDy = ball.getGameDy();
+                if(ball.getDy()>0){
+                    isNull = true;
+                }            
+            }
+        }
     }
 
-    /*
-     * Draws the platform
-     */
-    void paint(Window game, boolean opponent) {
-        if(noDraw)return;
-        double scaledX = game.glScaleX(x, opponent, Screen.GAME);
-        double scaledY = game.glScaleY(y);
-        double widthGl = game.glScaleDistance(width);
-        double heightGl = game.glScaleDistance(height);
-
-        double[] verticesb = {scaledX, scaledY, 0.3f, scaledX, (scaledY - heightGl), 0.3f, (scaledX + widthGl), (scaledY - heightGl), 0.3f, (scaledX + widthGl), scaledY, 0.3f};
-        Rectangle.drawrectangle(verticesb, Menu.getRectangleModel(), false);
-    }
-
-    public void setDx(int dx){
-        this.dy = dx;
+    void paint(Window game) {
+        super.paint(game);
     }
 }

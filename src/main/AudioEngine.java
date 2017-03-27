@@ -19,15 +19,7 @@ public class AudioEngine {
     // Returns the AudioEngine instance
     public static AudioEngine getInstance() { return AUDIO_ENGINE; }
     // Set up the sounds for the AudioEngine
-    public static final int BLOP = AUDIO_ENGINE.createTrack("blopalop.wav");
-    public static final int WHOOSH = AUDIO_ENGINE.createTrack("hswoosh.wav");
-    public static final int GRAVDOWN = AUDIO_ENGINE.createTrack("gravdown.wav");
-    public static final int GRAVUP = AUDIO_ENGINE.createTrack("gravup.wav");
-    public static final int POINTS = AUDIO_ENGINE.createTrack("points.wav");
-    public static final int DELETE_PLATFORM = AUDIO_ENGINE.createTrack("platform.wav");
-    // We don't want to play if we're in the client!
-    public static boolean isClient = false;
-
+    public static final int BOING = AUDIO_ENGINE.createTrack("boing.wav");
 
     /** Holds the device and context through which to play the audio. */
     private long device;
@@ -270,14 +262,6 @@ public class AudioEngine {
         this.context = ALC10.alcCreateContext(device, (IntBuffer) null);
         ALC10.alcMakeContextCurrent(context);
         AL.createCapabilities(deviceCaps);
-    }
-
-    public void destroy() {
-        for (Track t : tracks) {
-            t.killALData();
-        }
-        ALC10.alcCloseDevice(this.device);
-        ALC10.alcMakeContextCurrent(0);
     }
 
     /**
