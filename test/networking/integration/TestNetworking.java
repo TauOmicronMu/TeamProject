@@ -19,7 +19,6 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 
 /**
